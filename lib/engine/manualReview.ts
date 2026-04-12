@@ -42,6 +42,32 @@ export function checkManualReview(
     explanationSteps.push('Date of knowledge is unknown — cannot determine if later-of rule applies.');
   }
 
+  // Professional negligence: knowledge date unknown/disputed
+  if (
+    rule.claimType === 'professional_negligence' &&
+    answers.knowledge_date_known === false
+  ) {
+    warnings.push(
+      'You indicated the claimant\'s date of knowledge is not known. Professional negligence claims may rely on the s.14A knowledge-based period (3 years from knowledge), with a separate longstop under s.14B. Manual legal review is required where knowledge is uncertain.'
+    );
+    explanationSteps.push('Professional negligence knowledge date uncertain — s.14A analysis required.');
+  }
+
+  // Breach of trust: no-limitation scenarios under s.21(1)
+  if (rule.claimType === 'breach_of_trust' && answers.fraudulent_breach === true) {
+    warnings.push(
+      'You indicated a fraudulent breach of trust. Under s.21(1)(a) Limitation Act 1980, no limitation period applies in this scenario. Manual legal review is required to confirm classification and remedy scope.'
+    );
+    explanationSteps.push('Fraudulent breach of trust indicated — no statutory limitation period (s.21(1)(a)).');
+  }
+
+  if (rule.claimType === 'breach_of_trust' && answers.trust_property_recovery === true) {
+    warnings.push(
+      'You indicated a claim to recover trust property (or proceeds) from a trustee. Under s.21(1)(b) Limitation Act 1980, no limitation period applies where trust property is in the trustee’s possession or converted to their use. Manual legal review is required.'
+    );
+    explanationSteps.push('Trust property recovery from trustee indicated — no statutory limitation period (s.21(1)(b)).');
+  }
+
   // Fraud/concealment indicated but no discovery date and "unsure" response
   if (
     answers.fraud_concealment === 'unsure'

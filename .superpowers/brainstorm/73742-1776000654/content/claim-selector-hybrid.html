@@ -1,0 +1,70 @@
+<h2>Claim Selector — Hybrid of B + C</h2>
+<p class="subtitle">Combining the best of both: compact grid cards with a detail panel on selection</p>
+
+<div class="cards">
+  <div class="card" data-choice="a" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background: #0f172a; padding: 24px; border-radius: 8px; color: #e2e8f0; font-family: system-ui;">
+        <div style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #64748b; margin-bottom: 12px;">Select claim type</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div style="background: #1e3a5f; border: 1px solid #2563eb55; border-radius: 8px; padding: 10px 14px;">
+            <div style="font-size: 13px; font-weight: 600;">Simple Contract</div>
+            <div style="font-size: 10px; color: #94a3b8; margin-top: 2px;">6 yrs · breach</div>
+          </div>
+          <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px 14px;">
+            <div style="font-size: 13px; color: #94a3b8;">Tort (Non-PI)</div>
+            <div style="font-size: 10px; color: #64748b; margin-top: 2px;">6 yrs · accrual</div>
+          </div>
+          <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px 14px;">
+            <div style="font-size: 13px; color: #94a3b8;">Personal Injury</div>
+            <div style="font-size: 10px; color: #64748b; margin-top: 2px;">3 yrs</div>
+          </div>
+          <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px 14px;">
+            <div style="font-size: 13px; color: #94a3b8;">Defamation</div>
+            <div style="font-size: 10px; color: #64748b; margin-top: 2px;">1 yr · publication</div>
+          </div>
+        </div>
+        <!-- Detail panel appears on selection -->
+        <div style="margin-top: 12px; background: #1e293b; border: 1px solid #2563eb33; border-radius: 8px; padding: 12px 16px; border-left: 3px solid #3b82f6;">
+          <div style="font-size: 12px; font-weight: 500; color: #e2e8f0;">Simple Contract</div>
+          <div style="font-size: 11px; color: #94a3b8; margin-top: 4px;">6 years from date of breach · Limitation Act 1980, s.5</div>
+          <div style="font-size: 11px; color: #3b82f6; margin-top: 8px; cursor: pointer;">Continue →</div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. Hybrid (Recommended)</h3>
+      <p>Compact 2x2 grid from C, but selecting a card reveals a detail panel (from B) with statute reference and "Continue" action. Best of both — compact selection with context before committing.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="b" onclick="toggleSelect(this)">
+    <div class="card-image">
+      <div style="background: #0f172a; padding: 24px; border-radius: 8px; color: #e2e8f0; font-family: system-ui;">
+        <div style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #64748b; margin-bottom: 12px;">Select claim type</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+          <div style="background: #1e3a5f; border: 1px solid #2563eb55; border-radius: 8px; padding: 10px 14px;">
+            <div style="font-size: 13px; font-weight: 600;">Simple Contract</div>
+            <div style="font-size: 10px; color: #94a3b8; margin-top: 2px;">6 yrs · breach</div>
+          </div>
+          <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px 14px;">
+            <div style="font-size: 13px; color: #94a3b8;">Tort (Non-PI)</div>
+            <div style="font-size: 10px; color: #64748b; margin-top: 2px;">6 yrs · accrual</div>
+          </div>
+          <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px 14px;">
+            <div style="font-size: 13px; color: #94a3b8;">Personal Injury</div>
+            <div style="font-size: 10px; color: #64748b; margin-top: 2px;">3 yrs</div>
+          </div>
+          <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 10px 14px;">
+            <div style="font-size: 13px; color: #94a3b8;">Defamation</div>
+            <div style="font-size: 10px; color: #64748b; margin-top: 2px;">1 yr · publication</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. Compact grid, direct action</h3>
+      <p>Just the compact 2x2 grid (option C from before). Clicking a card goes directly to the questionnaire — no intermediate detail panel. Fastest path, fewer clicks.</p>
+    </div>
+  </div>
+</div>

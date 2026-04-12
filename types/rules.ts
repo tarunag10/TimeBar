@@ -19,7 +19,17 @@ export type Question = {
 export type Rule = {
   id: string;
   jurisdiction: 'england_wales';
-  claimType: 'simple_contract' | 'tort_non_pi' | 'personal_injury' | 'defamation';
+  claimType:
+    | 'simple_contract'
+    | 'tort_non_pi'
+    | 'personal_injury'
+    | 'defamation'
+    | 'deed_specialty'
+    | 'professional_negligence'
+    | 'debt_recovery'
+    | 'contribution'
+    | 'recovery_of_land'
+    | 'breach_of_trust';
   title: string;
   statuteRef: {
     act: string;
@@ -32,7 +42,11 @@ export type Rule = {
     unit: 'years' | 'months' | 'days';
     value: number;
   };
-  startRule: 'accrual' | 'publication' | 'later_of_accrual_or_knowledge';
+  startRule: 'accrual' | 'publication' | 'later_of_accrual_or_knowledge' | 'knowledge_with_longstop';
+  longstopPeriod?: {
+    unit: 'years' | 'months' | 'days';
+    value: number;
+  };
   supportedModifiers: ModifierKey[];
   questions: Question[];
   manualReviewTriggers: string[];

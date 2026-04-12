@@ -9,7 +9,18 @@ const dateString = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be in YYYY
 );
 
 export const calculatorInputSchema = z.object({
-  claimType: z.enum(['simple_contract', 'tort_non_pi', 'personal_injury', 'defamation']),
+  claimType: z.enum([
+    'simple_contract',
+    'tort_non_pi',
+    'personal_injury',
+    'defamation',
+    'deed_specialty',
+    'professional_negligence',
+    'debt_recovery',
+    'contribution',
+    'recovery_of_land',
+    'breach_of_trust',
+  ]),
   answers: z.record(z.string(), z.union([z.string(), z.boolean(), z.undefined()])),
 });
 

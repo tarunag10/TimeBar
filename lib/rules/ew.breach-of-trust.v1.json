@@ -1,0 +1,74 @@
+{
+  "id": "ew-breach-of-trust-v1",
+  "jurisdiction": "england_wales",
+  "claimType": "breach_of_trust",
+  "title": "Breach of Trust",
+  "statuteRef": {
+    "act": "Limitation Act 1980",
+    "section": "s.21",
+    "label": "Time limit for actions in respect of trust property"
+  },
+  "version": "1.0.0",
+  "lastReviewed": "2026-04-12",
+  "basePeriod": {
+    "unit": "years",
+    "value": 6
+  },
+  "startRule": "accrual",
+  "supportedModifiers": [
+    "disability"
+  ],
+  "questions": [
+    {
+      "id": "accrual_date",
+      "type": "date",
+      "label": "Date of breach of trust",
+      "helpText": "The date on which the trustee committed the breach of trust. This is typically the date of the act or omission that constituted the breach.",
+      "required": true
+    },
+    {
+      "id": "fraudulent_breach",
+      "type": "boolean",
+      "label": "Was the breach of trust fraudulent?",
+      "helpText": "Under s.21(1)(a) Limitation Act 1980, no limitation period applies to an action by a beneficiary in respect of any fraud or fraudulent breach of trust to which the trustee was a party or privy. If fraudulent, there is no time limit.",
+      "required": true
+    },
+    {
+      "id": "trust_property_recovery",
+      "type": "boolean",
+      "label": "Is the claim to recover trust property (or its proceeds) from the trustee?",
+      "helpText": "Under s.21(1)(b) Limitation Act 1980, no limitation period applies to an action to recover trust property or its proceeds which is in the possession of the trustee, or previously received by the trustee and converted to their use. If yes, there is no time limit.",
+      "required": true
+    },
+    {
+      "id": "disability_at_accrual",
+      "type": "boolean",
+      "label": "Was the claimant under a disability at the date of accrual?",
+      "helpText": "Under the Limitation Act 1980, a person is under a disability if they are a minor (under 18) or lack capacity within the meaning of the Mental Capacity Act 2005.",
+      "required": true
+    },
+    {
+      "id": "disability_ceased_date",
+      "type": "date",
+      "label": "Date disability ceased",
+      "helpText": "The date the claimant turned 18, or the date capacity was regained.",
+      "required": true,
+      "showWhen": {
+        "field": "disability_at_accrual",
+        "equals": true
+      }
+    }
+  ],
+  "manualReviewTriggers": [
+    "fraudulent_breach_no_limitation",
+    "trust_property_in_trustee_possession",
+    "constructive_trust",
+    "knowing_receipt",
+    "dishonest_assistance"
+  ],
+  "notes": [
+    "Where the breach is fraudulent (s.21(1)(a)) or the claim is to recover trust property from the trustee (s.21(1)(b)), NO limitation period applies. The calculator will flag these as manual review with 'no limitation' status.",
+    "The s.32 fraud/concealment postponement is generally not needed for breach of trust claims because s.21(1)(a) already removes the limitation period entirely for fraudulent breaches.",
+    "Claims against third parties for knowing receipt or dishonest assistance may be subject to different limitation rules and are not covered by this calculator."
+  ]
+}

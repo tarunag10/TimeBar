@@ -1,0 +1,123 @@
+<h2>TimeBar — Main Calculator Layout</h2>
+<p class="subtitle">Single-page flow: select claim → fill questionnaire → see result. All on one screen with smooth transitions.</p>
+
+<div class="split">
+  <div class="mockup">
+    <div class="mockup-header">State 1: Claim Selection</div>
+    <div class="mockup-body" style="background: #0f172a; color: #e2e8f0; font-family: system-ui; padding: 0;">
+      <!-- Nav -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid #1e293b;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="width: 8px; height: 8px; background: #3b82f6; border-radius: 2px;"></div>
+          <span style="font-weight: 600; font-size: 15px;">TimeBar</span>
+        </div>
+        <div style="display: flex; gap: 16px; font-size: 12px; color: #64748b;">
+          <span>About</span><span>Coverage</span><span>Changelog</span>
+        </div>
+      </div>
+      <!-- Disclaimer -->
+      <div style="background: #1e293b; padding: 8px 20px; font-size: 10px; color: #64748b; border-bottom: 1px solid #334155;">
+        This tool is an informational aid, not legal advice. Always verify independently.
+      </div>
+      <!-- Hero -->
+      <div style="padding: 24px 20px 16px;">
+        <div style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: #64748b; margin-bottom: 6px;">England & Wales</div>
+        <div style="font-size: 20px; font-weight: 600;">Limitation Calculator</div>
+      </div>
+      <!-- Claim cards -->
+      <div style="padding: 0 20px 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+        <div style="background: #1e3a5f; border: 1px solid #2563eb55; border-radius: 8px; padding: 14px; cursor: pointer;">
+          <div style="font-size: 13px; font-weight: 600;">Simple Contract</div>
+          <div style="font-size: 10px; color: #94a3b8; margin-top: 4px;">6 years from breach</div>
+        </div>
+        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 14px;">
+          <div style="font-size: 13px; font-weight: 500; color: #94a3b8;">Tort (Non-PI)</div>
+          <div style="font-size: 10px; color: #64748b; margin-top: 4px;">6 years from accrual</div>
+        </div>
+        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 14px;">
+          <div style="font-size: 13px; font-weight: 500; color: #94a3b8;">Personal Injury</div>
+          <div style="font-size: 10px; color: #64748b; margin-top: 4px;">3 years</div>
+        </div>
+        <div style="background: #1e293b; border: 1px solid #334155; border-radius: 8px; padding: 14px;">
+          <div style="font-size: 13px; font-weight: 500; color: #94a3b8;">Defamation</div>
+          <div style="font-size: 10px; color: #64748b; margin-top: 4px;">1 year from publication</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mockup">
+    <div class="mockup-header">State 2: Questionnaire + Result</div>
+    <div class="mockup-body" style="background: #0f172a; color: #e2e8f0; font-family: system-ui; padding: 0;">
+      <!-- Nav -->
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 20px; border-bottom: 1px solid #1e293b;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <div style="width: 8px; height: 8px; background: #3b82f6; border-radius: 2px;"></div>
+          <span style="font-weight: 600; font-size: 15px;">TimeBar</span>
+        </div>
+        <div style="font-size: 12px; color: #3b82f6; cursor: pointer;">← Back</div>
+      </div>
+      <!-- Selected claim -->
+      <div style="padding: 16px 20px 0;">
+        <div style="font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: #64748b;">Simple Contract</div>
+        <div style="font-size: 16px; font-weight: 600; margin-top: 4px;">Enter details</div>
+      </div>
+      <!-- Form fields -->
+      <div style="padding: 12px 20px;">
+        <div style="margin-bottom: 12px;">
+          <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Date of breach <span style="color: #64748b; font-size: 9px;">ⓘ</span></div>
+          <div style="background: #1e293b; border: 1px solid #334155; border-radius: 6px; padding: 8px 12px; font-size: 13px; color: #e2e8f0;">14 / 06 / 2020</div>
+        </div>
+        <div style="margin-bottom: 12px;">
+          <div style="font-size: 11px; color: #94a3b8; margin-bottom: 4px;">Was claimant under disability?</div>
+          <div style="display: flex; gap: 8px;">
+            <div style="background: #1e293b; border: 1px solid #334155; border-radius: 6px; padding: 6px 14px; font-size: 12px; color: #94a3b8;">Yes</div>
+            <div style="background: #1e293b; border: 1px solid #3b82f6; border-radius: 6px; padding: 6px 14px; font-size: 12px; color: #e2e8f0;">No</div>
+            <div style="background: #1e293b; border: 1px solid #334155; border-radius: 6px; padding: 6px 14px; font-size: 12px; color: #94a3b8;">Unsure</div>
+          </div>
+        </div>
+      </div>
+      <!-- Result card -->
+      <div style="margin: 8px 20px 16px; background: linear-gradient(135deg, #0f2b1a, #0f172a); border: 1px solid #16a34a33; border-radius: 10px; padding: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: start;">
+          <div>
+            <div style="font-size: 10px; color: #4ade80; text-transform: uppercase; letter-spacing: 1px;">Live — 63 days remaining</div>
+            <div style="font-size: 22px; font-weight: 700; color: #22c55e; margin: 6px 0;">14 June 2026</div>
+            <div style="font-size: 11px; color: #64748b;">Base: 14 Jun 2026 · No modifiers</div>
+          </div>
+          <div style="background: #16a34a22; border: 1px solid #16a34a44; border-radius: 6px; padding: 4px 10px; font-size: 10px; color: #4ade80; font-weight: 600;">LIVE</div>
+        </div>
+        <!-- Mini timeline -->
+        <div style="margin-top: 14px; position: relative; height: 24px;">
+          <div style="position: absolute; top: 10px; left: 0; right: 0; height: 2px; background: #1e293b;"></div>
+          <div style="position: absolute; top: 10px; left: 0; width: 75%; height: 2px; background: linear-gradient(90deg, #3b82f6, #22c55e);"></div>
+          <div style="position: absolute; top: 5px; left: 0; width: 12px; height: 12px; background: #3b82f6; border-radius: 50%;"></div>
+          <div style="position: absolute; top: 5px; left: 73%; width: 12px; height: 12px; background: #f59e0b; border-radius: 50%; border: 2px solid #0f172a;"></div>
+          <div style="position: absolute; top: 5px; right: 0; width: 12px; height: 12px; background: #22c55e; border-radius: 50%;"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 9px; color: #64748b; margin-top: 2px;">
+          <span>14 Jun 2020</span><span>Today</span><span>14 Jun 2026</span>
+        </div>
+      </div>
+      <!-- Reasoning peek -->
+      <div style="margin: 0 20px 16px; background: #1e293b; border-radius: 8px; padding: 12px; font-size: 11px; color: #94a3b8;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-weight: 500; color: #e2e8f0;">Reasoning & Statute ▾</span>
+          <span style="font-size: 10px; color: #64748b;">Copy result</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="margin-top: 24px; padding: 16px; background: rgba(255,255,255,0.03); border-radius: 8px; border: 1px solid rgba(255,255,255,0.06);">
+  <h3 style="margin-top: 0;">Key interactions</h3>
+  <ul style="font-size: 14px; line-height: 1.8; color: #aaa;">
+    <li>Claim cards animate into questionnaire on click (slide/fade)</li>
+    <li>Result card appears instantly as user fills fields (real-time calc)</li>
+    <li>Timeline animates as dates change</li>
+    <li>Reasoning accordion expands with step-by-step trail</li>
+    <li>"Back" returns to claim selection with reverse animation</li>
+    <li>Status badge color-codes: green (live), amber (expires today), red (expired), blue (manual review)</li>
+  </ul>
+</div>

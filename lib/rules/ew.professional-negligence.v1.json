@@ -1,0 +1,101 @@
+{
+  "id": "ew-professional-negligence-v1",
+  "jurisdiction": "england_wales",
+  "claimType": "professional_negligence",
+  "title": "Professional Negligence",
+  "statuteRef": {
+    "act": "Limitation Act 1980",
+    "section": "s.2 / s.14A",
+    "label": "Tort with latent damage knowledge-based alternative"
+  },
+  "version": "1.0.0",
+  "lastReviewed": "2026-04-12",
+  "basePeriod": {
+    "unit": "years",
+    "value": 6
+  },
+  "startRule": "knowledge_with_longstop",
+  "longstopPeriod": {
+    "unit": "years",
+    "value": 15
+  },
+  "supportedModifiers": [
+    "disability",
+    "fraud_concealment_mistake"
+  ],
+  "questions": [
+    {
+      "id": "accrual_date",
+      "type": "date",
+      "label": "Date damage first occurred",
+      "helpText": "The date on which the claimant first suffered measurable damage as a result of the professional's negligence. This may be earlier than the date the damage was discovered.",
+      "required": true
+    },
+    {
+      "id": "knowledge_date_known",
+      "type": "boolean",
+      "label": "Do you know the claimant's date of knowledge of the damage?",
+      "helpText": "Under s.14A Limitation Act 1980, the 'starting date' for the alternative 3-year period is the earliest date on which the claimant had knowledge (or constructive knowledge) of: (a) material facts about the damage, (b) that it was attributable to the defendant's act or omission, and (c) the defendant's identity.",
+      "required": true
+    },
+    {
+      "id": "knowledge_date",
+      "type": "date",
+      "label": "Date of knowledge (s.14A)",
+      "helpText": "The earliest date the claimant knew or ought reasonably to have known of the material facts giving rise to the claim.",
+      "required": true,
+      "showWhen": {
+        "field": "knowledge_date_known",
+        "equals": true
+      }
+    },
+    {
+      "id": "disability_at_accrual",
+      "type": "boolean",
+      "label": "Was the claimant under a disability at the date of accrual?",
+      "helpText": "Under the Limitation Act 1980, a person is under a disability if they are a minor (under 18) or lack capacity within the meaning of the Mental Capacity Act 2005.",
+      "required": true
+    },
+    {
+      "id": "disability_ceased_date",
+      "type": "date",
+      "label": "Date disability ceased",
+      "helpText": "The date the claimant turned 18, or the date capacity was regained.",
+      "required": true,
+      "showWhen": {
+        "field": "disability_at_accrual",
+        "equals": true
+      }
+    },
+    {
+      "id": "fraud_concealment",
+      "type": "boolean",
+      "label": "Was there fraud, deliberate concealment, or mistake?",
+      "helpText": "Under s.32 Limitation Act 1980, if the defendant deliberately concealed relevant facts, the limitation period does not begin until the claimant discovered or could with reasonable diligence have discovered the concealment.",
+      "required": true
+    },
+    {
+      "id": "discovery_date",
+      "type": "date",
+      "label": "Date of discovery",
+      "helpText": "The date the claimant discovered, or could with reasonable diligence have discovered, the fraud, concealment, or mistake.",
+      "required": true,
+      "showWhen": {
+        "field": "fraud_concealment",
+        "equals": true
+      }
+    }
+  ],
+  "manualReviewTriggers": [
+    "latent_damage_disputed",
+    "concurrent_contract_and_tort",
+    "disputed_knowledge_date",
+    "longstop_approaching",
+    "multiple_defendants"
+  ],
+  "notes": [
+    "Professional negligence claims may be brought in both contract and tort. The limitation periods may differ, so both should be considered.",
+    "The s.14A knowledge-based alternative (3 years from knowledge) cannot extend beyond the 15-year longstop under s.14B, which runs from the date of the negligent act or omission (not the date of damage).",
+    "The s.14A regime applies to latent damage in negligence claims and is not available for other torts or for breach of contract."
+  ]
+}

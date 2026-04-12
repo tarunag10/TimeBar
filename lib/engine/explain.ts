@@ -12,6 +12,8 @@ export function buildExplanation(
   startDate: Date,
   baseExpiry: Date,
   modifierResult: ModifierResult,
+  longstopExpiry?: Date | null,
+  longstopApplied?: boolean,
 ): string[] {
   const steps: string[] = [];
 
@@ -34,6 +36,17 @@ export function buildExplanation(
     } else {
       steps.push(`Start date: ${formatDate(startDate)} (date of injury)`);
     }
+  } else if (rule.startRule === 'knowledge_with_longstop') {
+    const knowledgeKnown = answers.knowledge_date_known;
+    if (knowledgeKnown === true && answers.knowledge_date) {
+      steps.push(
+        'Primary rule: later of 6 years from accrual and 3 years from date of knowledge (s.2 and s.14A Limitation Act 1980)'
+      );
+    } else {
+      steps.push(
+        'Primary rule: 6 years from accrual (knowledge date not available for s.14A alternative)'
+      );
+    }
   } else if (rule.startRule === 'publication') {
     steps.push(`Start date: ${formatDate(startDate)} (date of publication)`);
   } else {
@@ -50,10 +63,18 @@ export function buildExplanation(
   }
 
   // Step 5: Final date
-  const finalExpiry = modifierResult.adjustedExpiry || baseExpiry;
+  const finalExpiry = longstopApplied && longstopExpiry
+    ? longstopExpiry
+    : (modifierResult.adjustedExpiry || baseExpiry);
   steps.push(`Base expiry date: ${formatDate(baseExpiry)}`);
   if (modifierResult.adjustedExpiry) {
     steps.push(`Adjusted expiry date: ${formatDate(modifierResult.adjustedExpiry)}`);
+  }
+  if (longstopExpiry) {
+    steps.push(`Longstop date: ${formatDate(longstopExpiry)}`);
+    if (longstopApplied) {
+      steps.push('Longstop applied: final date capped by longstop');
+    }
   }
   steps.push(`Likely limitation expiry: ${formatDate(finalExpiry)}`);
 

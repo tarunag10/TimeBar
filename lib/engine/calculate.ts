@@ -20,7 +20,7 @@ function determineStartDate(rule: Rule, answers: Record<string, string | boolean
 
   const accrualDate = parseISO(accrualStr);
 
-  if (rule.startRule === 'later_of_accrual_or_knowledge') {
+  if (rule.startRule === 'later_of_accrual_or_knowledge' || rule.startRule === 'knowledge_with_longstop') {
     const knowledgeKnown = answers.knowledge_date_known;
     if (knowledgeKnown === true) {
       const knowledgeStr = answers.knowledge_date as string | undefined;
@@ -32,6 +32,31 @@ function determineStartDate(rule: Rule, answers: Record<string, string | boolean
   }
 
   return accrualDate;
+}
+
+function determineKnowledgeRuleExpiry(rule: Rule, answers: Record<string, string | boolean | undefined>): Date | null {
+  const accrualStr = answers.accrual_date as string | undefined;
+  if (!accrualStr) return null;
+
+  const accrualDate = parseISO(accrualStr);
+
+  if (rule.startRule !== 'knowledge_with_longstop') {
+    return null;
+  }
+
+  const accrualExpiry = addPeriod(accrualDate, rule.basePeriod);
+  const knowledgeKnown = answers.knowledge_date_known;
+
+  if (knowledgeKnown === true) {
+    const knowledgeStr = answers.knowledge_date as string | undefined;
+    if (knowledgeStr) {
+      const knowledgeDate = parseISO(knowledgeStr);
+      const knowledgeExpiry = addYears(knowledgeDate, 3);
+      return knowledgeExpiry > accrualExpiry ? knowledgeExpiry : accrualExpiry;
+    }
+  }
+
+  return accrualExpiry;
 }
 
 export function calculate(input: CalculationInput): CalculationResult {
@@ -57,12 +82,35 @@ export function calculate(input: CalculationInput): CalculationResult {
   }
 
   // Calculate base expiry
-  const baseExpiry = addPeriod(startDate, rule.basePeriod);
+  let baseExpiry =
+    determineKnowledgeRuleExpiry(rule, answers) ?? addPeriod(startDate, rule.basePeriod);
 
   // Apply modifiers
   const modifierResult = applyModifiers(rule, answers, startDate, baseExpiry);
 
-  const finalExpiry = modifierResult.adjustedExpiry || baseExpiry;
+  let adjustedExpiry = modifierResult.adjustedExpiry || null;
+  let finalExpiry = adjustedExpiry || baseExpiry;
+  let longstopExpiry: Date | null = null;
+  let longstopApplied = false;
+
+  if (rule.startRule === 'knowledge_with_longstop' && rule.longstopPeriod) {
+    const accrualStr = answers.accrual_date as string | undefined;
+    if (accrualStr) {
+      longstopExpiry = addPeriod(parseISO(accrualStr), rule.longstopPeriod);
+      if (finalExpiry > longstopExpiry) {
+        finalExpiry = longstopExpiry;
+        adjustedExpiry = longstopExpiry;
+        longstopApplied = true;
+        modifierResult.appliedModifiers.push(
+          `Longstop cap (${rule.longstopPeriod.value} ${rule.longstopPeriod.unit})`
+        );
+        modifierResult.warnings.push(
+          'The calculated date has been capped by the 15-year longstop (s.14B Limitation Act 1980).'
+        );
+      }
+    }
+  }
+
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -78,8 +126,8 @@ export function calculate(input: CalculationInput): CalculationResult {
   }
 
   const primaryExpiryStr = format(baseExpiry, 'yyyy-MM-dd');
-  const adjustedExpiryStr = modifierResult.adjustedExpiry
-    ? format(modifierResult.adjustedExpiry, 'yyyy-MM-dd')
+  const adjustedExpiryStr = adjustedExpiry
+    ? format(adjustedExpiry, 'yyyy-MM-dd')
     : undefined;
 
   const explanationSteps = buildExplanation(
@@ -88,6 +136,8 @@ export function calculate(input: CalculationInput): CalculationResult {
     startDate,
     baseExpiry,
     modifierResult,
+    longstopExpiry,
+    longstopApplied,
   );
 
   const warnings: string[] = [...modifierResult.warnings];
