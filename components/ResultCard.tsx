@@ -15,32 +15,32 @@ type Props = {
 
 const statusStyles = {
   live: {
-    gradient: 'from-green-500/[0.08] via-green-500/[0.03] to-transparent',
-    border: 'border-green-500/[0.12]',
+    gradient: 'from-emerald-500/[0.12] via-emerald-500/[0.03] to-transparent',
+    border: 'border-emerald-500/[0.25]',
     glow: 'glow-green',
-    dateColor: 'text-green-400',
-    accent: 'bg-green-500',
+    dateColor: 'text-emerald-300',
+    accent: 'bg-emerald-400',
   },
   expires_today: {
-    gradient: 'from-amber-500/[0.08] via-amber-500/[0.03] to-transparent',
-    border: 'border-amber-500/[0.12]',
+    gradient: 'from-amber-500/[0.12] via-amber-500/[0.04] to-transparent',
+    border: 'border-amber-500/[0.25]',
     glow: 'glow-amber',
-    dateColor: 'text-amber-400',
-    accent: 'bg-amber-500',
+    dateColor: 'text-amber-300',
+    accent: 'bg-amber-400',
   },
   expired: {
-    gradient: 'from-red-500/[0.08] via-red-500/[0.03] to-transparent',
-    border: 'border-red-500/[0.12]',
+    gradient: 'from-rose-500/[0.12] via-rose-500/[0.03] to-transparent',
+    border: 'border-rose-500/[0.26]',
     glow: 'glow-red',
-    dateColor: 'text-red-400',
-    accent: 'bg-red-500',
+    dateColor: 'text-rose-300',
+    accent: 'bg-rose-400',
   },
   manual_review: {
-    gradient: 'from-blue-500/[0.08] via-blue-500/[0.03] to-transparent',
-    border: 'border-blue-500/[0.12]',
+    gradient: 'from-[#d5b06b]/20 via-[#d5b06b]/5 to-transparent',
+    border: 'border-[#d5b06b]/35',
     glow: 'glow-blue',
-    dateColor: 'text-blue-400',
-    accent: 'bg-blue-500',
+    dateColor: 'text-[#f2dcb5]',
+    accent: 'bg-[#d5b06b]',
   },
 };
 
@@ -58,10 +58,7 @@ export default function ResultCard({ result, claimType, accrualDate }: Props) {
       transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
       className={`relative overflow-hidden rounded-2xl border ${style.border} ${style.glow}`}
     >
-      {/* Accent line */}
       <div className={`absolute top-0 left-0 w-full h-px ${style.accent} opacity-30`} />
-
-      {/* Gradient background */}
       <div className={`absolute inset-0 bg-gradient-to-br ${style.gradient}`} />
       <div className="absolute inset-0 glass" />
 
@@ -70,12 +67,12 @@ export default function ResultCard({ result, claimType, accrualDate }: Props) {
           <div className="flex-1 min-w-0">
             {result.status === 'manual_review' ? (
               <>
-                <div className="text-[11px] uppercase tracking-wider text-blue-400/80 font-medium mb-3">
+                <div className="text-[11px] uppercase tracking-wider text-[#eecf9a] font-semibold mb-3">
                   Manual Review Required
                 </div>
                 <div className="space-y-2">
                   {result.warnings.map((w, i) => (
-                    <p key={i} className="text-[13px] text-slate-400 leading-relaxed font-light">
+                    <p key={i} className="text-[13px] text-slate-200/90 leading-relaxed">
                       {w}
                     </p>
                   ))}
@@ -83,19 +80,19 @@ export default function ResultCard({ result, claimType, accrualDate }: Props) {
               </>
             ) : (
               <>
-                <div className={`text-[11px] uppercase tracking-wider ${style.dateColor} font-medium opacity-80 mb-1`}>
+                <div className={`text-[11px] uppercase tracking-wider ${style.dateColor} font-semibold opacity-90 mb-1`}>
                   {result.status === 'live' && `${result.daysRemaining} days remaining`}
                   {result.status === 'expires_today' && 'Expires today'}
                   {result.status === 'expired' && `${Math.abs(result.daysRemaining || 0)} days overdue`}
                 </div>
 
                 {result.primaryExpiryDate && (
-                  <div className={`text-3xl sm:text-4xl font-bold ${style.dateColor} tracking-tight leading-none`}>
+                  <div className={`text-3xl sm:text-4xl display-serif ${style.dateColor} tracking-tight leading-none`}>
                     {formatDisplayDate(result.adjustedExpiryDate || result.primaryExpiryDate)}
                   </div>
                 )}
 
-                <div className="text-[11px] text-slate-500 font-light mt-2.5">
+                <div className="text-[11px] text-slate-300/85 mt-2.5">
                   {result.adjustedExpiryDate ? (
                     <>
                       Base date: {formatDisplayDate(result.primaryExpiryDate!)} &middot; {result.appliedModifiers.join(', ')}

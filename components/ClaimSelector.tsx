@@ -49,13 +49,13 @@ export default function ClaimSelector({ onSelect }: Props) {
       transition={{ duration: 0.5 }}
     >
       <div className="mb-8">
-        <p className="text-[11px] tracking-[3px] uppercase text-slate-500 font-light mb-2">
+        <p className="text-[11px] tracking-[3px] uppercase text-slate-500 font-medium mb-2">
           England &amp; Wales
         </p>
-        <h1 className="text-2xl sm:text-3xl font-semibold tracking-tight text-gradient">
+        <h1 className="text-3xl sm:text-4xl display-serif tracking-tight text-gradient">
           Limitation Calculator
         </h1>
-        <p className="text-sm text-slate-500 font-light mt-2 leading-relaxed">
+        <p className="text-sm text-slate-300 mt-2 leading-relaxed max-w-3xl">
           Select the legal claim type that best matches your case. The calculator will then guide you
           through plain-English questions and estimate the likely limitation deadline under
           England &amp; Wales law.
@@ -65,10 +65,10 @@ export default function ClaimSelector({ onSelect }: Props) {
       <div className="space-y-6">
         {claimCategories.map((category, categoryIndex) => (
           <div key={category.label}>
-            <p className="text-[11px] tracking-[2px] uppercase text-slate-500 font-light mb-3">
+            <p className="text-[11px] tracking-[2px] uppercase text-slate-500 font-medium mb-3">
               {category.label}
             </p>
-            <div className="space-y-2.5">
+            <div className="grid sm:grid-cols-2 gap-2.5">
               {category.items.map((claim, itemIndex) => {
                 const Icon = claimIcons[claim.key];
                 const rule = getRule(claim.key);
@@ -83,30 +83,27 @@ export default function ClaimSelector({ onSelect }: Props) {
                       delay: overallIndex * 0.06,
                       ease: [0.25, 0.46, 0.45, 0.94],
                     }}
-                    whileHover={{
-                      scale: 1.01,
-                      transition: { type: 'spring', stiffness: 400, damping: 25 },
-                    }}
+                    whileHover={{ y: -2, transition: { type: 'spring', stiffness: 420, damping: 24 } }}
                     whileTap={{ scale: 0.99 }}
                     onClick={() => onSelect(claim.key)}
                     className="w-full group relative text-left glass glass-hover rounded-xl p-4
-                      focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40
+                      focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d5b06b]/50
                       cursor-pointer overflow-hidden"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/[0.06] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#d5b06b]/15 via-transparent to-[#9fbff6]/12 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
 
                     <div className="relative flex items-center gap-3.5">
-                      <div className="w-8 h-8 rounded-lg bg-white/[0.03] border border-white/[0.06] flex items-center justify-center">
-                        <Icon className="w-4 h-4 text-slate-500 group-hover:text-blue-400 transition-colors duration-300" />
+                      <div className="w-9 h-9 rounded-lg bg-white/[0.04] border border-[#d5b06b]/25 flex items-center justify-center">
+                        <Icon className="w-4 h-4 text-[#e6c48d] group-hover:text-[#f4ddb3] transition-colors duration-300" />
                       </div>
                       <div className="flex-1">
-                        <div className="text-[13px] font-medium text-slate-300 group-hover:text-slate-100 transition-colors duration-200">
+                        <div className="text-[13px] font-semibold text-slate-200 group-hover:text-white transition-colors duration-200">
                           {claim.title}
                         </div>
-                        <div className="text-[11px] text-slate-600 font-light mt-0.5">
+                        <div className="text-[11px] text-slate-400 mt-0.5">
                           {claim.shortDesc}
                         </div>
-                        <div className="text-[10px] text-slate-600/80 font-light mt-1">
+                        <div className="text-[10px] text-slate-500 mt-1">
                           {rule.statuteRef.act}, {rule.statuteRef.section}
                         </div>
                       </div>

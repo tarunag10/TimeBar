@@ -13,16 +13,16 @@ export default function ReasoningAccordion({ result }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="glass rounded-xl overflow-hidden">
+    <div className="glass rounded-xl overflow-hidden border border-[#d5b06b]/22">
       <button
         type="button"
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between px-5 py-3.5 text-left cursor-pointer
-          hover:bg-white/[0.02] transition-colors duration-200"
+          hover:bg-white/[0.04] transition-colors duration-200"
       >
         <div className="flex items-center gap-2.5">
-          <Scale className="w-3.5 h-3.5 text-slate-500" />
-          <span className="text-[13px] font-medium text-slate-300">
+          <Scale className="w-3.5 h-3.5 text-[#d5b06b]" />
+          <span className="text-[13px] font-semibold text-slate-100">
             Reasoning &amp; Statute
           </span>
         </div>
@@ -30,7 +30,7 @@ export default function ReasoningAccordion({ result }: Props) {
           animate={{ rotate: open ? 180 : 0 }}
           transition={{ duration: 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
         >
-          <ChevronDown className="w-4 h-4 text-slate-500" />
+          <ChevronDown className="w-4 h-4 text-slate-300" />
         </motion.div>
       </button>
 
@@ -42,40 +42,37 @@ export default function ReasoningAccordion({ result }: Props) {
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
-            <div className="px-5 pb-5 border-t border-white/[0.04]">
-              {/* Explanation steps */}
+            <div className="px-5 pb-5 border-t border-white/[0.06]">
               <ol className="mt-4 space-y-3">
                 {result.explanationSteps.map((step, i) => (
                   <li key={i} className="flex gap-3 text-[12px] leading-relaxed">
-                    <span className="flex items-center justify-center w-5 h-5 rounded-full bg-white/[0.04] text-slate-500 text-[10px] font-medium shrink-0 mt-0.5">
+                    <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[#d5b06b]/15 text-[#f0d7ad] text-[10px] font-medium shrink-0 mt-0.5">
                       {i + 1}
                     </span>
-                    <span className="text-slate-400 font-light">{step}</span>
+                    <span className="text-slate-200/90">{step}</span>
                   </li>
                 ))}
               </ol>
 
-              {/* Statute references */}
               {result.statuteRefs.length > 0 && (
-                <div className="mt-5 glass rounded-lg p-3.5">
+                <div className="mt-5 glass rounded-lg p-3.5 border border-[#d5b06b]/22">
                   <p className="text-[10px] uppercase tracking-wider text-slate-500 font-medium mb-2">
                     Statute Reference
                   </p>
                   {result.statuteRefs.map((ref, i) => (
-                    <p key={i} className="text-[12px] text-slate-300 font-light">
+                    <p key={i} className="text-[12px] text-slate-100">
                       {ref.act}, {ref.section} — {ref.label}
                     </p>
                   ))}
                 </div>
               )}
 
-              {/* Warnings */}
               {result.warnings.length > 0 && (
                 <div className="mt-4 space-y-2">
                   {result.warnings.map((warning, i) => (
                     <div key={i} className="flex gap-2 items-start">
-                      <AlertTriangle className="w-3 h-3 text-amber-500/60 shrink-0 mt-0.5" />
-                      <p className="text-[11px] text-amber-400/60 leading-relaxed font-light">
+                      <AlertTriangle className="w-3 h-3 text-amber-300/90 shrink-0 mt-0.5" />
+                      <p className="text-[11px] text-amber-200/85 leading-relaxed">
                         {warning}
                       </p>
                     </div>

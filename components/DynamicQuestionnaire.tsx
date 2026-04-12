@@ -26,7 +26,7 @@ function BooleanInput({
   ];
 
   return (
-    <div className="flex gap-2">
+    <div className="flex flex-wrap gap-2">
       {options.map((opt) => {
         const isSelected = value === opt.val;
         return (
@@ -35,11 +35,11 @@ function BooleanInput({
             type="button"
             whileTap={{ scale: 0.95 }}
             onClick={() => onChange(opt.val)}
-            className={`px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 cursor-pointer border
+            className={`px-4 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 cursor-pointer border
               ${
                 isSelected
-                  ? 'bg-blue-500/15 border-blue-500/30 text-blue-300 shadow-[0_0_12px_-3px_rgba(59,130,246,0.2)]'
-                  : 'glass border-white/[0.06] text-slate-400 hover:text-slate-300 hover:border-white/[0.12] hover:bg-white/[0.04]'
+                  ? 'bg-[#d5b06b]/15 border-[#d5b06b]/45 text-[#f2deb8] shadow-[0_0_18px_-5px_rgba(213,176,107,0.35)]'
+                  : 'glass border-white/[0.08] text-slate-300 hover:text-slate-100 hover:border-[#d5b06b]/35 hover:bg-white/[0.06]'
               }`}
           >
             {opt.label}
@@ -61,15 +61,15 @@ function DateInput({
 }) {
   return (
     <div className="relative">
-      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500 pointer-events-none" />
+      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#d5b06b]/70 pointer-events-none" />
       <input
         type="date"
         value={value || ''}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full sm:w-auto pl-9 pr-3 py-2.5 rounded-lg text-sm text-slate-200 font-light
-          glass border border-white/[0.06]
-          focus:outline-none focus:border-blue-500/30 focus:bg-blue-500/[0.03] focus:shadow-[0_0_16px_-4px_rgba(59,130,246,0.15)]
-          transition-all duration-200 placeholder:text-slate-600"
+        className="w-full sm:w-auto pl-9 pr-3 py-2.5 rounded-xl text-sm text-slate-100
+          glass border border-[#d5b06b]/25
+          focus:outline-none focus:border-[#d5b06b]/55 focus:bg-white/[0.05] focus:shadow-[0_0_20px_-6px_rgba(213,176,107,0.35)]
+          transition-all duration-200 placeholder:text-slate-500"
         aria-label={question.label}
       />
     </div>
@@ -84,7 +84,7 @@ function HelpTooltip({ text }: { text: string }) {
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="text-slate-600 hover:text-blue-400 transition-colors duration-200 cursor-pointer"
+        className="text-slate-500 hover:text-[#d5b06b] transition-colors duration-200 cursor-pointer"
         aria-label="More information"
       >
         <HelpCircle className="w-3.5 h-3.5" />
@@ -104,9 +104,9 @@ function HelpTooltip({ text }: { text: string }) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -6, scale: 0.96 }}
               transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="absolute z-30 left-0 top-full mt-2 w-72 sm:w-80 glass-strong rounded-xl p-3.5 shadow-2xl"
+              className="absolute z-30 left-0 top-full mt-2 w-72 sm:w-80 glass-strong rounded-xl p-3.5 shadow-2xl border border-[#d5b06b]/25"
             >
-              <p className="text-[11px] text-slate-300 leading-relaxed font-light">{text}</p>
+              <p className="text-[11px] text-slate-200 leading-relaxed">{text}</p>
             </motion.div>
           </>
         )}
@@ -123,7 +123,7 @@ export default function DynamicQuestionnaire({ rule, answers, onAnswerChange }: 
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {rule.questions.map((q, i) => {
         if (!shouldShow(q)) return null;
 
@@ -133,8 +133,9 @@ export default function DynamicQuestionnaire({ rule, answers, onAnswerChange }: 
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: i * 0.05, ease: [0.25, 0.46, 0.45, 0.94] }}
+            className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-4"
           >
-            <label className="flex items-center text-[12px] text-slate-400 font-light mb-2.5 leading-relaxed">
+            <label className="flex items-center text-[12px] text-slate-200 font-medium mb-2.5 leading-relaxed">
               <span>{q.label}</span>
               {q.helpText && <HelpTooltip text={q.helpText} />}
             </label>

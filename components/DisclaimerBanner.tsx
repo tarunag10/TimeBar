@@ -14,18 +14,18 @@ export default function DisclaimerBanner() {
           initial={{ height: 'auto', opacity: 1 }}
           exit={{ height: 0, opacity: 0 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
-          className="relative z-40 overflow-hidden border-b border-amber-500/[0.06] bg-amber-500/[0.03]"
+          className="relative z-40 overflow-hidden border-b border-[#d5b06b]/20 bg-[#d5b06b]/8"
         >
-          <div className="max-w-2xl mx-auto px-5 sm:px-8 py-2 flex items-center gap-2.5">
-            <AlertTriangle className="w-3 h-3 text-amber-500/60 shrink-0" />
-            <p className="text-[11px] text-slate-500 leading-relaxed font-light flex-1">
+          <div className="max-w-6xl mx-auto px-4 sm:px-8 py-2 flex items-center gap-2.5">
+            <AlertTriangle className="w-3 h-3 text-[#f1d7ab] shrink-0" />
+            <p className="text-[11px] text-[#f4e3c7] leading-relaxed flex-1">
               This tool gives an informational estimate, not legal advice. Limitation analysis depends
               on case facts, disputed evidence, and judicial discretion. Always verify with a qualified
               legal professional.
             </p>
             <button
               onClick={() => setVisible(false)}
-              className="text-slate-600 hover:text-slate-400 transition-colors p-0.5 cursor-pointer"
+              className="text-[#f4e3c7]/70 hover:text-[#f4e3c7] transition-colors p-0.5 cursor-pointer"
               aria-label="Dismiss disclaimer"
             >
               <X className="w-3 h-3" />
