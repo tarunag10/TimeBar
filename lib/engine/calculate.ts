@@ -59,6 +59,96 @@ function determineKnowledgeRuleExpiry(rule: Rule, answers: Record<string, string
   return accrualExpiry;
 }
 
+function getUrgencyLevel(status: CalculationResult['status'], daysRemaining?: number): CalculationResult['urgencyLevel'] {
+  if (status === 'manual_review' || status === 'expired' || status === 'expires_today') {
+    return 'critical';
+  }
+  if (typeof daysRemaining !== 'number') return 'important';
+  if (daysRemaining <= 30) return 'urgent';
+  if (daysRemaining <= 120) return 'important';
+  return 'routine';
+}
+
+function getConfidenceLevel(
+  status: CalculationResult['status'],
+  warnings: string[],
+  appliedModifiers: string[],
+): CalculationResult['confidenceLevel'] {
+  if (status === 'manual_review') return 'low';
+  if (warnings.length > 1) return 'low';
+  if (warnings.length > 0 || appliedModifiers.length > 0) return 'medium';
+  return 'high';
+}
+
+function buildScenarioSummary(
+  status: CalculationResult['status'],
+  daysRemaining: number,
+  expiryLabel: string,
+): string {
+  if (status === 'expired') {
+    return `The calculated limitation date (${expiryLabel}) appears to have passed by ${Math.abs(daysRemaining)} day(s).`;
+  }
+  if (status === 'expires_today') {
+    return `The calculated limitation date is today (${expiryLabel}). Immediate legal action may be required.`;
+  }
+  return `The claim appears in time with an estimated limitation date of ${expiryLabel} (${daysRemaining} day(s) remaining).`;
+}
+
+function buildNextActions(
+  rule: Rule,
+  status: CalculationResult['status'],
+  daysRemaining: number,
+): string[] {
+  const actions: string[] = [
+    'Preserve and date-stamp source evidence for all entered dates and modifiers.',
+    'Set internal reminders before the calculated deadline (for example: 90, 30, and 7 days).',
+  ];
+
+  if (status === 'expired' || status === 'expires_today') {
+    actions.unshift('Obtain urgent limitation advice on potential extension/discretion routes before taking next steps.');
+    actions.push('Assess whether any claim-specific judicial discretion or postponement routes remain available.');
+  } else if (daysRemaining <= 30) {
+    actions.unshift('Treat this file as urgent: prepare final pleadings and issue strategy immediately.');
+  } else if (daysRemaining <= 120) {
+    actions.unshift('Prioritize this file for pre-issue review and evidence finalization.');
+  } else {
+    actions.unshift('Maintain active monitoring and re-check limitation if facts or dates change.');
+  }
+
+  if (rule.claimType === 'professional_negligence') {
+    actions.push('Keep a separate record of both accrual analysis and knowledge-date analysis (s.14A/s.14B).');
+  }
+  if (rule.claimType === 'defamation') {
+    actions.push('Confirm whether republication facts could alter the operative publication date.');
+  }
+  if (rule.claimType === 'mortgage_interest') {
+    actions.push('Separate each arrears period if interest accrued over multiple intervals.');
+  }
+
+  return actions;
+}
+
+function buildReviewChecklist(rule: Rule): string[] {
+  const checklist = [
+    'Accrual/start date supported by documentary evidence.',
+    'Any modifier dates (discovery, acknowledgment, part payment, disability cessation) verified.',
+    'Claim pleaded in the correct legal category (for example deed vs simple contract).',
+    'Procedural timetable (issue/service/enforcement steps) checked separately from substantive limitation.',
+  ];
+
+  if (rule.claimType === 'recovery_of_land') {
+    checklist.push('Registered vs unregistered land position confirmed.');
+  }
+  if (rule.claimType === 'judgment_enforcement') {
+    checklist.push('Enforcement route checked against any permission requirements.');
+  }
+  if (rule.claimType === 'breach_of_trust') {
+    checklist.push('Verified whether s.21 no-limitation exceptions apply.');
+  }
+
+  return checklist;
+}
+
 export function calculate(input: CalculationInput): CalculationResult {
   const rule = getRule(input.claimType);
   const { answers } = input;
@@ -73,6 +163,17 @@ export function calculate(input: CalculationInput): CalculationResult {
   if (!startDate) {
     return {
       status: 'manual_review',
+      urgencyLevel: 'critical',
+      confidenceLevel: 'low',
+      scenarioSummary: 'A reliable limitation date cannot be calculated because essential date data is missing.',
+      nextActions: [
+        'Identify and verify the core accrual/start date from source documents.',
+        'Re-run the calculator once required dates are available.',
+      ],
+      reviewChecklist: [
+        'Accrual/start date established.',
+        'Core claim classification confirmed.',
+      ],
       warnings: ['Required date information is missing.'],
       explanationSteps: ['Cannot calculate: accrual date not provided.'],
       statuteRefs: [rule.statuteRef],
@@ -159,11 +260,23 @@ export function calculate(input: CalculationInput): CalculationResult {
     );
   }
 
+  const displayExpiry = format(finalExpiry, 'd MMMM yyyy');
+  const urgencyLevel = getUrgencyLevel(status, daysRemaining);
+  const confidenceLevel = getConfidenceLevel(status, warnings, modifierResult.appliedModifiers);
+  const scenarioSummary = buildScenarioSummary(status, daysRemaining, displayExpiry);
+  const nextActions = buildNextActions(rule, status, daysRemaining);
+  const reviewChecklist = buildReviewChecklist(rule);
+
   return {
     status,
     primaryExpiryDate: primaryExpiryStr,
     adjustedExpiryDate: adjustedExpiryStr,
     daysRemaining,
+    urgencyLevel,
+    confidenceLevel,
+    scenarioSummary,
+    nextActions,
+    reviewChecklist,
     statuteRefs: [rule.statuteRef],
     explanationSteps,
     warnings,

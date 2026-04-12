@@ -111,6 +111,32 @@ export default function ResultCard({ result, claimType, accrualDate }: Props) {
           </div>
         </div>
 
+        <div className="mt-4 rounded-xl border border-white/[0.08] bg-white/[0.02] p-3.5 space-y-3">
+          <div className="flex flex-wrap items-center gap-2 text-[10px] uppercase tracking-[1.5px]">
+            <span className="px-2 py-1 rounded-md bg-white/[0.05] text-slate-300">
+              Urgency: {result.urgencyLevel}
+            </span>
+            <span className="px-2 py-1 rounded-md bg-white/[0.05] text-slate-300">
+              Confidence: {result.confidenceLevel}
+            </span>
+          </div>
+          <p className="text-[12px] text-slate-200/90 leading-relaxed">
+            {result.scenarioSummary}
+          </p>
+          {result.nextActions.length > 0 && (
+            <div>
+              <p className="text-[11px] uppercase tracking-[1.5px] text-slate-500 mb-2">Recommended next steps</p>
+              <ul className="space-y-1.5">
+                {result.nextActions.slice(0, 3).map((action, idx) => (
+                  <li key={idx} className="text-[12px] text-slate-200/85 leading-relaxed">
+                    {idx + 1}. {action}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+
         {result.status !== 'manual_review' && result.primaryExpiryDate && accrualDate && (
           <Timeline
             accrualDate={accrualDate}

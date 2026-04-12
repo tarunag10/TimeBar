@@ -79,6 +79,21 @@ export default function ReasoningAccordion({ result }: Props) {
                   ))}
                 </div>
               )}
+
+              {result.reviewChecklist.length > 0 && (
+                <div className="mt-5 glass rounded-lg p-3.5 border border-[#9fbff6]/22">
+                  <p className="text-[10px] uppercase tracking-wider text-slate-500 font-medium mb-2">
+                    Review checklist
+                  </p>
+                  <ol className="space-y-1.5">
+                    {result.reviewChecklist.map((item, i) => (
+                      <li key={i} className="text-[12px] text-slate-100/90 leading-relaxed">
+                        {i + 1}. {item}
+                      </li>
+                    ))}
+                  </ol>
+                </div>
+              )}
             </div>
           </motion.div>
         )}

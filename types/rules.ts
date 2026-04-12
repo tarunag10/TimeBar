@@ -66,6 +66,11 @@ export type CalculationResult = {
   primaryExpiryDate?: string;
   adjustedExpiryDate?: string;
   daysRemaining?: number;
+  urgencyLevel: 'routine' | 'important' | 'urgent' | 'critical';
+  confidenceLevel: 'high' | 'medium' | 'low';
+  scenarioSummary: string;
+  nextActions: string[];
+  reviewChecklist: string[];
   statuteRefs: { act: string; section: string; label: string }[];
   explanationSteps: string[];
   warnings: string[];

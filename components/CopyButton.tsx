@@ -22,8 +22,18 @@ function formatCopyText(result: CalculationResult, claimType: string): string {
   if (result.status === 'manual_review') {
     lines.push('');
     lines.push('MANUAL REVIEW REQUIRED');
+    lines.push(`Urgency: ${result.urgencyLevel.toUpperCase()}`);
+    lines.push(`Confidence: ${result.confidenceLevel.toUpperCase()}`);
+    lines.push(`Summary: ${result.scenarioSummary}`);
     for (const warning of result.warnings) {
       lines.push(`Reason: ${warning}`);
+    }
+    if (result.nextActions.length > 0) {
+      lines.push('');
+      lines.push('Recommended next actions:');
+      for (const action of result.nextActions) {
+        lines.push(`- ${action}`);
+      }
     }
     lines.push(`Base period (if standard rule applied): ${rule.basePeriod.value} ${rule.basePeriod.unit} from ${rule.startRule.replace(/_/g, ' ')}`);
   } else {
@@ -46,7 +56,17 @@ function formatCopyText(result: CalculationResult, claimType: string): string {
       manual_review: 'Manual review required',
     };
     lines.push(`Status: ${statusLabels[result.status]}`);
+    lines.push(`Urgency: ${result.urgencyLevel.toUpperCase()}`);
+    lines.push(`Confidence: ${result.confidenceLevel.toUpperCase()}`);
+    lines.push(`Summary: ${result.scenarioSummary}`);
     lines.push(`Statute: ${rule.statuteRef.act}, ${rule.statuteRef.section}`);
+    if (result.nextActions.length > 0) {
+      lines.push('');
+      lines.push('Recommended next actions:');
+      for (const action of result.nextActions) {
+        lines.push(`- ${action}`);
+      }
+    }
     if (result.warnings.length > 0) {
       lines.push('');
       for (const w of result.warnings) {

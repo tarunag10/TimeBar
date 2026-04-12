@@ -1,6 +1,46 @@
 import { differenceInCalendarDays, parseISO } from 'date-fns';
 import { Rule, CalculationResult } from '@/types/rules';
 
+function manualNextActions(rule: Rule): string[] {
+  const actions = [
+    'Prepare a dated chronology of key events and all potential accrual/knowledge dates.',
+    'Obtain limitation advice from an England & Wales-qualified lawyer before issuing or enforcing proceedings.',
+    'Preserve evidence supporting dates, acknowledgments, and payment history.',
+  ];
+
+  if (rule.claimType === 'professional_negligence') {
+    actions.push('Obtain specialist advice on s.14A knowledge date and s.14B longstop interaction.');
+  }
+  if (rule.claimType === 'breach_of_trust') {
+    actions.push('Confirm whether s.21 no-limitation exceptions apply on pleaded facts.');
+  }
+  if (rule.claimType === 'judgment_enforcement') {
+    actions.push('Review CPR requirements for enforcement where more than 6 years may have elapsed.');
+  }
+
+  return actions;
+}
+
+function manualChecklist(rule: Rule): string[] {
+  const checklist = [
+    'Verify the legally correct accrual/start date against pleadable facts.',
+    'Verify whether any postponement, acknowledgment, or payment rules apply.',
+    'Check court discretion or procedural gateways before relying on any date output.',
+  ];
+
+  if (rule.claimType === 'defamation') {
+    checklist.push('Check whether publication facts trigger single-publication or multiple-publication analysis.');
+  }
+  if (rule.claimType === 'mortgage_interest') {
+    checklist.push('Break arrears into separate periods where interest accrued in tranches.');
+  }
+  if (rule.claimType === 'recovery_of_land') {
+    checklist.push('Confirm whether registered-land rules under the Land Registration Act 2002 are engaged.');
+  }
+
+  return checklist;
+}
+
 export function checkManualReview(
   rule: Rule,
   answers: Record<string, string | boolean | undefined>,
@@ -120,6 +160,11 @@ export function checkManualReview(
   if (warnings.length > 0) {
     return {
       status: 'manual_review',
+      urgencyLevel: 'critical',
+      confidenceLevel: 'low',
+      scenarioSummary: 'This scenario requires specialist legal review before a reliable limitation deadline can be stated.',
+      nextActions: manualNextActions(rule),
+      reviewChecklist: manualChecklist(rule),
       warnings,
       explanationSteps: [
         `Selected claim type: ${rule.title}`,
