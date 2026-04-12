@@ -1,0 +1,46 @@
+{
+  "id": "ew-defamation-v1",
+  "jurisdiction": "england_wales",
+  "claimType": "defamation",
+  "title": "Defamation / Malicious Falsehood",
+  "statuteRef": {
+    "act": "Limitation Act 1980",
+    "section": "s.4A",
+    "label": "Time limit for actions for defamation or malicious falsehood"
+  },
+  "version": "1.0.0",
+  "lastReviewed": "2026-04-12",
+  "basePeriod": {
+    "unit": "years",
+    "value": 1
+  },
+  "startRule": "publication",
+  "supportedModifiers": [],
+  "questions": [
+    {
+      "id": "accrual_date",
+      "type": "date",
+      "label": "Date of publication",
+      "helpText": "The date on which the defamatory statement was first published. Under the single publication rule (s.8 Defamation Act 2013), the limitation period generally runs from the date of first publication.",
+      "required": true
+    },
+    {
+      "id": "multiple_publications",
+      "type": "boolean",
+      "label": "Were there multiple publication events or online republications?",
+      "helpText": "If the statement was published on multiple occasions, or republished online in a materially different form, the single publication rule may not apply and each publication may give rise to a separate cause of action.",
+      "required": true
+    }
+  ],
+  "manualReviewTriggers": [
+    "multiple_publications",
+    "single_publication_rule_issues",
+    "online_republication",
+    "jurisdiction_forum_issues"
+  ],
+  "notes": [
+    "The court has discretion under s.32A Limitation Act 1980 to disapply the 1-year time limit if it is equitable to do so. This tool cannot predict the exercise of judicial discretion.",
+    "The single publication rule under s.8 Defamation Act 2013 means that for publications by the same publisher, the limitation period runs from the date of first publication.",
+    "If the manner of publication is materially different, a new cause of action may arise. This tool does not calculate multiple-publication scenarios in v1."
+  ]
+}

@@ -1,0 +1,97 @@
+{
+  "id": "ew-personal-injury-v1",
+  "jurisdiction": "england_wales",
+  "claimType": "personal_injury",
+  "title": "Personal Injury",
+  "statuteRef": {
+    "act": "Limitation Act 1980",
+    "section": "s.11",
+    "label": "Special time limit for actions in respect of personal injuries"
+  },
+  "version": "1.0.0",
+  "lastReviewed": "2026-04-12",
+  "basePeriod": {
+    "unit": "years",
+    "value": 3
+  },
+  "startRule": "later_of_accrual_or_knowledge",
+  "supportedModifiers": [
+    "disability",
+    "fraud_concealment_mistake"
+  ],
+  "questions": [
+    {
+      "id": "accrual_date",
+      "type": "date",
+      "label": "Date of injury",
+      "helpText": "The date on which the personal injury was sustained.",
+      "required": true
+    },
+    {
+      "id": "knowledge_date_known",
+      "type": "boolean",
+      "label": "Do you know the claimant's date of knowledge?",
+      "helpText": "Under s.14 Limitation Act 1980, the 'date of knowledge' is the date on which the claimant first knew: (a) the injury was significant, (b) it was attributable to the defendant's act or omission, (c) the defendant's identity, and (d) supporting facts for a claim (if applicable). If the date of knowledge is later than the injury date, the 3-year period runs from the later date.",
+      "required": true
+    },
+    {
+      "id": "knowledge_date",
+      "type": "date",
+      "label": "Date of knowledge",
+      "helpText": "The date the claimant first had the knowledge described above.",
+      "required": true,
+      "showWhen": {
+        "field": "knowledge_date_known",
+        "equals": true
+      }
+    },
+    {
+      "id": "disability_at_accrual",
+      "type": "boolean",
+      "label": "Was the claimant under a disability at the date of accrual?",
+      "helpText": "Under the Limitation Act 1980, a person is under a disability if they are a minor (under 18) or lack capacity within the meaning of the Mental Capacity Act 2005.",
+      "required": true
+    },
+    {
+      "id": "disability_ceased_date",
+      "type": "date",
+      "label": "Date disability ceased",
+      "helpText": "The date the claimant turned 18, or the date capacity was regained.",
+      "required": true,
+      "showWhen": {
+        "field": "disability_at_accrual",
+        "equals": true
+      }
+    },
+    {
+      "id": "fraud_concealment",
+      "type": "boolean",
+      "label": "Was there fraud, deliberate concealment, or mistake?",
+      "helpText": "Under s.32 Limitation Act 1980, the limitation period may be postponed where the action is based on fraud, deliberate concealment, or mistake. This modifier is less commonly relevant to personal injury claims but may apply in specific circumstances.",
+      "required": true
+    },
+    {
+      "id": "discovery_date",
+      "type": "date",
+      "label": "Date of discovery",
+      "helpText": "The date the claimant discovered, or could with reasonable diligence have discovered, the fraud, concealment, or mistake.",
+      "required": true,
+      "showWhen": {
+        "field": "fraud_concealment",
+        "equals": true
+      }
+    }
+  ],
+  "manualReviewTriggers": [
+    "disputed_knowledge_date",
+    "child_claimant",
+    "lack_of_capacity",
+    "date_of_injury_vs_knowledge_mismatch",
+    "fatal_accident_dependency"
+  ],
+  "notes": [
+    "The court has discretion under s.33 Limitation Act 1980 to disapply the time limit in personal injury cases if it is equitable to do so. This tool cannot predict the exercise of judicial discretion.",
+    "Fatal accident and dependency claims under the Fatal Accidents Act 1976 are not covered in v1.",
+    "Child claimant issues may involve complex interactions between disability provisions and the date of knowledge."
+  ]
+}
