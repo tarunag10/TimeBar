@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Calendar, HelpCircle } from 'lucide-react';
 import { Rule, Question } from '@/types/rules';
 
 type Props = {
@@ -11,7 +12,6 @@ type Props = {
 };
 
 function BooleanInput({
-  question,
   value,
   onChange,
 }: {
@@ -30,19 +30,20 @@ function BooleanInput({
       {options.map((opt) => {
         const isSelected = value === opt.val;
         return (
-          <button
+          <motion.button
             key={opt.label}
             type="button"
+            whileTap={{ scale: 0.95 }}
             onClick={() => onChange(opt.val)}
-            className={`px-3.5 py-1.5 rounded-md text-xs font-medium transition-all duration-150 cursor-pointer
+            className={`px-4 py-2 rounded-lg text-xs font-medium transition-all duration-200 cursor-pointer border
               ${
                 isSelected
-                  ? 'bg-slate-700 border-blue-500/50 text-slate-100 border'
-                  : 'bg-slate-800/60 border-slate-700 text-slate-400 border hover:border-slate-600 hover:text-slate-300'
+                  ? 'bg-blue-500/15 border-blue-500/30 text-blue-300 shadow-[0_0_12px_-3px_rgba(59,130,246,0.2)]'
+                  : 'glass border-white/[0.06] text-slate-400 hover:text-slate-300 hover:border-white/[0.12] hover:bg-white/[0.04]'
               }`}
           >
             {opt.label}
-          </button>
+          </motion.button>
         );
       })}
     </div>
@@ -59,15 +60,19 @@ function DateInput({
   onChange: (val: string) => void;
 }) {
   return (
-    <input
-      type="date"
-      value={value || ''}
-      onChange={(e) => onChange(e.target.value)}
-      className="bg-slate-800 border border-slate-700 rounded-md px-3 py-2 text-sm text-slate-200
-        focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500/40
-        transition-all duration-150 w-full sm:w-auto"
-      aria-label={question.label}
-    />
+    <div className="relative">
+      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500 pointer-events-none" />
+      <input
+        type="date"
+        value={value || ''}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full sm:w-auto pl-9 pr-3 py-2.5 rounded-lg text-sm text-slate-200 font-light
+          glass border border-white/[0.06]
+          focus:outline-none focus:border-blue-500/30 focus:bg-blue-500/[0.03] focus:shadow-[0_0_16px_-4px_rgba(59,130,246,0.15)]
+          transition-all duration-200 placeholder:text-slate-600"
+        aria-label={question.label}
+      />
+    </div>
   );
 }
 
@@ -79,22 +84,31 @@ function HelpTooltip({ text }: { text: string }) {
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="text-slate-500 hover:text-slate-400 text-[10px] transition-colors cursor-pointer"
+        className="text-slate-600 hover:text-blue-400 transition-colors duration-200 cursor-pointer"
         aria-label="More information"
       >
-        &#9432;
+        <HelpCircle className="w-3.5 h-3.5" />
       </button>
       <AnimatePresence>
         {open && (
-          <motion.div
-            initial={{ opacity: 0, y: -4 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -4 }}
-            transition={{ duration: 0.15 }}
-            className="absolute z-10 left-0 top-full mt-1 w-64 sm:w-80 bg-slate-700 border border-slate-600 rounded-lg p-3 shadow-xl"
-          >
-            <p className="text-[11px] text-slate-300 leading-relaxed">{text}</p>
-          </motion.div>
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-20"
+              onClick={() => setOpen(false)}
+            />
+            <motion.div
+              initial={{ opacity: 0, y: -6, scale: 0.96 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: -6, scale: 0.96 }}
+              transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+              className="absolute z-30 left-0 top-full mt-2 w-72 sm:w-80 glass-strong rounded-xl p-3.5 shadow-2xl"
+            >
+              <p className="text-[11px] text-slate-300 leading-relaxed font-light">{text}</p>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
     </span>
@@ -109,25 +123,19 @@ export default function DynamicQuestionnaire({ rule, answers, onAnswerChange }: 
   }
 
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 20 }}
-      animate={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.3, ease: 'easeOut' }}
-      className="space-y-5"
-    >
-      {rule.questions.map((q) => {
+    <div className="space-y-6">
+      {rule.questions.map((q, i) => {
         if (!shouldShow(q)) return null;
 
         return (
           <motion.div
             key={q.id}
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: i * 0.05, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
-            <label className="block text-[11px] sm:text-xs text-slate-400 mb-1.5">
-              {q.label}
+            <label className="flex items-center text-[12px] text-slate-400 font-light mb-2.5 leading-relaxed">
+              <span>{q.label}</span>
               {q.helpText && <HelpTooltip text={q.helpText} />}
             </label>
 
@@ -149,6 +157,6 @@ export default function DynamicQuestionnaire({ rule, answers, onAnswerChange }: 
           </motion.div>
         );
       })}
-    </motion.div>
+    </div>
   );
 }

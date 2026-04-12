@@ -2,6 +2,7 @@
 
 import { useState, useMemo, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { ArrowLeft } from 'lucide-react';
 import { Rule, CalculationResult } from '@/types/rules';
 import { getRule } from '@/lib/rules';
 import { calculate } from '@/lib/engine/calculate';
@@ -40,41 +41,47 @@ export default function HomePage() {
   const accrualDate = answers.accrual_date as string | undefined;
 
   return (
-    <div className="max-w-xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
+    <div className="max-w-lg mx-auto px-5 sm:px-8 py-10 sm:py-16">
       <AnimatePresence mode="wait">
         {!selectedClaim ? (
           <motion.div
             key="selector"
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.2 }}
+            exit={{ opacity: 0, x: -24, filter: 'blur(4px)' }}
+            transition={{ duration: 0.25 }}
           >
             <ClaimSelector onSelect={handleClaimSelect} />
           </motion.div>
         ) : (
           <motion.div
             key="questionnaire"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            transition={{ duration: 0.3 }}
+            initial={{ opacity: 0, x: 24, filter: 'blur(4px)' }}
+            animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, x: 24, filter: 'blur(4px)' }}
+            transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
-            <button
+            {/* Back button */}
+            <motion.button
               type="button"
               onClick={handleBack}
-              className="text-xs text-blue-400 hover:text-blue-300 transition-colors mb-6 cursor-pointer"
+              whileHover={{ x: -2 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-1.5 text-[12px] text-slate-500 hover:text-blue-400 transition-colors mb-8 cursor-pointer"
             >
-              &larr; Back to claim types
-            </button>
+              <ArrowLeft className="w-3.5 h-3.5" />
+              <span className="font-light">Back</span>
+            </motion.button>
 
-            <div className="mb-6">
-              <p className="text-[10px] tracking-[1.5px] uppercase text-slate-500">
+            {/* Claim header */}
+            <div className="mb-8">
+              <p className="text-[11px] tracking-[2px] uppercase text-slate-500 font-light">
                 {rule?.title}
               </p>
-              <h1 className="text-lg font-semibold text-slate-100 mt-1">
+              <h1 className="text-xl font-semibold text-slate-100 tracking-tight mt-1.5">
                 Enter details
               </h1>
             </div>
 
+            {/* Questionnaire */}
             {rule && (
               <DynamicQuestionnaire
                 rule={rule}
@@ -83,15 +90,16 @@ export default function HomePage() {
               />
             )}
 
+            {/* Result */}
             <AnimatePresence>
               {result && (
                 <motion.div
                   key="result"
-                  initial={{ opacity: 0, y: 16 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 16 }}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
                   transition={{ duration: 0.3 }}
-                  className="mt-8 space-y-3"
+                  className="mt-10 space-y-3"
                 >
                   <ResultCard
                     result={result}

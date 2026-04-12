@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Copy, Check } from 'lucide-react';
 import { CalculationResult } from '@/types/rules';
 import { getRule } from '@/lib/rules';
 import { format, parseISO } from 'date-fns';
@@ -11,7 +13,7 @@ type Props = {
 };
 
 function formatCopyText(result: CalculationResult, claimType: string): string {
-  const rule = getRule(claimType as any);
+  const rule = getRule(claimType as Parameters<typeof getRule>[0]);
   const lines: string[] = [];
 
   lines.push('TimeBar — Limitation Calculator');
@@ -26,7 +28,6 @@ function formatCopyText(result: CalculationResult, claimType: string): string {
     lines.push(`Base period (if standard rule applied): ${rule.basePeriod.value} ${rule.basePeriod.unit} from ${rule.startRule.replace(/_/g, ' ')}`);
   } else {
     lines.push(`Base period: ${rule.basePeriod.value} ${rule.basePeriod.unit} from ${rule.startRule.replace(/_/g, ' ')}`);
-
     if (result.primaryExpiryDate) {
       lines.push(`Likely expiry: ${format(parseISO(result.primaryExpiryDate), 'd MMMM yyyy')}`);
     }
@@ -38,7 +39,6 @@ function formatCopyText(result: CalculationResult, claimType: string): string {
     } else {
       lines.push('Modifiers: None applied');
     }
-
     const statusLabels = {
       live: `${result.daysRemaining} days remaining`,
       expires_today: 'Expires today',
@@ -46,9 +46,7 @@ function formatCopyText(result: CalculationResult, claimType: string): string {
       manual_review: 'Manual review required',
     };
     lines.push(`Status: ${statusLabels[result.status]}`);
-
     lines.push(`Statute: ${rule.statuteRef.act}, ${rule.statuteRef.section}`);
-
     if (result.warnings.length > 0) {
       lines.push('');
       for (const w of result.warnings) {
@@ -59,7 +57,6 @@ function formatCopyText(result: CalculationResult, claimType: string): string {
 
   lines.push('');
   lines.push('This is an informational calculation, not legal advice.');
-
   return lines.join('\n');
 }
 
@@ -74,12 +71,38 @@ export default function CopyButton({ result, claimType }: Props) {
   }
 
   return (
-    <button
+    <motion.button
       type="button"
       onClick={handleCopy}
-      className="text-[11px] text-slate-500 hover:text-slate-300 transition-colors cursor-pointer"
+      whileTap={{ scale: 0.9 }}
+      className="flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-slate-300
+        px-2.5 py-1.5 rounded-lg glass-hover transition-all duration-200 cursor-pointer border border-transparent hover:border-white/[0.06]"
     >
-      {copied ? 'Copied!' : 'Copy result'}
-    </button>
+      <AnimatePresence mode="wait">
+        {copied ? (
+          <motion.span
+            key="check"
+            initial={{ scale: 0, rotate: -45 }}
+            animate={{ scale: 1, rotate: 0 }}
+            exit={{ scale: 0 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+            className="text-green-400"
+          >
+            <Check className="w-3.5 h-3.5" />
+          </motion.span>
+        ) : (
+          <motion.span
+            key="copy"
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            exit={{ scale: 0 }}
+            transition={{ type: 'spring', stiffness: 500, damping: 25 }}
+          >
+            <Copy className="w-3.5 h-3.5" />
+          </motion.span>
+        )}
+      </AnimatePresence>
+      <span className="font-light">{copied ? 'Copied' : 'Copy'}</span>
+    </motion.button>
   );
 }

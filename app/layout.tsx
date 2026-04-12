@@ -7,6 +7,7 @@ import DisclaimerBanner from "@/components/DisclaimerBanner";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -22,10 +23,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-slate-950 text-slate-200 font-[var(--font-inter)]">
+      <body className="relative min-h-full flex flex-col bg-[#050a18] text-slate-200 font-[var(--font-inter)]">
         <Header />
         <DisclaimerBanner />
-        <main className="flex-1">{children}</main>
+        <main className="relative z-10 flex-1">{children}</main>
       </body>
     </html>
   );
