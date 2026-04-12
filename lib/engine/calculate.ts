@@ -4,6 +4,8 @@ import { getRule } from '@/lib/rules';
 import { checkManualReview } from './manualReview';
 import { applyModifiers } from './modifiers';
 import { buildExplanation } from './explain';
+import { buildProceduralMilestones } from './procedural';
+import { buildScenarioTimelines } from './scenarios';
 
 function addPeriod(date: Date, period: { unit: string; value: number }): Date {
   switch (period.unit) {
@@ -174,6 +176,8 @@ export function calculate(input: CalculationInput): CalculationResult {
         'Accrual/start date established.',
         'Core claim classification confirmed.',
       ],
+      proceduralMilestones: buildProceduralMilestones('manual_review', null, new Date()),
+      scenarioTimelines: [],
       warnings: ['Required date information is missing.'],
       explanationSteps: ['Cannot calculate: accrual date not provided.'],
       statuteRefs: [rule.statuteRef],
@@ -266,6 +270,15 @@ export function calculate(input: CalculationInput): CalculationResult {
   const scenarioSummary = buildScenarioSummary(status, daysRemaining, displayExpiry);
   const nextActions = buildNextActions(rule, status, daysRemaining);
   const reviewChecklist = buildReviewChecklist(rule);
+  const proceduralMilestones = buildProceduralMilestones(status, finalExpiry, today);
+  const scenarioTimelines = buildScenarioTimelines(
+    rule,
+    answers,
+    baseExpiry,
+    finalExpiry,
+    adjustedExpiry,
+    longstopExpiry,
+  );
 
   return {
     status,
@@ -277,6 +290,8 @@ export function calculate(input: CalculationInput): CalculationResult {
     scenarioSummary,
     nextActions,
     reviewChecklist,
+    proceduralMilestones,
+    scenarioTimelines,
     statuteRefs: [rule.statuteRef],
     explanationSteps,
     warnings,

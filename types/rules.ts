@@ -61,6 +61,22 @@ export type CalculationInput = {
   answers: Record<string, string | boolean | undefined>;
 };
 
+export type ProceduralMilestone = {
+  title: string;
+  targetDate?: string;
+  priority: 'normal' | 'high' | 'critical';
+  note: string;
+};
+
+export type ScenarioTimeline = {
+  id: 'earliest_risk' | 'calculated' | 'latest_arguable';
+  label: string;
+  expiryDate: string;
+  daysRemaining: number;
+  riskBand: 'high' | 'medium' | 'low';
+  basis: string;
+};
+
 export type CalculationResult = {
   status: 'live' | 'expires_today' | 'expired' | 'manual_review';
   primaryExpiryDate?: string;
@@ -71,6 +87,8 @@ export type CalculationResult = {
   scenarioSummary: string;
   nextActions: string[];
   reviewChecklist: string[];
+  proceduralMilestones: ProceduralMilestone[];
+  scenarioTimelines: ScenarioTimeline[];
   statuteRefs: { act: string; section: string; label: string }[];
   explanationSteps: string[];
   warnings: string[];

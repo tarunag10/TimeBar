@@ -35,6 +35,25 @@ function formatCopyText(result: CalculationResult, claimType: string): string {
         lines.push(`- ${action}`);
       }
     }
+    if (result.proceduralMilestones.length > 0) {
+      lines.push('');
+      lines.push('Procedural action timeline:');
+      for (const milestone of result.proceduralMilestones) {
+        const when = milestone.targetDate
+          ? format(parseISO(milestone.targetDate), 'd MMMM yyyy')
+          : 'Date to be confirmed';
+        lines.push(`- [${milestone.priority.toUpperCase()}] ${milestone.title} (${when})`);
+      }
+    }
+    if (result.scenarioTimelines.length > 0) {
+      lines.push('');
+      lines.push('Scenario timeline model:');
+      for (const scenario of result.scenarioTimelines) {
+        lines.push(
+          `- ${scenario.label}: ${format(parseISO(scenario.expiryDate), 'd MMMM yyyy')} (${scenario.riskBand.toUpperCase()} RISK) — ${scenario.basis}`
+        );
+      }
+    }
     lines.push(`Base period (if standard rule applied): ${rule.basePeriod.value} ${rule.basePeriod.unit} from ${rule.startRule.replace(/_/g, ' ')}`);
   } else {
     lines.push(`Base period: ${rule.basePeriod.value} ${rule.basePeriod.unit} from ${rule.startRule.replace(/_/g, ' ')}`);
@@ -65,6 +84,25 @@ function formatCopyText(result: CalculationResult, claimType: string): string {
       lines.push('Recommended next actions:');
       for (const action of result.nextActions) {
         lines.push(`- ${action}`);
+      }
+    }
+    if (result.proceduralMilestones.length > 0) {
+      lines.push('');
+      lines.push('Procedural action timeline:');
+      for (const milestone of result.proceduralMilestones) {
+        const when = milestone.targetDate
+          ? format(parseISO(milestone.targetDate), 'd MMMM yyyy')
+          : 'Date to be confirmed';
+        lines.push(`- [${milestone.priority.toUpperCase()}] ${milestone.title} (${when})`);
+      }
+    }
+    if (result.scenarioTimelines.length > 0) {
+      lines.push('');
+      lines.push('Scenario timeline model:');
+      for (const scenario of result.scenarioTimelines) {
+        lines.push(
+          `- ${scenario.label}: ${format(parseISO(scenario.expiryDate), 'd MMMM yyyy')} (${scenario.riskBand.toUpperCase()} RISK) — ${scenario.basis}`
+        );
       }
     }
     if (result.warnings.length > 0) {

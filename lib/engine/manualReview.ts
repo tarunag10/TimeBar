@@ -1,5 +1,6 @@
 import { differenceInCalendarDays, parseISO } from 'date-fns';
 import { Rule, CalculationResult } from '@/types/rules';
+import { buildProceduralMilestones } from './procedural';
 
 function manualNextActions(rule: Rule): string[] {
   const actions = [
@@ -165,6 +166,8 @@ export function checkManualReview(
       scenarioSummary: 'This scenario requires specialist legal review before a reliable limitation deadline can be stated.',
       nextActions: manualNextActions(rule),
       reviewChecklist: manualChecklist(rule),
+      proceduralMilestones: buildProceduralMilestones('manual_review', null, new Date()),
+      scenarioTimelines: [],
       warnings,
       explanationSteps: [
         `Selected claim type: ${rule.title}`,

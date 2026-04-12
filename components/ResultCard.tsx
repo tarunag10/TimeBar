@@ -48,6 +48,18 @@ function formatDisplayDate(isoDate: string): string {
   return format(parseISO(isoDate), 'd MMMM yyyy');
 }
 
+function priorityStyle(priority: 'normal' | 'high' | 'critical'): string {
+  if (priority === 'critical') return 'text-rose-200 bg-rose-500/20 border-rose-400/30';
+  if (priority === 'high') return 'text-amber-200 bg-amber-500/20 border-amber-400/30';
+  return 'text-emerald-200 bg-emerald-500/18 border-emerald-400/25';
+}
+
+function riskBandStyle(riskBand: 'high' | 'medium' | 'low'): string {
+  if (riskBand === 'high') return 'text-rose-200 bg-rose-500/20 border-rose-400/30';
+  if (riskBand === 'medium') return 'text-amber-200 bg-amber-500/18 border-amber-400/25';
+  return 'text-emerald-200 bg-emerald-500/18 border-emerald-400/25';
+}
+
 export default function ResultCard({ result, claimType, accrualDate }: Props) {
   const style = statusStyles[result.status];
 
@@ -133,6 +145,52 @@ export default function ResultCard({ result, claimType, accrualDate }: Props) {
                   </li>
                 ))}
               </ul>
+            </div>
+          )}
+
+          {result.proceduralMilestones.length > 0 && (
+            <div>
+              <p className="text-[11px] uppercase tracking-[1.5px] text-slate-500 mb-2">Procedural action timeline</p>
+              <div className="space-y-2">
+                {result.proceduralMilestones.slice(0, 4).map((milestone, idx) => (
+                  <div key={idx} className="rounded-lg border border-white/[0.08] bg-black/10 p-2.5">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <p className="text-[12px] text-slate-100 font-medium">{milestone.title}</p>
+                      <span className={`text-[10px] uppercase px-1.5 py-0.5 rounded border ${priorityStyle(milestone.priority)}`}>
+                        {milestone.priority}
+                      </span>
+                    </div>
+                    {milestone.targetDate && (
+                      <p className="text-[11px] text-slate-300 mt-1">
+                        Target date: {formatDisplayDate(milestone.targetDate)}
+                      </p>
+                    )}
+                    <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">{milestone.note}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {result.scenarioTimelines.length > 0 && (
+            <div>
+              <p className="text-[11px] uppercase tracking-[1.5px] text-slate-500 mb-2">Scenario timeline model</p>
+              <div className="space-y-2">
+                {result.scenarioTimelines.map((scenario) => (
+                  <div key={scenario.id} className="rounded-lg border border-white/[0.08] bg-black/10 p-2.5">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <p className="text-[12px] text-slate-100 font-medium">{scenario.label}</p>
+                      <span className={`text-[10px] uppercase px-1.5 py-0.5 rounded border ${riskBandStyle(scenario.riskBand)}`}>
+                        {scenario.riskBand} risk
+                      </span>
+                    </div>
+                    <p className="text-[11px] text-slate-300 mt-1">
+                      {formatDisplayDate(scenario.expiryDate)} ({scenario.daysRemaining} day(s) remaining)
+                    </p>
+                    <p className="text-[11px] text-slate-400 mt-1 leading-relaxed">{scenario.basis}</p>
+                  </div>
+                ))}
+              </div>
             </div>
           )}
         </div>
