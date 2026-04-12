@@ -1,0 +1,44 @@
+{
+  "id": "ew-mortgage-interest-v1",
+  "jurisdiction": "england_wales",
+  "claimType": "mortgage_interest",
+  "title": "Mortgage Interest Arrears",
+  "statuteRef": {
+    "act": "Limitation Act 1980",
+    "section": "s.20(5)",
+    "label": "Time limit for arrears of interest under mortgage"
+  },
+  "version": "1.0.0",
+  "lastReviewed": "2026-04-13",
+  "basePeriod": {
+    "unit": "years",
+    "value": 6
+  },
+  "startRule": "accrual",
+  "supportedModifiers": [],
+  "questions": [
+    {
+      "id": "accrual_date",
+      "type": "date",
+      "label": "Date interest arrears became due",
+      "helpText": "Use the relevant due date for the arrears being claimed.",
+      "required": true
+    },
+    {
+      "id": "multiple_interest_periods",
+      "type": "boolean",
+      "label": "Are there multiple arrears periods or rolling arrears?",
+      "helpText": "Interest arrears often accrue in multiple periods. If yes, separate period analysis may be needed.",
+      "required": true
+    }
+  ],
+  "manualReviewTriggers": [
+    "multiple_arrears_periods",
+    "capitalised_interest",
+    "interaction_with_principal_and_possession"
+  ],
+  "notes": [
+    "Interest arrears commonly require period-by-period analysis.",
+    "This option gives a directional calculation and flags scenarios that usually need manual legal breakdown."
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "id": "ew-mortgage-principal-v1",
+  "jurisdiction": "england_wales",
+  "claimType": "mortgage_principal",
+  "title": "Mortgage Principal",
+  "statuteRef": {
+    "act": "Limitation Act 1980",
+    "section": "s.20(1)",
+    "label": "Time limit for principal money secured by mortgage"
+  },
+  "version": "1.0.0",
+  "lastReviewed": "2026-04-13",
+  "basePeriod": {
+    "unit": "years",
+    "value": 12
+  },
+  "startRule": "accrual",
+  "supportedModifiers": [
+    "acknowledgment",
+    "part_payment"
+  ],
+  "questions": [
+    {
+      "id": "accrual_date",
+      "type": "date",
+      "label": "Date principal became due",
+      "helpText": "Usually the redemption/default date from which the mortgagee's claim to principal is actionable.",
+      "required": true
+    },
+    {
+      "id": "acknowledgment",
+      "type": "boolean",
+      "label": "Was there a written, signed acknowledgment of the mortgage debt?",
+      "helpText": "Acknowledgment can restart the running period for principal claims.",
+      "required": true
+    },
+    {
+      "id": "acknowledgment_date",
+      "type": "date",
+      "label": "Date of acknowledgment",
+      "helpText": "Date of the most relevant written acknowledgment.",
+      "required": true,
+      "showWhen": {
+        "field": "acknowledgment",
+        "equals": true
+      }
+    },
+    {
+      "id": "part_payment",
+      "type": "boolean",
+      "label": "Was there a part payment toward principal?",
+      "helpText": "Part payment can restart the running period for principal claims.",
+      "required": true
+    },
+    {
+      "id": "part_payment_date",
+      "type": "date",
+      "label": "Date of part payment",
+      "helpText": "Date of the most relevant part payment.",
+      "required": true,
+      "showWhen": {
+        "field": "part_payment",
+        "equals": true
+      }
+    }
+  ],
+  "manualReviewTriggers": [
+    "arrears_split_principal_interest",
+    "possession_and_money_claim_overlap",
+    "mortgage_variations_or_capitalisation"
+  ],
+  "notes": [
+    "Mortgage claims frequently involve separate treatment for principal, interest, and possession relief.",
+    "If interest-only arrears are in issue, use the separate Mortgage Interest option."
+  ]
+}

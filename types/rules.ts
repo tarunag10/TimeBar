@@ -29,7 +29,10 @@ export type Rule = {
     | 'debt_recovery'
     | 'contribution'
     | 'recovery_of_land'
-    | 'breach_of_trust';
+    | 'breach_of_trust'
+    | 'judgment_enforcement'
+    | 'mortgage_principal'
+    | 'mortgage_interest';
   title: string;
   statuteRef: {
     act: string;

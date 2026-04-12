@@ -2,30 +2,44 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowLeft, FileText, Shield, Heart, MessageSquare, Check, X, AlertTriangle } from 'lucide-react';
+import {
+  AlertTriangle,
+  ArrowLeft,
+  Banknote,
+  Briefcase,
+  Check,
+  FileText,
+  Gavel,
+  Heart,
+  House,
+  Landmark,
+  MessageSquare,
+  Percent,
+  Scale,
+  Shield,
+  Stamp,
+  Users,
+  X,
+  type LucideIcon,
+} from 'lucide-react';
+import { claimCategories } from '@/lib/rules';
+import { Rule } from '@/types/rules';
 
-const claimTypes = [
-  {
-    icon: FileText,
-    title: 'Simple Contract',
-    detail: '6 years from breach \u00b7 Limitation Act 1980, s.5',
-  },
-  {
-    icon: Shield,
-    title: 'Tort (Non-Personal Injury)',
-    detail: '6 years from accrual \u00b7 Limitation Act 1980, s.2',
-  },
-  {
-    icon: Heart,
-    title: 'Personal Injury',
-    detail: '3 years from later of accrual or knowledge \u00b7 Limitation Act 1980, s.11',
-  },
-  {
-    icon: MessageSquare,
-    title: 'Defamation / Malicious Falsehood',
-    detail: '1 year from publication \u00b7 Limitation Act 1980, s.4A',
-  },
-];
+const claimIcons: Record<Rule['claimType'], LucideIcon> = {
+  simple_contract: FileText,
+  tort_non_pi: Shield,
+  personal_injury: Heart,
+  defamation: MessageSquare,
+  deed_specialty: Stamp,
+  professional_negligence: Briefcase,
+  debt_recovery: Banknote,
+  contribution: Scale,
+  recovery_of_land: Landmark,
+  breach_of_trust: Users,
+  judgment_enforcement: Gavel,
+  mortgage_principal: House,
+  mortgage_interest: Percent,
+};
 
 const modifiers = [
   { label: 'Disability', detail: 'postponement under s.28' },
@@ -35,19 +49,16 @@ const modifiers = [
 ];
 
 const excluded = [
-  'Deeds and specialty claims (12-year period)',
-  'Land and property claims',
-  'Trust and standalone fraud claims',
-  'Latent damage negligence (s.14A knowledge-based regime)',
-  'Contribution claims',
+  'Standstill agreements and bespoke contractual tolling',
+  'Foreign limitation rules and conflict of laws',
+  'Arbitration-specific and adjudication-specific deadlines',
+  'Insolvency stays and insolvency-specific timeline effects',
+  'Detailed CPR service/procedural deadlines',
+  'Detailed adverse possession regimes under Land Registration Act 2002',
+  'Complex trust claims against third parties (knowing receipt/dishonest assistance)',
+  'Complex mortgage possession proceedings strategy',
   'Fatal accidents and dependency claims',
   'Product liability specific rules',
-  'Mortgage and secured debt timelines',
-  'Arbitration-specific time calculations',
-  'Insolvency effects on limitation',
-  'Limitation standstill agreements',
-  'Cross-border and conflict of laws issues',
-  'Court rules, procedural deadlines, or service deadlines',
 ];
 
 export default function CoveragePage() {
@@ -74,24 +85,31 @@ export default function CoveragePage() {
       >
         <h2 className="text-sm font-medium text-slate-200 mb-4">Supported claim types</h2>
         <div className="space-y-2">
-          {claimTypes.map((ct, i) => {
-            const Icon = ct.icon;
-            return (
-              <motion.div
-                key={ct.title}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: i * 0.05 }}
-                className="glass rounded-xl p-4 flex items-start gap-3"
-              >
-                <Icon className="w-4 h-4 text-blue-400/60 mt-0.5 shrink-0" />
-                <div>
-                  <p className="text-[13px] text-slate-200 font-medium">{ct.title}</p>
-                  <p className="text-[11px] text-slate-500 font-light mt-0.5">{ct.detail}</p>
-                </div>
-              </motion.div>
-            );
-          })}
+          {claimCategories.map((category, i) => (
+            <motion.div
+              key={category.label}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3, delay: i * 0.05 }}
+              className="glass rounded-xl p-4"
+            >
+              <p className="text-[11px] uppercase tracking-[2px] text-slate-500 mb-2.5">{category.label}</p>
+              <div className="space-y-2">
+                {category.items.map((ct) => {
+                  const Icon = claimIcons[ct.key];
+                  return (
+                    <div key={ct.key} className="flex items-start gap-3">
+                      <Icon className="w-4 h-4 text-blue-400/60 mt-0.5 shrink-0" />
+                      <div>
+                        <p className="text-[13px] text-slate-200 font-medium">{ct.title}</p>
+                        <p className="text-[11px] text-slate-500 font-light mt-0.5">{ct.shortDesc}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </motion.div>
+          ))}
         </div>
       </motion.div>
 

@@ -9,6 +9,9 @@ import debtRecovery from './ew.debt-recovery.v1.json';
 import contribution from './ew.contribution.v1.json';
 import recoveryOfLand from './ew.recovery-of-land.v1.json';
 import breachOfTrust from './ew.breach-of-trust.v1.json';
+import judgmentEnforcement from './ew.judgment-enforcement.v1.json';
+import mortgagePrincipal from './ew.mortgage-principal.v1.json';
+import mortgageInterest from './ew.mortgage-interest.v1.json';
 
 export const rules: Record<Rule['claimType'], Rule> = {
   simple_contract: simpleContract as Rule,
@@ -21,6 +24,9 @@ export const rules: Record<Rule['claimType'], Rule> = {
   contribution: contribution as Rule,
   recovery_of_land: recoveryOfLand as Rule,
   breach_of_trust: breachOfTrust as Rule,
+  judgment_enforcement: judgmentEnforcement as Rule,
+  mortgage_principal: mortgagePrincipal as Rule,
+  mortgage_interest: mortgageInterest as Rule,
 };
 
 export type ClaimCategory = {
@@ -52,6 +58,14 @@ export const claimCategories: ClaimCategory[] = [
       { key: 'contribution', title: 'Contribution', shortDesc: '2 yrs · judgment' },
       { key: 'recovery_of_land', title: 'Recovery of Land', shortDesc: '12 yrs · possession' },
       { key: 'breach_of_trust', title: 'Breach of Trust', shortDesc: '6 yrs · breach' },
+    ],
+  },
+  {
+    label: 'Property & Enforcement',
+    items: [
+      { key: 'judgment_enforcement', title: 'Judgment Enforcement', shortDesc: '6 yrs · judgment date' },
+      { key: 'mortgage_principal', title: 'Mortgage Principal', shortDesc: '12 yrs · principal due' },
+      { key: 'mortgage_interest', title: 'Mortgage Interest Arrears', shortDesc: '6 yrs · arrears due' },
     ],
   },
 ];

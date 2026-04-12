@@ -20,6 +20,9 @@ export const calculatorInputSchema = z.object({
     'contribution',
     'recovery_of_land',
     'breach_of_trust',
+    'judgment_enforcement',
+    'mortgage_principal',
+    'mortgage_interest',
   ]),
   answers: z.record(z.string(), z.union([z.string(), z.boolean(), z.undefined()])),
 });

@@ -1,0 +1,38 @@
+{
+  "id": "ew-judgment-enforcement-v1",
+  "jurisdiction": "england_wales",
+  "claimType": "judgment_enforcement",
+  "title": "Judgment Enforcement",
+  "statuteRef": {
+    "act": "Limitation Act 1980",
+    "section": "s.24",
+    "label": "Time limit for actions on judgments"
+  },
+  "version": "1.0.0",
+  "lastReviewed": "2026-04-13",
+  "basePeriod": {
+    "unit": "years",
+    "value": 6
+  },
+  "startRule": "accrual",
+  "supportedModifiers": [],
+  "questions": [
+    {
+      "id": "accrual_date",
+      "type": "date",
+      "label": "Date of judgment/order",
+      "helpText": "The date on which judgment was entered or the order became enforceable.",
+      "required": true
+    }
+  ],
+  "manualReviewTriggers": [
+    "enforcement_after_6_years",
+    "interest_on_judgment_debt",
+    "foreign_judgment_registration",
+    "insolvency_or_stay_orders"
+  ],
+  "notes": [
+    "Enforcement after 6 years may require court permission under the Civil Procedure Rules.",
+    "This rule gives a conservative initial view and flags manual review for potentially permission-based enforcement scenarios."
+  ]
+}

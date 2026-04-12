@@ -6,9 +6,12 @@ import {
   Banknote,
   Briefcase,
   FileText,
+  Gavel,
   Heart,
+  House,
   Landmark,
   MessageSquare,
+  Percent,
   Scale,
   Shield,
   Stamp,
@@ -29,6 +32,9 @@ const claimIcons: Record<Rule['claimType'], LucideIcon> = {
   contribution: Scale,
   recovery_of_land: Landmark,
   breach_of_trust: Users,
+  judgment_enforcement: Gavel,
+  mortgage_principal: House,
+  mortgage_interest: Percent,
 };
 
 type Props = {

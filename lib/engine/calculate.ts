@@ -153,6 +153,11 @@ export function calculate(input: CalculationInput): CalculationResult {
       'The court has discretion under s.32A Limitation Act 1980 to disapply the 1-year time limit. This tool cannot predict the exercise of judicial discretion.'
     );
   }
+  if (status === 'live' && daysRemaining <= 90) {
+    warnings.push(
+      'This claim is within 90 days of the calculated limitation date. Urgent legal action may be needed.'
+    );
+  }
 
   return {
     status,

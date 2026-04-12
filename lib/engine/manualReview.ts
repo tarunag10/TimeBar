@@ -1,3 +1,4 @@
+import { differenceInCalendarDays, parseISO } from 'date-fns';
 import { Rule, CalculationResult } from '@/types/rules';
 
 export function checkManualReview(
@@ -51,6 +52,33 @@ export function checkManualReview(
       'You indicated the claimant\'s date of knowledge is not known. Professional negligence claims may rely on the s.14A knowledge-based period (3 years from knowledge), with a separate longstop under s.14B. Manual legal review is required where knowledge is uncertain.'
     );
     explanationSteps.push('Professional negligence knowledge date uncertain — s.14A analysis required.');
+  }
+
+  // Mortgage interest usually needs period-by-period treatment if arrears are rolling
+  if (
+    rule.claimType === 'mortgage_interest' &&
+    answers.multiple_interest_periods === true
+  ) {
+    warnings.push(
+      'You indicated multiple/rolling interest arrears periods. Mortgage interest claims commonly require period-by-period analysis of each arrears tranche. Manual legal review is required.'
+    );
+    explanationSteps.push('Multiple mortgage interest arrears periods indicated — single-date calculation may be misleading.');
+  }
+
+  // Judgment enforcement: after 6 years, permission issues may arise
+  if (rule.claimType === 'judgment_enforcement') {
+    const accrualStr = answers.accrual_date as string | undefined;
+    if (accrualStr) {
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const daysSinceJudgment = differenceInCalendarDays(today, parseISO(accrualStr));
+      if (daysSinceJudgment > (6 * 365)) {
+        warnings.push(
+          'More than 6 years has elapsed since the judgment date. Enforcement may require court permission under procedural rules and should be manually reviewed.'
+        );
+        explanationSteps.push('Judgment appears older than 6 years — permission-based enforcement issues may apply.');
+      }
+    }
   }
 
   // Breach of trust: no-limitation scenarios under s.21(1)
