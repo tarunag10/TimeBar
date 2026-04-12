@@ -19,7 +19,7 @@ import {
   type LucideIcon,
 } from 'lucide-react';
 import { Rule } from '@/types/rules';
-import { claimCategories } from '@/lib/rules';
+import { claimCategories, getRule } from '@/lib/rules';
 
 const claimIcons: Record<Rule['claimType'], LucideIcon> = {
   simple_contract: FileText,
@@ -56,7 +56,9 @@ export default function ClaimSelector({ onSelect }: Props) {
           Limitation Calculator
         </h1>
         <p className="text-sm text-slate-500 font-light mt-2 leading-relaxed">
-          Select a claim type to calculate the likely limitation expiry date.
+          Select the legal claim type that best matches your case. The calculator will then guide you
+          through plain-English questions and estimate the likely limitation deadline under
+          England &amp; Wales law.
         </p>
       </div>
 
@@ -69,6 +71,7 @@ export default function ClaimSelector({ onSelect }: Props) {
             <div className="space-y-2.5">
               {category.items.map((claim, itemIndex) => {
                 const Icon = claimIcons[claim.key];
+                const rule = getRule(claim.key);
                 const overallIndex = (categoryIndex * 4) + itemIndex;
                 return (
                   <motion.button
@@ -102,6 +105,9 @@ export default function ClaimSelector({ onSelect }: Props) {
                         </div>
                         <div className="text-[11px] text-slate-600 font-light mt-0.5">
                           {claim.shortDesc}
+                        </div>
+                        <div className="text-[10px] text-slate-600/80 font-light mt-1">
+                          {rule.statuteRef.act}, {rule.statuteRef.section}
                         </div>
                       </div>
                       <ArrowRight className="w-3.5 h-3.5 text-slate-700 group-hover:text-slate-400 transform group-hover:translate-x-0.5 transition-all duration-300" />

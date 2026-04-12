@@ -38,34 +38,34 @@ export const claimCategories: ClaimCategory[] = [
   {
     label: 'Contract & Debt',
     items: [
-      { key: 'simple_contract', title: 'Simple Contract', shortDesc: '6 yrs · breach' },
-      { key: 'deed_specialty', title: 'Deed / Specialty', shortDesc: '12 yrs · breach' },
-      { key: 'debt_recovery', title: 'Debt Recovery', shortDesc: '6 yrs · debt due' },
+      { key: 'simple_contract', title: 'Simple Contract', shortDesc: '6 years from Breach Date' },
+      { key: 'deed_specialty', title: 'Deed Claim (Specialty Contract)', shortDesc: '12 years from Breach Date' },
+      { key: 'debt_recovery', title: 'Debt Recovery', shortDesc: '6 years from Date Debt Became Due' },
     ],
   },
   {
     label: 'Tort & Negligence',
     items: [
-      { key: 'tort_non_pi', title: 'Tort (Non-PI)', shortDesc: '6 yrs · accrual' },
-      { key: 'personal_injury', title: 'Personal Injury', shortDesc: '3 yrs · knowledge' },
-      { key: 'professional_negligence', title: 'Professional Negligence', shortDesc: '6 yrs + longstop' },
-      { key: 'defamation', title: 'Defamation', shortDesc: '1 yr · publication' },
+      { key: 'tort_non_pi', title: 'Tort (Non-PI)', shortDesc: '6 years from Accrual Date' },
+      { key: 'personal_injury', title: 'Personal Injury', shortDesc: '3 years from Later of Injury/Knowledge' },
+      { key: 'professional_negligence', title: 'Professional Negligence', shortDesc: '6 years or 3-year Knowledge Rule (with 15-year longstop)' },
+      { key: 'defamation', title: 'Defamation', shortDesc: '1 year from First Publication' },
     ],
   },
   {
     label: 'Specialist Claims',
     items: [
-      { key: 'contribution', title: 'Contribution', shortDesc: '2 yrs · judgment' },
-      { key: 'recovery_of_land', title: 'Recovery of Land', shortDesc: '12 yrs · possession' },
-      { key: 'breach_of_trust', title: 'Breach of Trust', shortDesc: '6 yrs · breach' },
+      { key: 'contribution', title: 'Contribution', shortDesc: '2 years from Judgment/Settlement Date' },
+      { key: 'recovery_of_land', title: 'Recovery of Land', shortDesc: '12 years from Start of Adverse Possession' },
+      { key: 'breach_of_trust', title: 'Breach of Trust', shortDesc: 'Usually 6 years (some claims have no limitation period)' },
     ],
   },
   {
     label: 'Property & Enforcement',
     items: [
-      { key: 'judgment_enforcement', title: 'Judgment Enforcement', shortDesc: '6 yrs · judgment date' },
-      { key: 'mortgage_principal', title: 'Mortgage Principal', shortDesc: '12 yrs · principal due' },
-      { key: 'mortgage_interest', title: 'Mortgage Interest Arrears', shortDesc: '6 yrs · arrears due' },
+      { key: 'judgment_enforcement', title: 'Judgment Enforcement', shortDesc: '6 years from Judgment Date' },
+      { key: 'mortgage_principal', title: 'Mortgage Principal', shortDesc: '12 years from Date Principal Became Due' },
+      { key: 'mortgage_interest', title: 'Mortgage Interest Arrears', shortDesc: '6 years from Interest Due Date' },
     ],
   },
 ];

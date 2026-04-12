@@ -75,6 +75,11 @@ export default function CoveragePage() {
       <h1 className="text-2xl font-semibold tracking-tight text-gradient mt-8 mb-10">
         Coverage &amp; Limitations
       </h1>
+      <p className="text-[13px] text-slate-400 font-light leading-relaxed mb-8">
+        This page explains exactly what TimeBar currently covers, what it does not cover, and where
+        manual legal review is usually needed. It is written for both legal professionals and
+        non-lawyers.
+      </p>
 
       {/* Supported claim types */}
       <motion.div
@@ -146,8 +151,8 @@ export default function CoveragePage() {
           <h2 className="text-sm font-medium text-red-400/80">Not covered in this version</h2>
         </div>
         <p className="text-[13px] text-slate-400 font-light leading-relaxed mb-4">
-          The following claim types and scenarios are explicitly out of scope. If your matter
-          involves any of these, manual legal review is required:
+          The following claim types and scenarios are explicitly out of scope in this version. If
+          your matter involves any of these, a manual legal review is strongly recommended:
         </p>
         <div className="glass rounded-xl p-4 space-y-2">
           {excluded.map((item) => (
@@ -168,10 +173,10 @@ export default function CoveragePage() {
       >
         <h2 className="text-sm font-medium text-slate-200 mb-2">Accuracy of results</h2>
         <p className="text-[13px] text-slate-400 font-light leading-relaxed">
-          The result is only as accurate as the inputs you provide. Accrual dates and dates of
-          knowledge may be legally contestable. Where the facts are disputed or complex, the
-          tool will flag the need for manual review rather than provide a potentially misleading
-          answer.
+          The result is only as accurate as the facts you enter. Accrual dates, dates of knowledge,
+          and modifier dates can all be legally contested. Where facts are disputed or legally
+          complex, the tool is designed to flag manual review rather than provide a misleadingly
+          precise answer.
         </p>
       </motion.div>
     </div>

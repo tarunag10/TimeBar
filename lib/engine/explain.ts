@@ -59,7 +59,7 @@ export function buildExplanation(
       steps.push(`Modifier applied: ${mod}`);
     }
   } else {
-    steps.push('No modifiers applied');
+    steps.push('No limitation modifiers applied');
   }
 
   // Step 5: Final date

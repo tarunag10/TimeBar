@@ -98,10 +98,10 @@ export default function ResultCard({ result, claimType, accrualDate }: Props) {
                 <div className="text-[11px] text-slate-500 font-light mt-2.5">
                   {result.adjustedExpiryDate ? (
                     <>
-                      Base: {formatDisplayDate(result.primaryExpiryDate!)} &middot; {result.appliedModifiers.join(', ')}
+                      Base date: {formatDisplayDate(result.primaryExpiryDate!)} &middot; {result.appliedModifiers.join(', ')}
                     </>
                   ) : (
-                    <>Base: {result.primaryExpiryDate && formatDisplayDate(result.primaryExpiryDate)} &middot; No modifiers</>
+                    <>Base date: {result.primaryExpiryDate && formatDisplayDate(result.primaryExpiryDate)} &middot; No limitation modifiers applied</>
                   )}
                 </div>
               </>

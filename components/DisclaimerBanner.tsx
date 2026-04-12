@@ -19,8 +19,9 @@ export default function DisclaimerBanner() {
           <div className="max-w-2xl mx-auto px-5 sm:px-8 py-2 flex items-center gap-2.5">
             <AlertTriangle className="w-3 h-3 text-amber-500/60 shrink-0" />
             <p className="text-[11px] text-slate-500 leading-relaxed font-light flex-1">
-              This tool is an informational aid, not legal advice. Limitation analysis depends on the
-              facts. Always verify independently.
+              This tool gives an informational estimate, not legal advice. Limitation analysis depends
+              on case facts, disputed evidence, and judicial discretion. Always verify with a qualified
+              legal professional.
             </p>
             <button
               onClick={() => setVisible(false)}

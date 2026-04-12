@@ -9,13 +9,13 @@ const sections = [
     icon: Info,
     title: 'What is this tool?',
     content:
-      'TimeBar is an informational decision-support tool that calculates likely limitation expiry dates for common England & Wales civil claim types. It is designed for lawyers, paralegals, and legal professionals who need a fast, reliable first-pass calculation.',
+      'TimeBar is an informational decision-support tool that estimates limitation deadlines for common England & Wales civil claim types. It is designed for legal professionals and non-lawyers who need a clear, structured first-pass view of timing risk.',
   },
   {
     icon: Cpu,
     title: 'How does it work?',
     content:
-      'The calculator uses a deterministic rules engine. You select a claim type, enter key dates, and toggle any applicable modifiers (disability, fraud/concealment, acknowledgment, part payment). The engine applies the relevant limitation rules and outputs a likely expiry date with a full reasoning trail.',
+      'The calculator uses a deterministic rules engine. You choose a claim type, enter key dates, and select any relevant modifiers (for example disability, fraud/concealment, acknowledgment, or part payment). The engine applies the selected legal rules and returns an estimated deadline with a full reasoning trail in plain English.',
     extra:
       'All calculations happen in your browser. No data is sent to any server. No dates or facts you enter are stored or tracked.',
   },
@@ -42,7 +42,7 @@ const sections = [
     icon: AlertTriangle,
     title: 'Important limitations',
     content:
-      'This tool is not legal advice. Limitation analysis depends on the specific facts of each case, including accrual, knowledge, disability, concealment, and whether a court may exercise discretion to disapply a time limit. The result is only as accurate as the inputs provided. Always verify independently.',
+      'This tool is not legal advice. Limitation analysis depends on the specific facts of each case, including accrual, date of knowledge, disability, concealment, and whether a court may exercise discretion to disapply a time limit. The result is only as accurate as the inputs provided and should be independently verified.',
   },
 ];
 

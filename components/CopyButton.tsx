@@ -29,10 +29,10 @@ function formatCopyText(result: CalculationResult, claimType: string): string {
   } else {
     lines.push(`Base period: ${rule.basePeriod.value} ${rule.basePeriod.unit} from ${rule.startRule.replace(/_/g, ' ')}`);
     if (result.primaryExpiryDate) {
-      lines.push(`Likely expiry: ${format(parseISO(result.primaryExpiryDate), 'd MMMM yyyy')}`);
+      lines.push(`Estimated limitation expiry date: ${format(parseISO(result.primaryExpiryDate), 'd MMMM yyyy')}`);
     }
     if (result.adjustedExpiryDate) {
-      lines.push(`Adjusted expiry: ${format(parseISO(result.adjustedExpiryDate), 'd MMMM yyyy')}`);
+      lines.push(`Adjusted expiry after modifiers: ${format(parseISO(result.adjustedExpiryDate), 'd MMMM yyyy')}`);
     }
     if (result.appliedModifiers.length > 0) {
       lines.push(`Modifiers: ${result.appliedModifiers.join('; ')}`);
@@ -56,7 +56,7 @@ function formatCopyText(result: CalculationResult, claimType: string): string {
   }
 
   lines.push('');
-  lines.push('This is an informational calculation, not legal advice.');
+  lines.push('This is an informational legal-timing estimate, not legal advice.');
   return lines.join('\n');
 }
 

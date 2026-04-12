@@ -13,7 +13,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "TimeBar — England & Wales Limitation Calculator",
   description:
-    "Calculate likely limitation expiry dates for common England & Wales civil claim types. A lawyer-friendly decision-support tool.",
+    "Estimate limitation deadlines for common England & Wales civil claims with legal references, clear reasoning, and plain-English guidance.",
 };
 
 export default function RootLayout({
