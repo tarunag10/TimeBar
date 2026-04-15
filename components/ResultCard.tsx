@@ -6,6 +6,8 @@ import { CalculationResult } from '@/types/rules';
 import StatusBadge from './StatusBadge';
 import Timeline from './Timeline';
 import CopyButton from './CopyButton';
+import CalendarExportButton from './CalendarExportButton';
+import PrintButton from './PrintButton';
 
 type Props = {
   result: CalculationResult;
@@ -120,6 +122,8 @@ export default function ResultCard({ result, claimType, accrualDate }: Props) {
           <div className="shrink-0 flex flex-col items-end gap-2.5">
             <StatusBadge status={result.status} />
             <CopyButton result={result} claimType={claimType} />
+            <CalendarExportButton result={result} claimType={claimType} />
+            <PrintButton claimType={claimType} />
           </div>
         </div>
 

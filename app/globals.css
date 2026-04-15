@@ -128,3 +128,76 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
   outline-offset: 2px;
   border-radius: 4px;
 }
+
+/* ── Print stylesheet ───────────────────── */
+
+@media print {
+  html, body {
+    background: white !important;
+    color: #1a1a1a !important;
+  }
+
+  body::before,
+  body::after {
+    display: none !important;
+  }
+
+  header,
+  .disclaimer-banner,
+  .no-print,
+  nav {
+    display: none !important;
+  }
+
+  .glass,
+  .glass-strong,
+  .glass-hover,
+  .panel-shell {
+    background: white !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-color: #d1d5db !important;
+    box-shadow: none !important;
+  }
+
+  .text-gradient,
+  .text-gradient-blue,
+  .display-serif {
+    -webkit-text-fill-color: #1a1a1a !important;
+    background: none !important;
+  }
+
+  [class*="text-slate-"],
+  [class*="text-emerald-"],
+  [class*="text-amber-"],
+  [class*="text-rose-"],
+  [class*="text-blue-"],
+  [class*="text-red-"] {
+    color: #1a1a1a !important;
+  }
+
+  [class*="bg-emerald-"] { background-color: #d1fae5 !important; color: #065f46 !important; }
+  [class*="bg-amber-"] { background-color: #fef3c7 !important; color: #92400e !important; }
+  [class*="bg-red-"] { background-color: #fee2e2 !important; color: #991b1b !important; }
+  [class*="bg-blue-"] { background-color: #dbeafe !important; color: #1e40af !important; }
+
+  .animate-pulse-glow,
+  .animate-ping,
+  [class*="glow-"] {
+    animation: none !important;
+    box-shadow: none !important;
+  }
+
+  [class*="border-white\\/"],
+  [class*="border-\\[#d5b06b\\]"] {
+    border-color: #d1d5db !important;
+  }
+
+  main {
+    break-inside: avoid;
+  }
+
+  .print-footer {
+    display: block !important;
+  }
+}

@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, HelpCircle } from 'lucide-react';
 import { Rule, Question } from '@/types/rules';
+import { validateDateNotFuture, validateDateOrder } from '@/lib/validation/calculatorSchema';
 
 type Props = {
   rule: Rule;
@@ -54,24 +55,37 @@ function DateInput({
   question,
   value,
   onChange,
+  error,
+  onBlur,
 }: {
   question: Question;
   value: string | undefined;
   onChange: (val: string) => void;
+  error: string | null;
+  onBlur: () => void;
 }) {
+  const errorId = `${question.id}-error`;
   return (
-    <div className="relative">
-      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#d5b06b]/70 pointer-events-none" />
-      <input
-        type="date"
-        value={value || ''}
-        onChange={(e) => onChange(e.target.value)}
-        className="w-full sm:w-auto pl-9 pr-3 py-2.5 rounded-xl text-sm text-slate-100
-          glass border border-[#d5b06b]/25
-          focus:outline-none focus:border-[#d5b06b]/55 focus:bg-white/[0.05] focus:shadow-[0_0_20px_-6px_rgba(213,176,107,0.35)]
-          transition-all duration-200 placeholder:text-slate-500"
-        aria-label={question.label}
-      />
+    <div>
+      <div className="relative">
+        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#d5b06b]/70 pointer-events-none" />
+        <input
+          type="date"
+          value={value || ''}
+          onChange={(e) => onChange(e.target.value)}
+          onBlur={onBlur}
+          className={`w-full sm:w-auto pl-9 pr-3 py-2.5 rounded-xl text-sm text-slate-100
+            glass border ${error ? 'border-rose-500/60' : 'border-[#d5b06b]/25'}
+            focus:outline-none focus:border-[#d5b06b]/55 focus:bg-white/[0.05] focus:shadow-[0_0_20px_-6px_rgba(213,176,107,0.35)]
+            transition-all duration-200 placeholder:text-slate-500`}
+          aria-label={question.label}
+          aria-invalid={!!error}
+          aria-describedby={error ? errorId : undefined}
+        />
+      </div>
+      {error && (
+        <p id={errorId} className="mt-1.5 text-[11px] text-rose-400">{error}</p>
+      )}
     </div>
   );
 }
@@ -115,7 +129,46 @@ function HelpTooltip({ text }: { text: string }) {
   );
 }
 
+const DATE_FIELDS_AFTER_ACCRUAL = new Set([
+  'knowledge_date',
+  'discovery_date',
+  'disability_ceased_date',
+  'acknowledgment_date',
+  'part_payment_date',
+]);
+
 export default function DynamicQuestionnaire({ rule, answers, onAnswerChange }: Props) {
+  const [errors, setErrors] = useState<Record<string, string | null>>({});
+
+  const validateField = useCallback((questionId: string) => {
+    const value = answers[questionId] as string | undefined;
+    if (!value) {
+      setErrors((prev) => ({ ...prev, [questionId]: null }));
+      return;
+    }
+
+    // Check future date
+    const futureError = validateDateNotFuture(value);
+    if (futureError) {
+      setErrors((prev) => ({ ...prev, [questionId]: futureError }));
+      return;
+    }
+
+    // Check date ordering (secondary dates must be >= accrual_date)
+    if (DATE_FIELDS_AFTER_ACCRUAL.has(questionId)) {
+      const accrualDate = answers.accrual_date as string | undefined;
+      if (accrualDate) {
+        const orderError = validateDateOrder(accrualDate, value, 'This date must not be before the accrual date');
+        if (orderError) {
+          setErrors((prev) => ({ ...prev, [questionId]: orderError }));
+          return;
+        }
+      }
+    }
+
+    setErrors((prev) => ({ ...prev, [questionId]: null }));
+  }, [answers]);
+
   function shouldShow(question: Question): boolean {
     if (!question.showWhen) return true;
     const depValue = answers[question.showWhen.field];
@@ -153,6 +206,8 @@ export default function DynamicQuestionnaire({ rule, answers, onAnswerChange }: 
                 question={q}
                 value={answers[q.id] as string | undefined}
                 onChange={(val) => onAnswerChange(q.id, val)}
+                error={errors[q.id] ?? null}
+                onBlur={() => validateField(q.id)}
               />
             )}
           </motion.div>

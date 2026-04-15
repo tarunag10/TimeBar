@@ -14,7 +14,7 @@ export default function DisclaimerBanner() {
           initial={{ height: 'auto', opacity: 1 }}
           exit={{ height: 0, opacity: 0 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
-          className="relative z-40 overflow-hidden border-b border-[#d5b06b]/20 bg-[#d5b06b]/8"
+          className="disclaimer-banner relative z-40 overflow-hidden border-b border-[#d5b06b]/20 bg-[#d5b06b]/8"
         >
           <div className="max-w-6xl mx-auto px-4 sm:px-8 py-2 flex items-center gap-2.5">
             <AlertTriangle className="w-3 h-3 text-[#f1d7ab] shrink-0" />

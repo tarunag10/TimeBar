@@ -6,6 +6,7 @@ import { Copy, Check } from 'lucide-react';
 import { CalculationResult } from '@/types/rules';
 import { getRule } from '@/lib/rules';
 import { format, parseISO } from 'date-fns';
+import { trackEvent } from '@/lib/storage';
 
 type Props = {
   result: CalculationResult;
@@ -125,6 +126,7 @@ export default function CopyButton({ result, claimType }: Props) {
     const text = formatCopyText(result, claimType);
     await navigator.clipboard.writeText(text);
     setCopied(true);
+    trackEvent({ type: 'copy_clicked', claimType });
     setTimeout(() => setCopied(false), 2000);
   }
 
