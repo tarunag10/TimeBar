@@ -1,16 +1,8 @@
-import { addYears, addMonths, addDays, differenceInCalendarDays, format, parseISO } from 'date-fns';
+import { addYears, differenceInCalendarDays, format, parseISO } from 'date-fns';
 import { Rule, ScenarioTimeline } from '@/types/rules';
+import { addPeriod } from './utils';
 
 type Answers = Record<string, string | boolean | undefined>;
-
-function addPeriod(date: Date, period: { unit: string; value: number }): Date {
-  switch (period.unit) {
-    case 'years': return addYears(date, period.value);
-    case 'months': return addMonths(date, period.value);
-    case 'days': return addDays(date, period.value);
-    default: return addYears(date, period.value);
-  }
-}
 
 function iso(date: Date): string {
   return format(date, 'yyyy-MM-dd');

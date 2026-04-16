@@ -8,7 +8,7 @@
     "section": "s.2 / s.14A",
     "label": "Tort with latent damage knowledge-based alternative"
   },
-  "version": "1.0.0",
+  "version": "1.1.0",
   "lastReviewed": "2026-04-12",
   "basePeriod": {
     "unit": "years",
@@ -24,6 +24,13 @@
     "fraud_concealment_mistake"
   ],
   "questions": [
+    {
+      "id": "act_or_omission_date",
+      "type": "date",
+      "label": "Date of the negligent act or omission",
+      "helpText": "The date on which the professional committed the negligent act or omission. This is the date from which the 15-year longstop under s.14B runs. It may be earlier than the date damage occurred or was discovered.",
+      "required": true
+    },
     {
       "id": "accrual_date",
       "type": "date",

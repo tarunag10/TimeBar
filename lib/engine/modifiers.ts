@@ -1,5 +1,6 @@
-import { addYears, parseISO } from 'date-fns';
+import { parseISO } from 'date-fns';
 import { Rule } from '@/types/rules';
+import { addPeriod } from './utils';
 
 export type ModifierResult = {
   adjustedExpiry: Date | null;
@@ -30,7 +31,7 @@ export function applyModifiers(
     const ceasedStr = answers.disability_ceased_date as string | undefined;
     if (ceasedStr) {
       const ceasedDate = parseISO(ceasedStr);
-      const disabilityExpiry = addYears(ceasedDate, rule.basePeriod.value);
+      const disabilityExpiry = addPeriod(ceasedDate, rule.basePeriod);
       if (isLater(disabilityExpiry, latestExpiry)) {
         latestExpiry = disabilityExpiry;
       }
@@ -50,7 +51,7 @@ export function applyModifiers(
     const discoveryStr = answers.discovery_date as string | undefined;
     if (discoveryStr) {
       const discoveryDate = parseISO(discoveryStr);
-      const fraudExpiry = addYears(discoveryDate, rule.basePeriod.value);
+      const fraudExpiry = addPeriod(discoveryDate, rule.basePeriod);
       if (isLater(fraudExpiry, latestExpiry)) {
         latestExpiry = fraudExpiry;
       }
@@ -71,7 +72,7 @@ export function applyModifiers(
     if (ackStr) {
       const ackDate = parseISO(ackStr);
       if (ackDate >= startDate) {
-        const ackExpiry = addYears(ackDate, rule.basePeriod.value);
+        const ackExpiry = addPeriod(ackDate, rule.basePeriod);
         if (isLater(ackExpiry, latestExpiry)) {
           latestExpiry = ackExpiry;
         }
@@ -93,7 +94,7 @@ export function applyModifiers(
     if (payStr) {
       const payDate = parseISO(payStr);
       if (payDate >= startDate) {
-        const payExpiry = addYears(payDate, rule.basePeriod.value);
+        const payExpiry = addPeriod(payDate, rule.basePeriod);
         if (isLater(payExpiry, latestExpiry)) {
           latestExpiry = payExpiry;
         }

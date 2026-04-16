@@ -1,20 +1,13 @@
-import { addYears, addMonths, addDays, differenceInCalendarDays, parseISO, format } from 'date-fns';
+import { differenceInCalendarDays, parseISO, format } from 'date-fns';
 import { Rule, CalculationInput, CalculationResult } from '@/types/rules';
 import { getRule } from '@/lib/rules';
+import { calculatorInputSchema } from '@/lib/validation/calculatorSchema';
+import { addPeriod } from './utils';
 import { checkManualReview } from './manualReview';
 import { applyModifiers } from './modifiers';
 import { buildExplanation } from './explain';
 import { buildProceduralMilestones } from './procedural';
 import { buildScenarioTimelines } from './scenarios';
-
-function addPeriod(date: Date, period: { unit: string; value: number }): Date {
-  switch (period.unit) {
-    case 'years': return addYears(date, period.value);
-    case 'months': return addMonths(date, period.value);
-    case 'days': return addDays(date, period.value);
-    default: return addYears(date, period.value);
-  }
-}
 
 function determineStartDate(rule: Rule, answers: Record<string, string | boolean | undefined>): Date | null {
   const accrualStr = answers.accrual_date as string | undefined;
@@ -53,7 +46,7 @@ function determineKnowledgeRuleExpiry(rule: Rule, answers: Record<string, string
     const knowledgeStr = answers.knowledge_date as string | undefined;
     if (knowledgeStr) {
       const knowledgeDate = parseISO(knowledgeStr);
-      const knowledgeExpiry = addYears(knowledgeDate, 3);
+      const knowledgeExpiry = addPeriod(knowledgeDate, { unit: 'years', value: 3 });
       return knowledgeExpiry > accrualExpiry ? knowledgeExpiry : accrualExpiry;
     }
   }
@@ -152,8 +145,60 @@ function buildReviewChecklist(rule: Rule): string[] {
 }
 
 export function calculate(input: CalculationInput): CalculationResult {
-  const rule = getRule(input.claimType);
-  const { answers } = input;
+  // Validate input with Zod schema
+  const parsed = calculatorInputSchema.safeParse(input);
+  if (!parsed.success) {
+    // Guard: claimType may be invalid, so getRule could throw
+    let rule: Rule;
+    try {
+      rule = getRule(input.claimType);
+    } catch {
+      // Fallback rule reference for the error result
+      return {
+        status: 'manual_review',
+        urgencyLevel: 'critical',
+        confidenceLevel: 'low',
+        scenarioSummary: 'Invalid input: the data provided could not be validated.',
+        nextActions: [
+          'Check that all required fields are filled in correctly.',
+          'Re-run the calculator with valid data.',
+        ],
+        reviewChecklist: [
+          'Input data validated against expected format.',
+        ],
+        proceduralMilestones: [{ title: 'Specialist procedural review', priority: 'critical', note: 'Confirm the applicable procedural route before relying on any deadline.' }],
+        scenarioTimelines: [],
+        warnings: ['Invalid input data: ' + parsed.error.issues.map((i) => i.message).join('; ')],
+        explanationSteps: ['Cannot calculate: input validation failed.'],
+        statuteRefs: [],
+        appliedModifiers: [],
+        ruleVersion: 'unknown',
+      };
+    }
+    return {
+      status: 'manual_review',
+      urgencyLevel: 'critical',
+      confidenceLevel: 'low',
+      scenarioSummary: 'Invalid input: the data provided could not be validated.',
+      nextActions: [
+        'Check that all required fields are filled in correctly.',
+        'Re-run the calculator with valid data.',
+      ],
+      reviewChecklist: [
+        'Input data validated against expected format.',
+      ],
+      proceduralMilestones: buildProceduralMilestones('manual_review', null, new Date()),
+      scenarioTimelines: [],
+      warnings: ['Invalid input data: ' + parsed.error.issues.map((i) => i.message).join('; ')],
+      explanationSteps: ['Cannot calculate: input validation failed.'],
+      statuteRefs: [rule.statuteRef],
+      appliedModifiers: [],
+      ruleVersion: rule.version,
+    };
+  }
+
+  const rule = getRule(parsed.data.claimType);
+  const { answers } = parsed.data;
 
   // Check manual review triggers first
   const manualReviewResult = checkManualReview(rule, answers);
@@ -187,7 +232,7 @@ export function calculate(input: CalculationInput): CalculationResult {
   }
 
   // Calculate base expiry
-  let baseExpiry =
+  const baseExpiry =
     determineKnowledgeRuleExpiry(rule, answers) ?? addPeriod(startDate, rule.basePeriod);
 
   // Apply modifiers
@@ -199,18 +244,21 @@ export function calculate(input: CalculationInput): CalculationResult {
   let longstopApplied = false;
 
   if (rule.startRule === 'knowledge_with_longstop' && rule.longstopPeriod) {
-    const accrualStr = answers.accrual_date as string | undefined;
-    if (accrualStr) {
-      longstopExpiry = addPeriod(parseISO(accrualStr), rule.longstopPeriod);
+    // s.14B longstop runs from the date of the negligent act or omission,
+    // NOT from the date of damage/accrual. Use act_or_omission_date if available,
+    // falling back to accrual_date for backwards compatibility.
+    const longstopBaseStr = (answers.act_or_omission_date as string | undefined) || (answers.accrual_date as string | undefined);
+    if (longstopBaseStr) {
+      longstopExpiry = addPeriod(parseISO(longstopBaseStr), rule.longstopPeriod);
       if (finalExpiry > longstopExpiry) {
         finalExpiry = longstopExpiry;
         adjustedExpiry = longstopExpiry;
         longstopApplied = true;
         modifierResult.appliedModifiers.push(
-          `Longstop cap (${rule.longstopPeriod.value} ${rule.longstopPeriod.unit})`
+          `Longstop cap (${rule.longstopPeriod.value} ${rule.longstopPeriod.unit} from date of act/omission)`
         );
         modifierResult.warnings.push(
-          'The calculated date has been capped by the 15-year longstop (s.14B Limitation Act 1980).'
+          'The calculated date has been capped by the 15-year longstop (s.14B Limitation Act 1980), which runs from the date of the negligent act or omission.'
         );
       }
     }

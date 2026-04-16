@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { format } from 'date-fns';
 
 const dateString = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Date must be in YYYY-MM-DD format').refine(
   (val) => {
@@ -30,19 +31,18 @@ export const calculatorInputSchema = z.object({
 export const dateFieldSchema = dateString;
 
 export function validateDateNotFuture(dateStr: string): string | null {
-  const date = new Date(dateStr);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  if (date > today) {
+  // Compare lexicographically to avoid UTC vs local timezone issues
+  // with new Date('YYYY-MM-DD') parsing as midnight UTC.
+  const today = format(new Date(), 'yyyy-MM-dd');
+  if (dateStr > today) {
     return 'Date cannot be in the future for an accrual event that has already occurred.';
   }
   return null;
 }
 
 export function validateDateOrder(earlierStr: string, laterStr: string, context: string): string | null {
-  const earlier = new Date(earlierStr);
-  const later = new Date(laterStr);
-  if (later < earlier) {
+  // Compare lexicographically to avoid timezone parsing issues
+  if (laterStr < earlierStr) {
     return `${context}: the second date cannot be before the first date.`;
   }
   return null;
