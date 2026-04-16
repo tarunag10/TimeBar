@@ -129,58 +129,35 @@
 - **Description:** `setEvents(getAnalyticsEvents())` and `setEntries(getHistory())` inside `useEffect` can cause cascading renders.
 - **Fix applied:** Replaced `useState` + `useEffect` with lazy `useState` initializer in both components. Removed `useEffect` import from both files.
 
-### 16. Unused `yearsAgo` Function in Tests
+### 16. ~~Unused `yearsAgo` Function in Tests~~ ✅ Fixed
 
-- **File:** `lib/engine/__tests__/calculate.test.ts` (line ~7)
+- **File:** `lib/engine/__tests__/calculate.test.ts`
 - **Description:** `yearsAgo` is defined but never called.
-- **Fix:** Remove the unused function.
+- **Fix applied:** Removed the unused function.
 
-### 17. `font-weight: 420` in CSS
+### 17. ~~`font-weight: 420` in CSS~~ ✅ Fixed
 
 - **File:** `app/globals.css`
 - **Description:** While variable fonts can accept arbitrary weight values, `420` is unusual. Standard weights are multiples of 100 (400=normal, 500=medium). This may render as 400 in some browsers.
-- **Fix:** Change to `font-weight: 400` (normal) or `font-weight: 500` (medium) depending on the intended visual weight.
+- **Fix applied:** Changed to `font-weight: 400` (normal).
 
-### 18. Disclaimer Banner Resets on Navigation
+### 18. ~~Disclaimer Banner Resets on Navigation~~ ✅ Fixed
 
-- **File:** `components/DisclaimerBanner.tsx`
-- **Description:** The dismiss state is local component state. On route changes, the banner reappears.
-- **Fix:** Persist the dismissed state in `localStorage` or app-level state (e.g., a context provider).
+- **File:** `components/DisclaimerBanner.tsx`, `lib/storage.ts`
+- **Description:** The dismiss state was local component state. On route changes, the banner reappeared.
+- **Fix applied:** Persisted dismiss state in `localStorage` under `timebar_disclaimer_dismissed` key. Added to `clearAllData()` for full data wipe.
 
-### 19. No Content Security Policy Headers
+### 19. ~~No Content Security Policy Headers~~ ✅ Fixed
 
 - **File:** `next.config.ts`
 - **Description:** No CSP headers configured. The app is client-only so risk is lower, but CSP would harden against XSS if any is introduced.
-- **Fix:** Add CSP headers in `next.config.ts`:
-  ```ts
-  const nextConfig: NextConfig = {
-    async headers() {
-      return [{
-        source: '/(.*)',
-        headers: [
-          { key: 'Content-Security-Policy', value: "default-src 'self'; script-src 'self' 'unsafe-eval' 'unsafe-inline'; style-src 'self' 'unsafe-inline';" },
-          { key: 'X-Frame-Options', value: 'DENY' },
-          { key: 'X-Content-Type-Options', value: 'nosniff' },
-        ],
-      }];
-    },
-  };
-  ```
+- **Fix applied:** Added `Content-Security-Policy`, `X-Frame-Options: DENY`, `X-Content-Type-Options: nosniff`, `Referrer-Policy`, and `Permissions-Policy` headers in `next.config.ts`.
 
-### 20. `crypto.randomUUID()` Without Fallback
+### 20. ~~`crypto.randomUUID()` Without Fallback~~ ✅ Fixed
 
-- **Files:** `lib/ics.ts`, `lib/storage.ts`
+- **Files:** `lib/utils.ts`, `lib/ics.ts`, `lib/storage.ts`
 - **Description:** In non-secure contexts (HTTP), `crypto.randomUUID()` is `undefined` and will throw.
-- **Fix:** Add a try/catch with a fallback:
-  ```ts
-  function generateId(): string {
-    try {
-      return crypto.randomUUID();
-    } catch {
-      return `${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
-    }
-  }
-  ```
+- **Fix applied:** Extracted `generateId()` to shared `lib/utils.ts` with try/catch fallback (`Date.now() + Math.random`). Both `ics.ts` and `storage.ts` import from the shared utility.
 
 ---
 
@@ -204,19 +181,14 @@
 | 🔴 Critical | 2 | 2 ✅ | 0 |
 | 🟠 High | 4 | 4 ✅ | 0 |
 | 🟡 Medium | 6 | 6 ✅ | 0 |
-| 🟢 Low | 8 | 3 ✅ | 5 |
+| 🟢 Low | 8 | 8 ✅ | 0 |
 | ℹ️ Info | 6 | 0 | 6 |
-| **Total** | **26** | **15 ✅** | **11** |
+| **Total** | **26** | **20 ✅** | **6** |
 
 ### Remaining Issues
 
 | # | Severity | Issue | File |
 |---|----------|-------|------|
-| 16 | 🟢 Low | Unused `yearsAgo` function in tests | `lib/engine/__tests__/calculate.test.ts` |
-| 17 | 🟢 Low | `font-weight: 420` in CSS | `app/globals.css` |
-| 18 | 🟢 Low | Disclaimer banner resets on navigation | `components/DisclaimerBanner.tsx` |
-| 19 | 🟢 Low | No Content Security Policy headers | `next.config.ts` |
-| 20 | 🟢 Low | `crypto.randomUUID()` without fallback | `lib/ics.ts`, `lib/storage.ts` |
 | 21–26 | ℹ️ Info | See Informational section above | Various |
 
 ### Completed Fixes
@@ -236,3 +208,8 @@
 13. ✅ **Low #13** — `addPeriod` deduplicated to `lib/engine/utils.ts`
 14. ✅ **Low #14** — `let baseExpiry` → `const baseExpiry`
 15. ✅ **Low #15** — Lazy `useState` initializer replaces `useEffect` + `setState`
+16. ✅ **Low #16** — Removed unused `yearsAgo()` function from test file
+17. ✅ **Low #17** — `font-weight: 420` → `400` in `globals.css`
+18. ✅ **Low #18** — Disclaimer banner dismiss persisted in `localStorage`
+19. ✅ **Low #19** — CSP and security headers added in `next.config.ts`
+20. ✅ **Low #20** — `generateId()` with `randomUUID` fallback extracted to `lib/utils.ts`
