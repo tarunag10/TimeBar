@@ -122,9 +122,28 @@ function formatCopyText(result: CalculationResult, claimType: string): string {
 export default function CopyButton({ result, claimType }: Props) {
   const [copied, setCopied] = useState(false);
 
+  function fallbackCopy(text: string) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+  }
+
   async function handleCopy() {
     const text = formatCopyText(result, claimType);
-    await navigator.clipboard.writeText(text);
+    try {
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(text);
+      } else {
+        fallbackCopy(text);
+      }
+    } catch {
+      fallbackCopy(text);
+    }
     setCopied(true);
     trackEvent({ type: 'copy_clicked', claimType });
     setTimeout(() => setCopied(false), 2000);

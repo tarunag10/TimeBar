@@ -1,8 +1,10 @@
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Info, Cpu, Calendar, AlertTriangle, BookOpen } from 'lucide-react';
+import { ArrowLeft, Info, Cpu, Calendar, AlertTriangle, BookOpen, ShieldCheck, Trash2 } from 'lucide-react';
+import { clearAllData } from '@/lib/storage';
 
 const sections = [
   {
@@ -44,9 +46,23 @@ const sections = [
     content:
       'This tool is not legal advice. Limitation analysis depends on the specific facts of each case, including accrual, date of knowledge, disability, concealment, and whether a court may exercise discretion to disapply a time limit. The result is only as accurate as the inputs provided and should be independently verified.',
   },
+  {
+    icon: ShieldCheck,
+    title: 'Data & Privacy',
+    content:
+      'All data stays in your browser. Calculation history and analytics are stored in localStorage (unencrypted). No data is ever transmitted to any server. Because localStorage is accessible to any script running on the same origin, avoid using this tool on shared or public computers for sensitive matters.',
+  },
 ];
 
 export default function AboutPage() {
+  const [cleared, setCleared] = useState(false);
+
+  function handleClearAll() {
+    clearAllData();
+    setCleared(true);
+    setTimeout(() => setCleared(false), 2500);
+  }
+
   return (
     <div className="max-w-lg mx-auto px-5 sm:px-8 py-10 sm:py-16">
       <Link
@@ -99,6 +115,21 @@ export default function AboutPage() {
             </motion.div>
           );
         })}
+      </div>
+
+      <div className="mt-8 pt-6 border-t border-white/[0.06]">
+        <button
+          type="button"
+          onClick={handleClearAll}
+          disabled={cleared}
+          className="flex items-center gap-2 text-[12px] text-slate-500 hover:text-rose-400 transition-colors duration-200 cursor-pointer disabled:cursor-default disabled:text-green-400"
+        >
+          <Trash2 className="w-3.5 h-3.5" />
+          <span className="font-light">{cleared ? 'All data cleared' : 'Clear all stored data'}</span>
+        </button>
+        <p className="text-[11px] text-slate-600 mt-1.5 font-light">
+          Removes calculation history and analytics from your browser’s local storage.
+        </p>
       </div>
     </div>
   );

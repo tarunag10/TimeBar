@@ -90,6 +90,13 @@ export function clearHistory(): void {
   }
 }
 
+export function clearAllData(): void {
+  if (isBrowser()) {
+    localStorage.removeItem(HISTORY_KEY);
+    localStorage.removeItem(ANALYTICS_KEY);
+  }
+}
+
 // ── Analytics ──────────────────────────────
 
 export function getAnalyticsEvents(): AnalyticsEvent[] {

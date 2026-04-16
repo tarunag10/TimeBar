@@ -1,4 +1,4 @@
-import { differenceInCalendarDays, parseISO } from 'date-fns';
+import { addYears, parseISO } from 'date-fns';
 import { Rule, CalculationResult } from '@/types/rules';
 import { buildProceduralMilestones } from './procedural';
 
@@ -110,10 +110,11 @@ export function checkManualReview(
   if (rule.claimType === 'judgment_enforcement') {
     const accrualStr = answers.accrual_date as string | undefined;
     if (accrualStr) {
+      const judgmentDate = parseISO(accrualStr);
+      const sixYearDate = addYears(judgmentDate, 6);
       const today = new Date();
       today.setHours(0, 0, 0, 0);
-      const daysSinceJudgment = differenceInCalendarDays(today, parseISO(accrualStr));
-      if (daysSinceJudgment > (6 * 365)) {
+      if (today > sixYearDate) {
         warnings.push(
           'More than 6 years has elapsed since the judgment date. Enforcement may require court permission under procedural rules and should be manually reviewed.'
         );

@@ -3,7 +3,7 @@
 import { useState, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Calendar, HelpCircle } from 'lucide-react';
-import { Rule, Question } from '@/types/rules';
+import { Rule, Question, SelectOption } from '@/types/rules';
 import { validateDateNotFuture, validateDateOrder } from '@/lib/validation/calculatorSchema';
 
 type Props = {
@@ -86,6 +86,39 @@ function DateInput({
       {error && (
         <p id={errorId} className="mt-1.5 text-[11px] text-rose-400">{error}</p>
       )}
+    </div>
+  );
+}
+
+function SelectInput({
+  question,
+  value,
+  onChange,
+}: {
+  question: Question;
+  value: string | undefined;
+  onChange: (val: string) => void;
+}) {
+  const options: SelectOption[] = question.options ?? [];
+  return (
+    <div className="relative">
+      <select
+        value={value || ''}
+        onChange={(e) => onChange(e.target.value)}
+        className="w-full sm:w-auto pl-3 pr-8 py-2.5 rounded-xl text-sm text-slate-100 appearance-none
+          glass border border-[#d5b06b]/25
+          focus:outline-none focus:border-[#d5b06b]/55 focus:bg-white/[0.05] focus:shadow-[0_0_20px_-6px_rgba(213,176,107,0.35)]
+          transition-all duration-200 cursor-pointer bg-no-repeat bg-[right_0.5rem_center]"
+        style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")` }}
+        aria-label={question.label}
+      >
+        <option value="" disabled className="bg-slate-900 text-slate-400">Select…</option>
+        {options.map((opt) => (
+          <option key={opt.value} value={opt.value} className="bg-slate-900 text-slate-100">
+            {opt.label}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }
@@ -208,6 +241,14 @@ export default function DynamicQuestionnaire({ rule, answers, onAnswerChange }: 
                 onChange={(val) => onAnswerChange(q.id, val)}
                 error={errors[q.id] ?? null}
                 onBlur={() => validateField(q.id)}
+              />
+            )}
+
+            {q.type === 'select' && (
+              <SelectInput
+                question={q}
+                value={answers[q.id] as string | undefined}
+                onChange={(val) => onAnswerChange(q.id, val)}
               />
             )}
           </motion.div>

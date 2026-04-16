@@ -4,12 +4,18 @@ export type ModifierKey =
   | 'acknowledgment'
   | 'part_payment';
 
+export type SelectOption = {
+  value: string;
+  label: string;
+};
+
 export type Question = {
   id: string;
   type: 'date' | 'boolean' | 'select';
   label: string;
   helpText?: string;
   required: boolean;
+  options?: SelectOption[];
   showWhen?: {
     field: string;
     equals: string | boolean;

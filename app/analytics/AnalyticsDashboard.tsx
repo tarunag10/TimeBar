@@ -1,15 +1,11 @@
 'use client';
 
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 import { BarChart3, MousePointerClick, FileText } from 'lucide-react';
 import { getAnalyticsEvents, AnalyticsEvent } from '@/lib/storage';
 
 export default function AnalyticsDashboard() {
-  const [events, setEvents] = useState<AnalyticsEvent[]>([]);
-
-  useEffect(() => {
-    setEvents(getAnalyticsEvents());
-  }, []);
+  const [events] = useState<AnalyticsEvent[]>(() => getAnalyticsEvents());
 
   const { actionCounts, claimCounts, statusCounts } = useMemo(() => {
     const actions: Record<string, number> = {};

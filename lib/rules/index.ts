@@ -1,4 +1,5 @@
 import { Rule } from '@/types/rules';
+import { z } from 'zod';
 import simpleContract from './ew.simple-contract.v1.json';
 import tortNonPi from './ew.tort-non-pi.v1.json';
 import personalInjury from './ew.personal-injury.v1.json';
@@ -13,20 +14,66 @@ import judgmentEnforcement from './ew.judgment-enforcement.v1.json';
 import mortgagePrincipal from './ew.mortgage-principal.v1.json';
 import mortgageInterest from './ew.mortgage-interest.v1.json';
 
+const selectOptionSchema = z.object({
+  value: z.string(),
+  label: z.string(),
+});
+
+const questionSchema = z.object({
+  id: z.string(),
+  type: z.enum(['date', 'boolean', 'select']),
+  label: z.string(),
+  helpText: z.string().optional(),
+  required: z.boolean(),
+  options: z.array(selectOptionSchema).optional(),
+  showWhen: z.object({ field: z.string(), equals: z.union([z.string(), z.boolean()]) }).optional(),
+});
+
+const ruleSchema = z.object({
+  id: z.string(),
+  jurisdiction: z.literal('england_wales'),
+  claimType: z.enum([
+    'simple_contract', 'tort_non_pi', 'personal_injury', 'defamation',
+    'deed_specialty', 'professional_negligence', 'debt_recovery', 'contribution',
+    'recovery_of_land', 'breach_of_trust', 'judgment_enforcement',
+    'mortgage_principal', 'mortgage_interest',
+  ]),
+  title: z.string(),
+  statuteRef: z.object({ act: z.string(), section: z.string(), label: z.string() }),
+  version: z.string(),
+  lastReviewed: z.string(),
+  basePeriod: z.object({ unit: z.enum(['years', 'months', 'days']), value: z.number() }),
+  startRule: z.enum(['accrual', 'publication', 'later_of_accrual_or_knowledge', 'knowledge_with_longstop']),
+  longstopPeriod: z.object({ unit: z.enum(['years', 'months', 'days']), value: z.number() }).optional(),
+  supportedModifiers: z.array(z.enum(['disability', 'fraud_concealment_mistake', 'acknowledgment', 'part_payment'])),
+  questions: z.array(questionSchema),
+  manualReviewTriggers: z.array(z.string()),
+  notes: z.array(z.string()).optional(),
+});
+
+function validateRule(raw: unknown, label: string): Rule {
+  const result = ruleSchema.safeParse(raw);
+  if (!result.success) {
+    const issues = result.error.issues.map((i) => `${i.path.join('.')}: ${i.message}`).join('; ');
+    throw new Error(`Rule validation failed for ${label}: ${issues}`);
+  }
+  return result.data as Rule;
+}
+
 export const rules: Record<Rule['claimType'], Rule> = {
-  simple_contract: simpleContract as Rule,
-  tort_non_pi: tortNonPi as Rule,
-  personal_injury: personalInjury as Rule,
-  defamation: defamation as Rule,
-  deed_specialty: deedSpecialty as Rule,
-  professional_negligence: professionalNegligence as Rule,
-  debt_recovery: debtRecovery as Rule,
-  contribution: contribution as Rule,
-  recovery_of_land: recoveryOfLand as Rule,
-  breach_of_trust: breachOfTrust as Rule,
-  judgment_enforcement: judgmentEnforcement as Rule,
-  mortgage_principal: mortgagePrincipal as Rule,
-  mortgage_interest: mortgageInterest as Rule,
+  simple_contract: validateRule(simpleContract, 'simple_contract'),
+  tort_non_pi: validateRule(tortNonPi, 'tort_non_pi'),
+  personal_injury: validateRule(personalInjury, 'personal_injury'),
+  defamation: validateRule(defamation, 'defamation'),
+  deed_specialty: validateRule(deedSpecialty, 'deed_specialty'),
+  professional_negligence: validateRule(professionalNegligence, 'professional_negligence'),
+  debt_recovery: validateRule(debtRecovery, 'debt_recovery'),
+  contribution: validateRule(contribution, 'contribution'),
+  recovery_of_land: validateRule(recoveryOfLand, 'recovery_of_land'),
+  breach_of_trust: validateRule(breachOfTrust, 'breach_of_trust'),
+  judgment_enforcement: validateRule(judgmentEnforcement, 'judgment_enforcement'),
+  mortgage_principal: validateRule(mortgagePrincipal, 'mortgage_principal'),
+  mortgage_interest: validateRule(mortgageInterest, 'mortgage_interest'),
 };
 
 export type ClaimCategory = {

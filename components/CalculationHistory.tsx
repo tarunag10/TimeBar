@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Clock, Trash2, X } from 'lucide-react';
 import { formatDistanceToNow } from 'date-fns';
@@ -27,11 +27,7 @@ const statusLabels: Record<string, string> = {
 };
 
 export default function CalculationHistory({ onRestore }: Props) {
-  const [entries, setEntries] = useState<HistoryEntry[]>([]);
-
-  useEffect(() => {
-    setEntries(getHistory());
-  }, []);
+  const [entries, setEntries] = useState<HistoryEntry[]>(() => getHistory());
 
   if (entries.length === 0) return null;
 
