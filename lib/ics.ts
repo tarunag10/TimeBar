@@ -1,6 +1,7 @@
 import { parseISO, addDays, format } from 'date-fns';
 import { CalculationResult } from '@/types/rules';
 import { getRule } from '@/lib/rules';
+import { generateId } from '@/lib/utils';
 
 type IcsInput = {
   result: CalculationResult;
@@ -16,7 +17,7 @@ export function generateIcsContent({ result, claimType }: IcsInput): string | nu
   const dtStart = format(expiryDate, 'yyyyMMdd');
   const dtEnd = format(addDays(expiryDate, 1), 'yyyyMMdd');
   const now = format(new Date(), "yyyyMMdd'T'HHmmss'Z'");
-  const uid = `timebar-${claimType}-${dtStart}-${crypto.randomUUID()}@timebar.app`;
+  const uid = `timebar-${claimType}-${dtStart}-${generateId()}@timebar.app`;
 
   const summary = `TimeBar: ${rule.title} limitation deadline`;
   const description = [

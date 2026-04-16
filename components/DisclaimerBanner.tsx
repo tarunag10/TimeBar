@@ -4,8 +4,19 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AlertTriangle, X } from 'lucide-react';
 
+const DISMISSED_KEY = 'timebar_disclaimer_dismissed';
+
+function wasPreviouslyDismissed(): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    return localStorage.getItem(DISMISSED_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
+
 export default function DisclaimerBanner() {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(() => !wasPreviouslyDismissed());
 
   return (
     <AnimatePresence>
@@ -24,7 +35,10 @@ export default function DisclaimerBanner() {
               legal professional.
             </p>
             <button
-              onClick={() => setVisible(false)}
+              onClick={() => {
+                setVisible(false);
+                try { localStorage.setItem(DISMISSED_KEY, 'true'); } catch { /* ignore */ }
+              }}
               className="text-[#f4e3c7]/70 hover:text-[#f4e3c7] transition-colors p-0.5 cursor-pointer"
               aria-label="Dismiss disclaimer"
             >

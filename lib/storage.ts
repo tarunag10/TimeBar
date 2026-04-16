@@ -1,4 +1,5 @@
 import { CalculationResult } from '@/types/rules';
+import { generateId } from '@/lib/utils';
 
 // ── Types ──────────────────────────────────
 
@@ -71,7 +72,7 @@ export function addHistoryEntry(entry: Omit<HistoryEntry, 'id' | 'timestamp'>): 
 
   const newEntry: HistoryEntry = {
     ...entry,
-    id: crypto.randomUUID(),
+    id: generateId(),
     timestamp: Date.now(),
   };
 
@@ -94,6 +95,7 @@ export function clearAllData(): void {
   if (isBrowser()) {
     localStorage.removeItem(HISTORY_KEY);
     localStorage.removeItem(ANALYTICS_KEY);
+    localStorage.removeItem('timebar_disclaimer_dismissed');
   }
 }
 

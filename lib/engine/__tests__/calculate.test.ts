@@ -2,12 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { calculate } from '../calculate';
 import { CalculationInput } from '@/types/rules';
 
-// Helper: create a date string N years ago from a fixed reference
-// Using 2024-01-15 as a stable reference date for deterministic tests
-function yearsAgo(years: number): string {
-  return `${2024 - years}-01-15`;
-}
-
+// Helper: create a date string N days from now (negative = past)
 function daysFromNow(days: number): string {
   const d = new Date();
   d.setDate(d.getDate() + days);

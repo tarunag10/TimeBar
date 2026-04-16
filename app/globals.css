@@ -19,7 +19,7 @@ html {
 body {
   background: var(--color-background);
   color: var(--color-foreground);
-  font-weight: 420;
+  font-weight: 400;
   letter-spacing: -0.006em;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
