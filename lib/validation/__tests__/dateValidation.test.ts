@@ -1,5 +1,17 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { validateDateNotFuture, validateDateOrder } from '../calculatorSchema';
+
+// Freeze time for deterministic tests
+const FROZEN_DATE = new Date('2025-01-15T12:00:00Z');
+
+beforeEach(() => {
+  vi.useFakeTimers();
+  vi.setSystemTime(FROZEN_DATE);
+});
+
+afterEach(() => {
+  vi.useRealTimers();
+});
 
 describe('validateDateNotFuture', () => {
   it('returns null for a past date', () => {
@@ -7,15 +19,12 @@ describe('validateDateNotFuture', () => {
   });
 
   it('returns null for today', () => {
-    const today = new Date().toISOString().split('T')[0];
+    const today = '2025-01-15'; // matches FROZEN_DATE
     expect(validateDateNotFuture(today)).toBeNull();
   });
 
   it('returns error for a future date', () => {
-    const future = new Date();
-    future.setFullYear(future.getFullYear() + 1);
-    const futureStr = future.toISOString().split('T')[0];
-    const result = validateDateNotFuture(futureStr);
+    const result = validateDateNotFuture('2026-01-15');
     expect(result).toBeTruthy();
     expect(result).toContain('future');
   });

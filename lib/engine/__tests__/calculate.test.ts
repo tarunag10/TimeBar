@@ -1,10 +1,22 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { calculate } from '../calculate';
 import { CalculationInput } from '@/types/rules';
 
-// Helper: create a date string N days from now (negative = past)
+// Freeze time at 2025-01-15T12:00:00Z for deterministic tests
+const FROZEN_DATE = new Date('2025-01-15T12:00:00Z');
+
+beforeEach(() => {
+  vi.useFakeTimers();
+  vi.setSystemTime(FROZEN_DATE);
+});
+
+afterEach(() => {
+  vi.useRealTimers();
+});
+
+// Helper: create a date string N days from the frozen reference date (negative = past)
 function daysFromNow(days: number): string {
-  const d = new Date();
+  const d = new Date(FROZEN_DATE);
   d.setDate(d.getDate() + days);
   return d.toISOString().split('T')[0];
 }

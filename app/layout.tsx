@@ -30,9 +30,15 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${manrope.variable} ${cormorant.variable} h-full antialiased`}>
       <body className="relative min-h-full flex flex-col bg-[#090d17] text-slate-200 font-[var(--font-manrope)]">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[100] focus:px-3 focus:py-1.5 focus:rounded-lg focus:bg-[#d5b06b] focus:text-[#090d17] focus:text-sm focus:font-semibold"
+        >
+          Skip to content
+        </a>
         <Header />
         <DisclaimerBanner />
-        <main className="relative z-10 flex-1">{children}</main>
+        <main id="main-content" role="main" className="relative z-10 flex-1">{children}</main>
       </body>
     </html>
   );

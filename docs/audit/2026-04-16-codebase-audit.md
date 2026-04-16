@@ -163,14 +163,14 @@
 
 ## ℹ️ Informational
 
-| # | Finding | Notes |
-|---|---------|-------|
-| 21 | No XSS found | Next.js auto-escapes; no `dangerouslySetInnerHTML` usage |
-| 22 | No server-side validation | Entire app is client-side; acceptable for a local tool but worth noting if an API is added later |
-| 23 | No sitemap.xml / robots.txt | Minor SEO gap; can add via Next.js `app/sitemap.ts` |
-| 24 | Non-deterministic tests | Tests using `new Date()` / `daysFromNow()` without mocking can be flaky across time boundaries |
-| 25 | Missing ARIA landmarks and skip-to-content link | Accessibility gaps for screen reader and keyboard users |
-| 26 | Analytics page has `noindex` | But other pages lack meta robots directives — consider adding `robots` metadata consistently |
+| # | Finding | Status |
+|---|---------|--------|
+| 21 | ~~No XSS found~~ | ✅ Confirmed safe — Next.js auto-escapes; no `dangerouslySetInnerHTML` usage. No action needed. |
+| 22 | ~~No server-side validation~~ | ✅ Noted — app is client-only by design. If an API is added later, server-side validation should be added at that time. No action needed now. |
+| 23 | ~~No sitemap.xml / robots.txt~~ | ✅ Fixed — added `app/sitemap.ts` and `app/robots.ts` via Next.js Metadata API. |
+| 24 | ~~Non-deterministic tests~~ | ✅ Fixed — both test files now use `vi.useFakeTimers()` with `vi.setSystemTime()` frozen at `2025-01-15T12:00:00Z`. |
+| 25 | ~~Missing ARIA landmarks and skip-to-content link~~ | ✅ Fixed — added skip-to-content link, `id="main-content"` + `role="main"` on `<main>`, and `aria-label="Main navigation"` on `<nav>`. |
+| 26 | ~~Inconsistent robots metadata~~ | ✅ Fixed — `app/robots.ts` now provides consistent robots directives (disallow `/analytics`, allow all others). Analytics page already has `noindex` metadata. |
 
 ---
 
@@ -182,14 +182,10 @@
 | 🟠 High | 4 | 4 ✅ | 0 |
 | 🟡 Medium | 6 | 6 ✅ | 0 |
 | 🟢 Low | 8 | 8 ✅ | 0 |
-| ℹ️ Info | 6 | 0 | 6 |
-| **Total** | **26** | **20 ✅** | **6** |
+| ℹ️ Info | 6 | 6 ✅ | 0 |
+| **Total** | **26** | **26 ✅** | **0** |
 
-### Remaining Issues
-
-| # | Severity | Issue | File |
-|---|----------|-------|------|
-| 21–26 | ℹ️ Info | See Informational section above | Various |
+### All Issues Resolved ✅
 
 ### Completed Fixes
 
@@ -213,3 +209,9 @@
 18. ✅ **Low #18** — Disclaimer banner dismiss persisted in `localStorage`
 19. ✅ **Low #19** — CSP and security headers added in `next.config.ts`
 20. ✅ **Low #20** — `generateId()` with `randomUUID` fallback extracted to `lib/utils.ts`
+21. ✅ **Info #21** — Confirmed no XSS vulnerabilities (Next.js auto-escapes, no `dangerouslySetInnerHTML`)
+22. ✅ **Info #22** — Noted client-only design; server-side validation recommended if API added later
+23. ✅ **Info #23** — Added `app/sitemap.ts` and `app/robots.ts` for SEO
+24. ✅ **Info #24** — Fixed non-deterministic tests with `vi.useFakeTimers()` + `vi.setSystemTime()` in both test files
+25. ✅ **Info #25** — Added skip-to-content link, `id="main-content"` + `role="main"`, and `aria-label` on `<nav>`
+26. ✅ **Info #26** — Consistent robots directives via `app/robots.ts` (disallow `/analytics`, allow all others)
