@@ -31,18 +31,20 @@ Lawyers need file notes. A styled PDF with the result card, reasoning trail, sce
   - Include: result summary, scenario timelines, reasoning trail, statute refs, procedural milestones, disclaimer, generated timestamp
   - Add header/footer with TimeBar branding and "not legal advice" watermark
 
-### 3. Dark/Light Theme Toggle
+### 3. ~~Dark/Light Theme Toggle~~ ✅ COMPLETED
 
-Currently dark-only. Solicitors in bright offices, court settings, or with accessibility needs may prefer light mode.
+Implemented April 2026. Full dual-theme system with `next-themes`, CSS variable palette for both dark and light modes, FOUC prevention, hydration-safe toggle, and all 12+ components updated.
 
-- **Effort:** Small — CSS variables + `next-themes` or custom toggle
+- **Effort:** Small → Medium (escalated due to comprehensive variable system)
 - **Impact:** High — removes a common barrier to adoption
-- **Implementation notes:**
-  - Use `next-themes` for SSR-safe theme switching
-  - Define light palette as inverse of current dark palette
-  - Store preference in `localStorage` (already have the infrastructure)
-  - Add toggle to Header component (sun/moon icon)
-  - Ensure all `glass`, `glass-hover`, gradient, and glow classes adapt to both themes
+- **What was built:**
+  - `next-themes` with `data-theme` attribute + `ThemeProvider` wrapper
+  - 80+ CSS custom properties covering both themes (glass, gradients, overlays, badges, priorities, scrollbars)
+  - Inline `<script>` in `<head>` to prevent FOUC (reads localStorage before first paint)
+  - `mounted` state guard in Header toggle to prevent hydration mismatch
+  - Sun/Moon toggle button in Header navigation
+  - Timeline gradient reads `--accent` dynamically via `getComputedStyle`
+  - All Tailwind v4 opacity-class overrides replaced with CSS variables for reliability
 
 ### 4. Side-by-Side Claim Comparison
 
@@ -182,7 +184,7 @@ The PRD calls for this and it's missing. Critical for confidence before adding m
 | Feature | Why | Priority |
 |---|---|---|
 | Shareable links (#1) | Highest ROI — small effort, massive utility | 🔴 Do first |
-| Light/dark toggle (#3) | Removes adoption barrier | 🔴 Do first |
+| ~~Light/dark toggle (#3)~~ ✅ | Removes adoption barrier | ✅ Done |
 | PWA manifest (#8) | "Install" on phone = daily use | 🟠 Soon |
 | Feedback widget (#7) | Closes the quality loop | 🟠 Soon |
 | Interactive modifier dots (#9) | Visual completeness | 🟡 Nice-to-have |
@@ -192,7 +194,7 @@ The PRD calls for this and it's missing. Critical for confidence before adding m
 ## 🎯 Recommended Build Order
 
 1. **Shareable Links** — highest ROI, unlocks collaboration
-2. **Light/Dark Toggle** — removes accessibility barrier
+2. ~~**Light/Dark Toggle**~~ ✅ — removes accessibility barrier (DONE)
 3. **PDF Export** — professional output, daily-use driver
 4. **Side-by-Side Comparison** — unique differentiator
 5. **PWA Install** — mobile adoption
