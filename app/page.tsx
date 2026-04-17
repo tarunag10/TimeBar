@@ -76,11 +76,11 @@ export default function HomePage() {
           >
             <section className="panel-shell overflow-hidden">
               <div className="p-6 sm:p-8 lg:p-10 relative">
-                <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-[#d5b06b]/15 blur-3xl" />
-                <div className="absolute -bottom-20 left-1/3 w-72 h-72 rounded-full bg-[#86a6eb]/14 blur-3xl" />
+                <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-[var(--accent)]/15 blur-3xl" />
+                <div className="absolute -bottom-20 left-1/3 w-72 h-72 rounded-full bg-[var(--accent-blue)]/14 blur-3xl" />
 
                 <div className="relative">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[#d5b06b]/35 bg-[#d5b06b]/10 text-[11px] tracking-[1.5px] uppercase text-[#ecd2a4]">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-[var(--accent)]/35 bg-[var(--accent-soft)] text-[11px] tracking-[1.5px] uppercase text-[var(--accent-text)]">
                     <Sparkles className="w-3 h-3" />
                     Legal Timing Intelligence
                   </div>
@@ -93,11 +93,11 @@ export default function HomePage() {
                   </p>
                   <div className="mt-6 flex flex-wrap gap-2.5 text-[12px]">
                     <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/12 bg-white/5 text-slate-200">
-                      <BadgeCheck className="w-3.5 h-3.5 text-[#d5b06b]" />
+                      <BadgeCheck className="w-3.5 h-3.5 text-[var(--accent)]" />
                       {claimTypes.length} supported claim types
                     </span>
                     <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-white/12 bg-white/5 text-slate-200">
-                      <BookOpenText className="w-3.5 h-3.5 text-[#9fbff6]" />
+                      <BookOpenText className="w-3.5 h-3.5 text-[var(--accent-blue)]" />
                       Transparent statute references
                     </span>
                   </div>
@@ -124,7 +124,7 @@ export default function HomePage() {
               onClick={handleBack}
               whileHover={{ x: -2 }}
               whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-1.5 text-[12px] text-slate-500 hover:text-[#d5b06b] transition-colors mb-6 cursor-pointer"
+              className="flex items-center gap-1.5 text-[12px] text-slate-500 hover:text-[var(--accent)] transition-colors mb-6 cursor-pointer"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
               <span className="font-medium">Back to Claim Types</span>

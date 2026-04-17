@@ -13,10 +13,10 @@ type Props = {
 };
 
 const statusColors: Record<string, string> = {
-  live: 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30',
-  expires_today: 'bg-amber-500/15 text-amber-300 border-amber-500/30',
-  expired: 'bg-red-500/15 text-red-300 border-red-500/30',
-  manual_review: 'bg-blue-500/15 text-blue-300 border-blue-500/30',
+  live: 'bg-[var(--history-live)] text-[var(--badge-live-text)] border-[var(--badge-live-border)]',
+  expires_today: 'bg-[var(--history-today)] text-[var(--badge-today-text)] border-[var(--badge-today-border)]',
+  expired: 'bg-[var(--history-expired)] text-[var(--badge-expired-text)] border-[var(--badge-expired-border)]',
+  manual_review: 'bg-[var(--history-review)] text-[var(--badge-review-text)] border-[var(--badge-review-border)]',
 };
 
 const statusLabels: Record<string, string> = {
@@ -49,7 +49,7 @@ export default function CalculationHistory({ onRestore }: Props) {
     <section className="panel-shell p-5 sm:p-7">
       <div className="flex items-center justify-between mb-4">
         <div className="flex items-center gap-2">
-          <Clock className="w-3.5 h-3.5 text-[#d5b06b]" />
+          <Clock className="w-3.5 h-3.5 text-[var(--accent)]" />
           <h2 className="text-xs font-semibold uppercase tracking-[2px] text-slate-400">
             Recent Calculations
           </h2>
@@ -79,8 +79,8 @@ export default function CalculationHistory({ onRestore }: Props) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -20, height: 0 }}
                 transition={{ duration: 0.2 }}
-                className="flex items-center gap-3 p-3 rounded-xl border border-white/[0.06] bg-white/[0.02]
-                  hover:bg-white/[0.04] hover:border-[#d5b06b]/20 transition-all duration-200 group cursor-pointer"
+                className="flex items-center gap-3 p-3 rounded-xl border border-white/[0.06] bg-[var(--overlay-subtle)]
+                  hover:bg-[var(--surface-hover)] hover:border-[var(--accent)]/20 transition-all duration-200 group cursor-pointer"
                 onClick={() => handleRestore(entry)}
               >
                 <div className="flex-1 min-w-0">

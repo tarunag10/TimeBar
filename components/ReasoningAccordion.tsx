@@ -13,15 +13,15 @@ export default function ReasoningAccordion({ result }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="glass rounded-xl overflow-hidden border border-[#d5b06b]/22">
+    <div className="glass rounded-xl overflow-hidden border border-[var(--accent)]/22">
       <button
         type="button"
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between px-5 py-3.5 text-left cursor-pointer
-          hover:bg-white/[0.04] transition-colors duration-200"
+          hover:bg-[var(--surface-hover)] transition-colors duration-200"
       >
         <div className="flex items-center gap-2.5">
-          <Scale className="w-3.5 h-3.5 text-[#d5b06b]" />
+          <Scale className="w-3.5 h-3.5 text-[var(--accent)]" />
           <span className="text-[13px] font-semibold text-slate-100">
             Reasoning &amp; Statute
           </span>
@@ -46,7 +46,7 @@ export default function ReasoningAccordion({ result }: Props) {
               <ol className="mt-4 space-y-3">
                 {result.explanationSteps.map((step, i) => (
                   <li key={i} className="flex gap-3 text-[12px] leading-relaxed">
-                    <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[#d5b06b]/15 text-[#f0d7ad] text-[10px] font-medium shrink-0 mt-0.5">
+                    <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[var(--accent-soft)] text-[var(--accent-text)] text-[10px] font-medium shrink-0 mt-0.5">
                       {i + 1}
                     </span>
                     <span className="text-slate-200/90">{step}</span>
@@ -55,7 +55,7 @@ export default function ReasoningAccordion({ result }: Props) {
               </ol>
 
               {result.statuteRefs.length > 0 && (
-                <div className="mt-5 glass rounded-lg p-3.5 border border-[#d5b06b]/22">
+                <div className="mt-5 glass rounded-lg p-3.5 border border-[var(--accent)]/22">
                   <p className="text-[10px] uppercase tracking-wider text-slate-500 font-medium mb-2">
                     Statute Reference
                   </p>
@@ -71,8 +71,8 @@ export default function ReasoningAccordion({ result }: Props) {
                 <div className="mt-4 space-y-2">
                   {result.warnings.map((warning, i) => (
                     <div key={i} className="flex gap-2 items-start">
-                      <AlertTriangle className="w-3 h-3 text-amber-300/90 shrink-0 mt-0.5" />
-                      <p className="text-[11px] text-amber-200/85 leading-relaxed">
+                      <AlertTriangle className="w-3 h-3 text-[var(--priority-high-text)] shrink-0 mt-0.5" />
+                      <p className="text-[11px] text-[var(--priority-high-text)] leading-relaxed">
                         {warning}
                       </p>
                     </div>
@@ -81,7 +81,7 @@ export default function ReasoningAccordion({ result }: Props) {
               )}
 
               {result.reviewChecklist.length > 0 && (
-                <div className="mt-5 glass rounded-lg p-3.5 border border-[#9fbff6]/22">
+                <div className="mt-5 glass rounded-lg p-3.5 border border-[var(--accent-blue)]/22">
                   <p className="text-[10px] uppercase tracking-wider text-slate-500 font-medium mb-2">
                     Review checklist
                   </p>

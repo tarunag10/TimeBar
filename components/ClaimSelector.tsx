@@ -87,14 +87,14 @@ export default function ClaimSelector({ onSelect }: Props) {
                     whileTap={{ scale: 0.99 }}
                     onClick={() => onSelect(claim.key)}
                     className="w-full group relative text-left glass glass-hover rounded-xl p-4
-                      focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d5b06b]/50
+                      focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]/50
                       cursor-pointer overflow-hidden"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#d5b06b]/15 via-transparent to-[#9fbff6]/12 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/15 via-transparent to-[var(--accent-blue)]/12 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
 
                     <div className="relative flex items-center gap-3.5">
-                      <div className="w-9 h-9 rounded-lg bg-white/[0.04] border border-[#d5b06b]/25 flex items-center justify-center">
-                        <Icon className="w-4 h-4 text-[#e6c48d] group-hover:text-[#f4ddb3] transition-colors duration-300" />
+                      <div className="w-9 h-9 rounded-lg bg-[var(--overlay-white-4)] border border-[var(--accent)]/25 flex items-center justify-center">
+                        <Icon className="w-4 h-4 text-[var(--accent-icon)] group-hover:text-[var(--accent-icon-hover)] transition-colors duration-300" />
                       </div>
                       <div className="flex-1">
                         <div className="text-[13px] font-semibold text-slate-200 group-hover:text-white transition-colors duration-200">

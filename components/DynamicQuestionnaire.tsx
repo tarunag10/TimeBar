@@ -39,8 +39,8 @@ function BooleanInput({
             className={`px-4 py-2.5 rounded-xl text-xs font-semibold transition-all duration-200 cursor-pointer border
               ${
                 isSelected
-                  ? 'bg-[#d5b06b]/15 border-[#d5b06b]/45 text-[#f2deb8] shadow-[0_0_18px_-5px_rgba(213,176,107,0.35)]'
-                  : 'glass border-white/[0.08] text-slate-300 hover:text-slate-100 hover:border-[#d5b06b]/35 hover:bg-white/[0.06]'
+                  ? 'bg-[var(--accent-soft)] border-[var(--accent)]/45 text-[var(--accent-text)] shadow-[0_0_18px_-5px_rgba(213,176,107,0.35)]'
+                  : 'glass border-white/[0.08] text-slate-300 hover:text-slate-100 hover:border-[var(--accent)]/35 hover:bg-[var(--surface-hover)]'
               }`}
           >
             {opt.label}
@@ -68,15 +68,15 @@ function DateInput({
   return (
     <div>
       <div className="relative">
-        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#d5b06b]/70 pointer-events-none" />
+        <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[var(--accent)]/70 pointer-events-none" />
         <input
           type="date"
           value={value || ''}
           onChange={(e) => onChange(e.target.value)}
           onBlur={onBlur}
           className={`w-full sm:w-auto pl-9 pr-3 py-2.5 rounded-xl text-sm text-slate-100
-            glass border ${error ? 'border-rose-500/60' : 'border-[#d5b06b]/25'}
-            focus:outline-none focus:border-[#d5b06b]/55 focus:bg-white/[0.05] focus:shadow-[0_0_20px_-6px_rgba(213,176,107,0.35)]
+            glass border ${error ? 'border-rose-500/60' : 'border-[var(--accent)]/25'}
+            focus:outline-none focus:border-[var(--accent)]/55 focus:bg-[var(--surface-hover)] focus:shadow-[0_0_20px_-6px_rgba(213,176,107,0.35)]
             transition-all duration-200 placeholder:text-slate-500`}
           aria-label={question.label}
           aria-invalid={!!error}
@@ -106,15 +106,15 @@ function SelectInput({
         value={value || ''}
         onChange={(e) => onChange(e.target.value)}
         className="w-full sm:w-auto pl-3 pr-8 py-2.5 rounded-xl text-sm text-slate-100 appearance-none
-          glass border border-[#d5b06b]/25
-          focus:outline-none focus:border-[#d5b06b]/55 focus:bg-white/[0.05] focus:shadow-[0_0_20px_-6px_rgba(213,176,107,0.35)]
+          glass border border-[var(--accent)]/25
+          focus:outline-none focus:border-[var(--accent)]/55 focus:bg-[var(--surface-hover)] focus:shadow-[0_0_20px_-6px_rgba(213,176,107,0.35)]
           transition-all duration-200 cursor-pointer bg-no-repeat bg-[right_0.5rem_center]"
         style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E")` }}
         aria-label={question.label}
       >
-        <option value="" disabled className="bg-slate-900 text-slate-400">Select…</option>
+        <option value="" disabled className="bg-[var(--option-bg)] text-slate-400">Select…</option>
         {options.map((opt) => (
-          <option key={opt.value} value={opt.value} className="bg-slate-900 text-slate-100">
+          <option key={opt.value} value={opt.value} className="bg-[var(--option-bg)] text-slate-100">
             {opt.label}
           </option>
         ))}
@@ -131,7 +131,7 @@ function HelpTooltip({ text }: { text: string }) {
       <button
         type="button"
         onClick={() => setOpen(!open)}
-        className="text-slate-500 hover:text-[#d5b06b] transition-colors duration-200 cursor-pointer"
+        className="text-slate-500 hover:text-[var(--accent)] transition-colors duration-200 cursor-pointer"
         aria-label="More information"
       >
         <HelpCircle className="w-3.5 h-3.5" />
@@ -151,7 +151,7 @@ function HelpTooltip({ text }: { text: string }) {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -6, scale: 0.96 }}
               transition={{ duration: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-              className="absolute z-30 left-0 top-full mt-2 w-72 sm:w-80 glass-strong rounded-xl p-3.5 shadow-2xl border border-[#d5b06b]/25"
+              className="absolute z-30 left-0 top-full mt-2 w-72 sm:w-80 glass-strong rounded-xl p-3.5 shadow-2xl border border-[var(--accent)]/25"
             >
               <p className="text-[11px] text-slate-200 leading-relaxed">{text}</p>
             </motion.div>
@@ -219,7 +219,7 @@ export default function DynamicQuestionnaire({ rule, answers, onAnswerChange }: 
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: i * 0.05, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="rounded-xl border border-white/[0.06] bg-white/[0.02] p-4"
+            className="rounded-xl border border-white/[0.06] bg-[var(--overlay-subtle)] p-4"
           >
             <label className="flex items-center text-[12px] text-slate-200 font-medium mb-2.5 leading-relaxed">
               <span>{q.label}</span>

@@ -38,11 +38,11 @@ const statusStyles = {
     accent: 'bg-rose-400',
   },
   manual_review: {
-    gradient: 'from-[#d5b06b]/20 via-[#d5b06b]/5 to-transparent',
-    border: 'border-[#d5b06b]/35',
+    gradient: 'from-[var(--accent)]/20 via-[var(--accent)]/5 to-transparent',
+    border: 'border-[var(--accent)]/35',
     glow: 'glow-blue',
-    dateColor: 'text-[#f2dcb5]',
-    accent: 'bg-[#d5b06b]',
+    dateColor: 'text-[var(--accent-text)]',
+    accent: 'bg-[var(--accent)]',
   },
 };
 
@@ -51,15 +51,15 @@ function formatDisplayDate(isoDate: string): string {
 }
 
 function priorityStyle(priority: 'normal' | 'high' | 'critical'): string {
-  if (priority === 'critical') return 'text-rose-200 bg-rose-500/20 border-rose-400/30';
-  if (priority === 'high') return 'text-amber-200 bg-amber-500/20 border-amber-400/30';
-  return 'text-emerald-200 bg-emerald-500/18 border-emerald-400/25';
+  if (priority === 'critical') return 'text-[var(--priority-critical-text)] bg-[var(--priority-critical-bg)] border-[var(--priority-critical-border)]';
+  if (priority === 'high') return 'text-[var(--priority-high-text)] bg-[var(--priority-high-bg)] border-[var(--priority-high-border)]';
+  return 'text-[var(--priority-normal-text)] bg-[var(--priority-normal-bg)] border-[var(--priority-normal-border)]';
 }
 
 function riskBandStyle(riskBand: 'high' | 'medium' | 'low'): string {
-  if (riskBand === 'high') return 'text-rose-200 bg-rose-500/20 border-rose-400/30';
-  if (riskBand === 'medium') return 'text-amber-200 bg-amber-500/18 border-amber-400/25';
-  return 'text-emerald-200 bg-emerald-500/18 border-emerald-400/25';
+  if (riskBand === 'high') return 'text-[var(--risk-high-text)] bg-[var(--risk-high-bg)] border-[var(--risk-high-border)]';
+  if (riskBand === 'medium') return 'text-[var(--risk-medium-text)] bg-[var(--risk-medium-bg)] border-[var(--risk-medium-border)]';
+  return 'text-[var(--risk-low-text)] bg-[var(--risk-low-bg)] border-[var(--risk-low-border)]';
 }
 
 export default function ResultCard({ result, claimType, accrualDate }: Props) {
@@ -81,7 +81,7 @@ export default function ResultCard({ result, claimType, accrualDate }: Props) {
           <div className="flex-1 min-w-0">
             {result.status === 'manual_review' ? (
               <>
-                <div className="text-[11px] uppercase tracking-wider text-[#eecf9a] font-semibold mb-3">
+                <div className="text-[11px] uppercase tracking-wider text-[var(--accent-text)] font-semibold mb-3">
                   Manual Review Required
                 </div>
                 <div className="space-y-2">
@@ -127,12 +127,12 @@ export default function ResultCard({ result, claimType, accrualDate }: Props) {
           </div>
         </div>
 
-        <div className="mt-4 rounded-xl border border-white/[0.08] bg-white/[0.02] p-3.5 space-y-3">
+        <div className="mt-4 rounded-xl border border-white/[0.08] bg-[var(--overlay-subtle)] p-3.5 space-y-3">
           <div className="flex flex-wrap items-center gap-2 text-[10px] uppercase tracking-[1.5px]">
-            <span className="px-2 py-1 rounded-md bg-white/[0.05] text-slate-300">
+            <span className="px-2 py-1 rounded-md bg-[var(--overlay-white-5)] text-slate-300">
               Urgency: {result.urgencyLevel}
             </span>
-            <span className="px-2 py-1 rounded-md bg-white/[0.05] text-slate-300">
+            <span className="px-2 py-1 rounded-md bg-[var(--overlay-white-5)] text-slate-300">
               Confidence: {result.confidenceLevel}
             </span>
           </div>
@@ -157,7 +157,7 @@ export default function ResultCard({ result, claimType, accrualDate }: Props) {
               <p className="text-[11px] uppercase tracking-[1.5px] text-slate-500 mb-2">Procedural action timeline</p>
               <div className="space-y-2">
                 {result.proceduralMilestones.slice(0, 4).map((milestone, idx) => (
-                  <div key={idx} className="rounded-lg border border-white/[0.08] bg-black/10 p-2.5">
+                  <div key={idx} className="rounded-lg border border-white/[0.08] bg-[var(--overlay-subtle)] p-2.5">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <p className="text-[12px] text-slate-100 font-medium">{milestone.title}</p>
                       <span className={`text-[10px] uppercase px-1.5 py-0.5 rounded border ${priorityStyle(milestone.priority)}`}>
@@ -181,7 +181,7 @@ export default function ResultCard({ result, claimType, accrualDate }: Props) {
               <p className="text-[11px] uppercase tracking-[1.5px] text-slate-500 mb-2">Scenario timeline model</p>
               <div className="space-y-2">
                 {result.scenarioTimelines.map((scenario) => (
-                  <div key={scenario.id} className="rounded-lg border border-white/[0.08] bg-black/10 p-2.5">
+                  <div key={scenario.id} className="rounded-lg border border-white/[0.08] bg-[var(--overlay-subtle)] p-2.5">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <p className="text-[12px] text-slate-100 font-medium">{scenario.label}</p>
                       <span className={`text-[10px] uppercase px-1.5 py-0.5 rounded border ${riskBandStyle(scenario.riskBand)}`}>

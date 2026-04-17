@@ -42,10 +42,10 @@ export default function ChangelogPage() {
         {/* Version entry */}
         <div className="relative pl-6 border-l border-blue-500/20">
           {/* Version dot */}
-          <div className="absolute -left-[5px] top-0 w-[10px] h-[10px] rounded-full bg-blue-500 ring-4 ring-[#050a18]" />
+          <div className="absolute -left-[5px] top-0 w-[10px] h-[10px] rounded-full bg-blue-500 ring-4 ring-[var(--bg-deep)]" />
 
           <div className="flex items-center gap-3 mb-4">
-            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-blue-500/10 border border-blue-500/20">
+            <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--changelog-badge-bg)] border border-[var(--changelog-badge-border)]">
               <Tag className="w-3 h-3 text-blue-400" />
               <span className="text-[12px] font-medium text-blue-300">v1.0.0</span>
             </div>

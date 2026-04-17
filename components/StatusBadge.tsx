@@ -4,33 +4,33 @@ import { CalculationResult } from '@/types/rules';
 const statusConfig = {
   live: {
     label: 'LIVE',
-    bg: 'bg-green-500/20',
-    border: 'border-green-500/30',
-    text: 'text-green-400',
+    bg: 'bg-[var(--badge-live-bg)]',
+    border: 'border-[var(--badge-live-border)]',
+    text: 'text-[var(--badge-live-text)]',
     icon: CheckCircle,
     pulse: true,
   },
   expires_today: {
     label: 'EXPIRES TODAY',
-    bg: 'bg-amber-500/20',
-    border: 'border-amber-500/30',
-    text: 'text-amber-400',
+    bg: 'bg-[var(--badge-today-bg)]',
+    border: 'border-[var(--badge-today-border)]',
+    text: 'text-[var(--badge-today-text)]',
     icon: Clock,
     pulse: true,
   },
   expired: {
     label: 'EXPIRED',
-    bg: 'bg-red-500/20',
-    border: 'border-red-500/30',
-    text: 'text-red-400',
+    bg: 'bg-[var(--badge-expired-bg)]',
+    border: 'border-[var(--badge-expired-border)]',
+    text: 'text-[var(--badge-expired-text)]',
     icon: AlertTriangle,
     pulse: false,
   },
   manual_review: {
     label: 'REVIEW',
-    bg: 'bg-blue-500/20',
-    border: 'border-blue-500/30',
-    text: 'text-blue-400',
+    bg: 'bg-[var(--badge-review-bg)]',
+    border: 'border-[var(--badge-review-border)]',
+    text: 'text-[var(--badge-review-text)]',
     icon: Search,
     pulse: false,
   },
@@ -50,8 +50,8 @@ export default function StatusBadge({ status }: Props) {
     >
       {config.pulse ? (
         <span className="relative flex h-1.5 w-1.5">
-          <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-50 ${status === 'live' ? 'bg-green-400' : 'bg-amber-400'}`} />
-          <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${status === 'live' ? 'bg-green-400' : 'bg-amber-400'}`} />
+          <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-50 ${status === 'live' ? 'bg-[var(--badge-live-dot)]' : 'bg-[var(--badge-today-dot)]'}`} />
+          <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${status === 'live' ? 'bg-[var(--badge-live-dot)]' : 'bg-[var(--badge-today-dot)]'}`} />
         </span>
       ) : (
         <Icon className="w-3 h-3" />

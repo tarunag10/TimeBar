@@ -33,7 +33,7 @@ export default function AnalyticsDashboard() {
     <div className="space-y-6">
       <div className="panel-shell p-5 sm:p-7">
         <div className="flex items-center gap-2 mb-4">
-          <MousePointerClick className="w-4 h-4 text-[#d5b06b]" />
+          <MousePointerClick className="w-4 h-4 text-[var(--accent)]" />
           <h2 className="text-xs font-semibold uppercase tracking-[2px] text-slate-400">
             Actions ({events.length} total events)
           </h2>
@@ -42,9 +42,9 @@ export default function AnalyticsDashboard() {
           {Object.entries(actionCounts)
             .sort(([, a], [, b]) => b - a)
             .map(([type, count]) => (
-              <div key={type} className="flex items-center justify-between p-2.5 rounded-lg border border-white/[0.06] bg-white/[0.02]">
+              <div key={type} className="flex items-center justify-between p-2.5 rounded-lg border border-white/[0.06] bg-[var(--overlay-subtle)]">
                 <span className="text-[12px] text-slate-300 font-mono">{type}</span>
-                <span className="text-[12px] text-[#d5b06b] font-semibold">{count}</span>
+                <span className="text-[12px] text-[var(--accent)] font-semibold">{count}</span>
               </div>
             ))}
         </div>
@@ -53,7 +53,7 @@ export default function AnalyticsDashboard() {
       {Object.keys(claimCounts).length > 0 && (
         <div className="panel-shell p-5 sm:p-7">
           <div className="flex items-center gap-2 mb-4">
-            <BarChart3 className="w-4 h-4 text-[#9fbff6]" />
+            <BarChart3 className="w-4 h-4 text-[var(--accent-blue)]" />
             <h2 className="text-xs font-semibold uppercase tracking-[2px] text-slate-400">
               Claim Types
             </h2>
@@ -62,9 +62,9 @@ export default function AnalyticsDashboard() {
             {Object.entries(claimCounts)
               .sort(([, a], [, b]) => b - a)
               .map(([type, count]) => (
-                <div key={type} className="flex items-center justify-between p-2.5 rounded-lg border border-white/[0.06] bg-white/[0.02]">
+                <div key={type} className="flex items-center justify-between p-2.5 rounded-lg border border-white/[0.06] bg-[var(--overlay-subtle)]">
                   <span className="text-[12px] text-slate-300">{type.replace(/_/g, ' ')}</span>
-                  <span className="text-[12px] text-[#9fbff6] font-semibold">{count}</span>
+                  <span className="text-[12px] text-[var(--accent-blue)] font-semibold">{count}</span>
                 </div>
               ))}
           </div>
@@ -83,7 +83,7 @@ export default function AnalyticsDashboard() {
             {Object.entries(statusCounts)
               .sort(([, a], [, b]) => b - a)
               .map(([status, count]) => (
-                <div key={status} className="flex items-center justify-between p-2.5 rounded-lg border border-white/[0.06] bg-white/[0.02]">
+                <div key={status} className="flex items-center justify-between p-2.5 rounded-lg border border-white/[0.06] bg-[var(--overlay-subtle)]">
                   <span className="text-[12px] text-slate-300">{status.replace(/_/g, ' ')}</span>
                   <span className="text-[12px] text-emerald-400 font-semibold">{count}</span>
                 </div>
