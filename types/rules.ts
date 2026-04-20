@@ -38,7 +38,14 @@ export type Rule = {
     | 'breach_of_trust'
     | 'judgment_enforcement'
     | 'mortgage_principal'
-    | 'mortgage_interest';
+    | 'mortgage_interest'
+    | 'clinical_negligence'
+    | 'fatal_accident'
+    | 'product_liability'
+    | 'conversion'
+    | 'unjust_enrichment'
+    | 'latent_damage'
+    | 'hra_claim';
   title: string;
   statuteRef: {
     act: string;

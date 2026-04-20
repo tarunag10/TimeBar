@@ -1,0 +1,40 @@
+{
+  "id": "ew-hra-claim-v1",
+  "jurisdiction": "england_wales",
+  "claimType": "hra_claim",
+  "title": "Human Rights Act Claim",
+  "statuteRef": {
+    "act": "Human Rights Act 1998",
+    "section": "s.7(5)",
+    "label": "Time limit for proceedings under the Human Rights Act 1998"
+  },
+  "version": "1.0.0",
+  "lastReviewed": "2026-04-20",
+  "basePeriod": {
+    "unit": "years",
+    "value": 1
+  },
+  "startRule": "accrual",
+  "supportedModifiers": [],
+  "questions": [
+    {
+      "id": "accrual_date",
+      "type": "date",
+      "label": "Date of the act complained of",
+      "helpText": "The date on which the public authority committed the act (or omission) alleged to be incompatible with the claimant's Convention rights. For continuing acts, this may be the date the act ceased.",
+      "required": true
+    }
+  ],
+  "manualReviewTriggers": [
+    "continuing_act",
+    "judicial_review_alternative",
+    "court_discretion_to_extend",
+    "criminal_proceedings_context"
+  ],
+  "notes": [
+    "The 1-year time limit under s.7(5) HRA 1998 is subject to any stricter time limit in relation to the procedure in question — for example, judicial review has a 3-month time limit.",
+    "The court has discretion to extend the time limit if it considers it equitable having regard to all the circumstances, but extensions are rare in practice.",
+    "HRA claims can only be brought against public authorities (s.6) — private bodies are not subject to the HRA.",
+    "No standard modifiers (disability, fraud, acknowledgment, part payment) apply. The court's equitable discretion under s.7(5)(b) is the only route to extension."
+  ]
+}

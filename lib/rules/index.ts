@@ -13,6 +13,13 @@ import breachOfTrust from './ew.breach-of-trust.v1.json';
 import judgmentEnforcement from './ew.judgment-enforcement.v1.json';
 import mortgagePrincipal from './ew.mortgage-principal.v1.json';
 import mortgageInterest from './ew.mortgage-interest.v1.json';
+import clinicalNegligence from './ew.clinical-negligence.v1.json';
+import fatalAccident from './ew.fatal-accident.v1.json';
+import productLiability from './ew.product-liability.v1.json';
+import conversion from './ew.conversion.v1.json';
+import unjustEnrichment from './ew.unjust-enrichment.v1.json';
+import latentDamage from './ew.latent-damage.v1.json';
+import hraClaim from './ew.hra-claim.v1.json';
 
 const selectOptionSchema = z.object({
   value: z.string(),
@@ -37,6 +44,8 @@ const ruleSchema = z.object({
     'deed_specialty', 'professional_negligence', 'debt_recovery', 'contribution',
     'recovery_of_land', 'breach_of_trust', 'judgment_enforcement',
     'mortgage_principal', 'mortgage_interest',
+    'clinical_negligence', 'fatal_accident', 'product_liability',
+    'conversion', 'unjust_enrichment', 'latent_damage', 'hra_claim',
   ]),
   title: z.string(),
   statuteRef: z.object({ act: z.string(), section: z.string(), label: z.string() }),
@@ -74,6 +83,13 @@ export const rules: Record<Rule['claimType'], Rule> = {
   judgment_enforcement: validateRule(judgmentEnforcement, 'judgment_enforcement'),
   mortgage_principal: validateRule(mortgagePrincipal, 'mortgage_principal'),
   mortgage_interest: validateRule(mortgageInterest, 'mortgage_interest'),
+  clinical_negligence: validateRule(clinicalNegligence, 'clinical_negligence'),
+  fatal_accident: validateRule(fatalAccident, 'fatal_accident'),
+  product_liability: validateRule(productLiability, 'product_liability'),
+  conversion: validateRule(conversion, 'conversion'),
+  unjust_enrichment: validateRule(unjustEnrichment, 'unjust_enrichment'),
+  latent_damage: validateRule(latentDamage, 'latent_damage'),
+  hra_claim: validateRule(hraClaim, 'hra_claim'),
 };
 
 export type ClaimCategory = {
@@ -95,8 +111,16 @@ export const claimCategories: ClaimCategory[] = [
     items: [
       { key: 'tort_non_pi', title: 'Tort (Non-PI)', shortDesc: '6 years from Accrual Date' },
       { key: 'personal_injury', title: 'Personal Injury', shortDesc: '3 years from Later of Injury/Knowledge' },
+      { key: 'clinical_negligence', title: 'Clinical/Medical Negligence', shortDesc: '3 years from Later of Injury/Knowledge' },
+      { key: 'fatal_accident', title: 'Fatal Accident', shortDesc: '3 years from Date of Death or Knowledge' },
       { key: 'professional_negligence', title: 'Professional Negligence', shortDesc: '6 years or 3-year Knowledge Rule (with 15-year longstop)' },
       { key: 'defamation', title: 'Defamation', shortDesc: '1 year from First Publication' },
+    ],
+  },
+  {
+    label: 'Consumer & Product',
+    items: [
+      { key: 'product_liability', title: 'Product Liability (CPA 1987)', shortDesc: '3 years from Knowledge (10-year longstop)' },
     ],
   },
   {
@@ -105,6 +129,8 @@ export const claimCategories: ClaimCategory[] = [
       { key: 'contribution', title: 'Contribution', shortDesc: '2 years from Judgment/Settlement Date' },
       { key: 'recovery_of_land', title: 'Recovery of Land', shortDesc: '12 years from Start of Adverse Possession' },
       { key: 'breach_of_trust', title: 'Breach of Trust', shortDesc: 'Usually 6 years (some claims have no limitation period)' },
+      { key: 'conversion', title: 'Conversion (Wrongful Interference)', shortDesc: '6 years from Date of Conversion' },
+      { key: 'unjust_enrichment', title: 'Restitution / Unjust Enrichment', shortDesc: '6 years from Date Enrichment Arose' },
     ],
   },
   {
@@ -113,6 +139,13 @@ export const claimCategories: ClaimCategory[] = [
       { key: 'judgment_enforcement', title: 'Judgment Enforcement', shortDesc: '6 years from Judgment Date' },
       { key: 'mortgage_principal', title: 'Mortgage Principal', shortDesc: '12 years from Date Principal Became Due' },
       { key: 'mortgage_interest', title: 'Mortgage Interest Arrears', shortDesc: '6 years from Interest Due Date' },
+      { key: 'latent_damage', title: 'Latent Damage (Non-PI)', shortDesc: '6 years or 3-year Knowledge Rule (15-year longstop)' },
+    ],
+  },
+  {
+    label: 'Public Law',
+    items: [
+      { key: 'hra_claim', title: 'Human Rights Act Claim', shortDesc: '1 year from Date of Act Complained Of' },
     ],
   },
 ];
