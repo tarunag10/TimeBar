@@ -8,11 +8,13 @@ import Timeline from './Timeline';
 import CopyButton from './CopyButton';
 import CalendarExportButton from './CalendarExportButton';
 import PrintButton from './PrintButton';
+import ShareButton from './ShareButton';
 
 type Props = {
   result: CalculationResult;
   claimType: string;
   accrualDate: string;
+  answers: Record<string, string | boolean | undefined>;
 };
 
 const statusStyles = {
@@ -62,7 +64,7 @@ function riskBandStyle(riskBand: 'high' | 'medium' | 'low'): string {
   return 'text-[var(--risk-low-text)] bg-[var(--risk-low-bg)] border-[var(--risk-low-border)]';
 }
 
-export default function ResultCard({ result, claimType, accrualDate }: Props) {
+export default function ResultCard({ result, claimType, accrualDate, answers }: Props) {
   const style = statusStyles[result.status];
 
   return (
@@ -70,7 +72,7 @@ export default function ResultCard({ result, claimType, accrualDate }: Props) {
       initial={{ opacity: 0, y: 20, scale: 0.98 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className={`relative overflow-hidden rounded-2xl border ${style.border} ${style.glow}`}
+      className={`relative overflow-hidden rounded-2xl border glass-card ${style.border} ${style.glow}`}
     >
       <div className={`absolute top-0 left-0 w-full h-px ${style.accent} opacity-30`} />
       <div className={`absolute inset-0 bg-gradient-to-br ${style.gradient}`} />
@@ -94,8 +96,10 @@ export default function ResultCard({ result, claimType, accrualDate }: Props) {
               </>
             ) : (
               <>
-                <div className={`text-[11px] uppercase tracking-wider ${style.dateColor} font-semibold opacity-90 mb-1`}>
-                  {result.status === 'live' && `${result.daysRemaining} days remaining`}
+                <div className={`text-sm uppercase tracking-wider ${style.dateColor} font-semibold mb-1`}>
+                  {result.status === 'live' && (
+                    <span className="animate-countdown">{result.daysRemaining} days remaining</span>
+                  )}
                   {result.status === 'expires_today' && 'Expires today'}
                   {result.status === 'expired' && `${Math.abs(result.daysRemaining || 0)} days overdue`}
                 </div>
@@ -119,15 +123,16 @@ export default function ResultCard({ result, claimType, accrualDate }: Props) {
             )}
           </div>
 
-          <div className="shrink-0 flex flex-col items-end gap-2.5">
+          <div className="shrink-0 flex flex-row sm:flex-col items-center sm:items-end gap-2 sm:gap-2.5 flex-wrap justify-end">
             <StatusBadge status={result.status} />
+            <ShareButton shareState={{ claimType, answers }} />
             <CopyButton result={result} claimType={claimType} />
             <CalendarExportButton result={result} claimType={claimType} />
             <PrintButton claimType={claimType} />
           </div>
         </div>
 
-        <div className="mt-4 rounded-xl border border-white/[0.08] bg-[var(--overlay-subtle)] p-3.5 space-y-3">
+        <div className="mt-4 rounded-2xl border border-white/[0.08] bg-[var(--overlay-subtle)] p-3.5 space-y-3">
           <div className="flex flex-wrap items-center gap-2 text-[10px] uppercase tracking-[1.5px]">
             <span className="px-2 py-1 rounded-md bg-[var(--overlay-white-5)] text-slate-300">
               Urgency: {result.urgencyLevel}
@@ -136,9 +141,11 @@ export default function ResultCard({ result, claimType, accrualDate }: Props) {
               Confidence: {result.confidenceLevel}
             </span>
           </div>
+          <div className="divider-gradient" />
           <p className="text-[12px] text-slate-200/90 leading-relaxed">
             {result.scenarioSummary}
           </p>
+          {result.nextActions.length > 0 && <div className="divider-gradient" />}
           {result.nextActions.length > 0 && (
             <div>
               <p className="text-[11px] uppercase tracking-[1.5px] text-slate-500 mb-2">Recommended next steps</p>
@@ -152,12 +159,13 @@ export default function ResultCard({ result, claimType, accrualDate }: Props) {
             </div>
           )}
 
+          {result.proceduralMilestones.length > 0 && <div className="divider-gradient" />}
           {result.proceduralMilestones.length > 0 && (
             <div>
               <p className="text-[11px] uppercase tracking-[1.5px] text-slate-500 mb-2">Procedural action timeline</p>
               <div className="space-y-2">
                 {result.proceduralMilestones.slice(0, 4).map((milestone, idx) => (
-                  <div key={idx} className="rounded-lg border border-white/[0.08] bg-[var(--overlay-subtle)] p-2.5">
+                  <div key={idx} className="rounded-xl glass glass-card p-3">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <p className="text-[12px] text-slate-100 font-medium">{milestone.title}</p>
                       <span className={`text-[10px] uppercase px-1.5 py-0.5 rounded border ${priorityStyle(milestone.priority)}`}>
@@ -176,12 +184,13 @@ export default function ResultCard({ result, claimType, accrualDate }: Props) {
             </div>
           )}
 
+          {result.scenarioTimelines.length > 0 && <div className="divider-gradient" />}
           {result.scenarioTimelines.length > 0 && (
             <div>
               <p className="text-[11px] uppercase tracking-[1.5px] text-slate-500 mb-2">Scenario timeline model</p>
               <div className="space-y-2">
                 {result.scenarioTimelines.map((scenario) => (
-                  <div key={scenario.id} className="rounded-lg border border-white/[0.08] bg-[var(--overlay-subtle)] p-2.5">
+                  <div key={scenario.id} className="rounded-xl glass glass-card p-3">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <p className="text-[12px] text-slate-100 font-medium">{scenario.label}</p>
                       <span className={`text-[10px] uppercase px-1.5 py-0.5 rounded border ${riskBandStyle(scenario.riskBand)}`}>

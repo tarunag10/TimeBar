@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useCallback, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft, BadgeCheck, BookOpenText, Sparkles } from 'lucide-react';
 import { Rule, CalculationResult } from '@/types/rules';
@@ -11,24 +12,44 @@ import DynamicQuestionnaire from '@/components/DynamicQuestionnaire';
 import ResultCard from '@/components/ResultCard';
 import ReasoningAccordion from '@/components/ReasoningAccordion';
 import CalculationHistory from '@/components/CalculationHistory';
+import ErrorBoundary from '@/components/ErrorBoundary';
 import { claimTypes } from '@/lib/rules';
 import { addHistoryEntry, trackEvent } from '@/lib/storage';
+import { decodeShareState } from '@/lib/share';
+import { rules } from '@/lib/rules';
 
-export default function HomePage() {
+function HomePageContent() {
+  const searchParams = useSearchParams();
   const [selectedClaim, setSelectedClaim] = useState<Rule['claimType'] | null>(null);
   const [answers, setAnswers] = useState<Record<string, string | boolean | undefined>>({});
+  const [shareRestored, setShareRestored] = useState(false);
 
   const rule = selectedClaim ? getRule(selectedClaim) : null;
+
+  // Restore state from shareable URL on mount
+  useEffect(() => {
+    const shared = searchParams.get('s');
+    if (!shared) return;
+    const state = decodeShareState(shared);
+    if (state && state.claimType && state.answers && state.claimType in rules) {
+      setSelectedClaim(state.claimType as Rule['claimType']);
+      setAnswers(state.answers);
+      setShareRestored(true);
+      trackEvent({ type: 'claim_selected', claimType: state.claimType });
+    }
+  }, [searchParams]);
 
   const handleClaimSelect = useCallback((claimType: Rule['claimType']) => {
     setSelectedClaim(claimType);
     setAnswers({});
+    setShareRestored(false);
     trackEvent({ type: 'claim_selected', claimType });
   }, []);
 
   const handleBack = useCallback(() => {
     setSelectedClaim(null);
     setAnswers({});
+    setShareRestored(false);
   }, []);
 
   const handleRestore = useCallback((claimType: Rule['claimType'], restoredAnswers: Record<string, string | boolean | undefined>) => {
@@ -38,6 +59,7 @@ export default function HomePage() {
 
   const handleAnswerChange = useCallback((id: string, value: string | boolean | undefined) => {
     setAnswers((prev) => ({ ...prev, [id]: value }));
+    setShareRestored(false);
   }, []);
 
   const result: CalculationResult | null = useMemo(() => {
@@ -65,14 +87,14 @@ export default function HomePage() {
   const accrualDate = answers.accrual_date as string | undefined;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-8 py-8 sm:py-14">
+    <div className="max-w-6xl mx-auto px-4 sm:px-8 py-10 sm:py-16">
       <AnimatePresence mode="wait">
         {!selectedClaim ? (
           <motion.div
             key="selector"
             exit={{ opacity: 0, y: 16, filter: 'blur(4px)' }}
             transition={{ duration: 0.28 }}
-            className="space-y-8"
+            className="space-y-10"
           >
             <section className="panel-shell overflow-hidden">
               <div className="p-6 sm:p-8 lg:p-10 relative">
@@ -109,7 +131,9 @@ export default function HomePage() {
               <ClaimSelector onSelect={handleClaimSelect} />
             </section>
 
-            <CalculationHistory onRestore={handleRestore} />
+            <ErrorBoundary name="calculation history">
+              <CalculationHistory onRestore={handleRestore} />
+            </ErrorBoundary>
           </motion.div>
         ) : (
           <motion.div
@@ -119,18 +143,25 @@ export default function HomePage() {
             exit={{ opacity: 0, y: 20, filter: 'blur(5px)' }}
             transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
-            <motion.button
-              type="button"
-              onClick={handleBack}
-              whileHover={{ x: -2 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-1.5 text-[12px] text-slate-500 hover:text-[var(--accent)] transition-colors mb-6 cursor-pointer"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" />
-              <span className="font-medium">Back to Claim Types</span>
-            </motion.button>
+            <div className="flex items-center gap-4 mb-6">
+              <motion.button
+                type="button"
+                onClick={handleBack}
+                whileHover={{ x: -2 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-1.5 text-[12px] text-slate-500 hover:text-[var(--accent)] transition-colors cursor-pointer"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span className="font-medium">Back to Claim Types</span>
+              </motion.button>
+              {shareRestored && (
+                <span className="text-[11px] text-[var(--accent-text)] bg-[var(--accent-soft)] px-2.5 py-1 rounded-full border border-[var(--accent)]/25">
+                  Shared link restored
+                </span>
+              )}
+            </div>
 
-            <div className="grid lg:grid-cols-[1.08fr_0.92fr] gap-5 lg:gap-6 items-start">
+            <div className="grid lg:grid-cols-[1.08fr_0.92fr] gap-6 lg:gap-8 items-start">
               <section className="panel-shell p-5 sm:p-7">
                 <div className="mb-7">
                   <p className="text-[11px] tracking-[2px] uppercase text-slate-500 font-medium">
@@ -144,16 +175,18 @@ export default function HomePage() {
                   </p>
                 </div>
 
-                {rule && (
-                  <DynamicQuestionnaire
-                    rule={rule}
-                    answers={answers}
-                    onAnswerChange={handleAnswerChange}
-                  />
-                )}
+                <ErrorBoundary name="questionnaire">
+                  {rule && (
+                    <DynamicQuestionnaire
+                      rule={rule}
+                      answers={answers}
+                      onAnswerChange={handleAnswerChange}
+                    />
+                  )}
+                </ErrorBoundary>
               </section>
 
-              <div className="space-y-4 lg:sticky lg:top-20">
+              <div className="space-y-5 lg:sticky lg:top-24">
                 <AnimatePresence mode="wait">
                   {result ? (
                     <motion.div
@@ -162,14 +195,29 @@ export default function HomePage() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
                       transition={{ duration: 0.3 }}
-                      className="space-y-3"
+                      className="space-y-3 relative"
                     >
-                      <ResultCard
-                        result={result}
-                        claimType={selectedClaim}
-                        accrualDate={accrualDate || ''}
+                      <div
+                        className="absolute -inset-8 -z-10 opacity-60 blur-3xl pointer-events-none transition-all duration-1000"
+                        style={{
+                          background:
+                            result.status === 'live' ? 'var(--ambient-green)' :
+                            result.status === 'expires_today' ? 'var(--ambient-amber)' :
+                            result.status === 'expired' ? 'var(--ambient-red)' :
+                            'var(--ambient-blue)',
+                        }}
                       />
-                      <ReasoningAccordion result={result} />
+                      <ErrorBoundary name="result display">
+                        <ResultCard
+                          result={result}
+                          claimType={selectedClaim}
+                          accrualDate={accrualDate || ''}
+                          answers={answers}
+                        />
+                      </ErrorBoundary>
+                      <ErrorBoundary name="reasoning">
+                        <ReasoningAccordion result={result} />
+                      </ErrorBoundary>
                     </motion.div>
                   ) : (
                     <motion.div
@@ -199,5 +247,13 @@ export default function HomePage() {
         Generated by TimeBar — England &amp; Wales Limitation Calculator | This is not legal advice. Verify all dates independently.
       </div>
     </div>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <Suspense>
+      <HomePageContent />
+    </Suspense>
   );
 }

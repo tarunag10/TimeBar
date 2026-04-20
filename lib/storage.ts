@@ -14,7 +14,7 @@ export type HistoryEntry = {
 };
 
 export type AnalyticsEvent = {
-  type: 'claim_selected' | 'result_computed' | 'copy_clicked' | 'ics_downloaded' | 'print_clicked';
+  type: 'claim_selected' | 'result_computed' | 'copy_clicked' | 'share_clicked' | 'ics_downloaded' | 'print_clicked';
   claimType?: string;
   status?: string;
   timestamp: number;
@@ -97,6 +97,55 @@ export function clearAllData(): void {
     localStorage.removeItem(ANALYTICS_KEY);
     localStorage.removeItem('timebar_disclaimer_dismissed');
   }
+}
+
+// ── Draft Auto-Save ────────────────────────
+
+const DRAFT_KEY = 'timebar_draft';
+const DRAFT_MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours
+
+export type DraftData = {
+  claimType: string;
+  answers: Record<string, string | boolean | undefined>;
+  timestamp: number;
+};
+
+export function saveDraft(claimType: string, answers: Record<string, string | boolean | undefined>): void {
+  safeSetJSON(DRAFT_KEY, { claimType, answers, timestamp: Date.now() });
+}
+
+export function getDraft(): DraftData | null {
+  const draft = safeGetJSON<DraftData>(DRAFT_KEY);
+  if (!draft) return null;
+  // Expire drafts older than 24 hours
+  if (Date.now() - draft.timestamp > DRAFT_MAX_AGE_MS) {
+    clearDraft();
+    return null;
+  }
+  return draft;
+}
+
+export function clearDraft(): void {
+  if (isBrowser()) {
+    localStorage.removeItem(DRAFT_KEY);
+  }
+}
+
+// ── Onboarding ─────────────────────────────
+
+const ONBOARDED_KEY = 'timebar_onboarded';
+
+export function isOnboarded(): boolean {
+  if (!isBrowser()) return false;
+  try {
+    return localStorage.getItem(ONBOARDED_KEY) === 'true';
+  } catch {
+    return false;
+  }
+}
+
+export function setOnboarded(): void {
+  safeSetJSON(ONBOARDED_KEY, true);
 }
 
 // ── Analytics ──────────────────────────────

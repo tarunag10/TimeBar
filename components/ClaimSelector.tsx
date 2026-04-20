@@ -86,11 +86,12 @@ export default function ClaimSelector({ onSelect }: Props) {
                     whileHover={{ y: -2, transition: { type: 'spring', stiffness: 420, damping: 24 } }}
                     whileTap={{ scale: 0.99 }}
                     onClick={() => onSelect(claim.key)}
-                    className="w-full group relative text-left glass glass-hover rounded-xl p-4
+                    className="w-full group relative text-left glass glass-hover glass-card rounded-2xl p-4
                       focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]/50
-                      cursor-pointer overflow-hidden"
+                      cursor-pointer overflow-hidden border-l-2 border-l-transparent hover:border-l-[var(--accent)]
+                      active:scale-[0.98] transition-all duration-200"
                   >
-                    <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/15 via-transparent to-[var(--accent-blue)]/12 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-xl" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/15 via-transparent to-[var(--accent-blue)]/12 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
 
                     <div className="relative flex items-center gap-3.5">
                       <div className="w-9 h-9 rounded-lg bg-[var(--overlay-white-4)] border border-[var(--accent)]/25 flex items-center justify-center">

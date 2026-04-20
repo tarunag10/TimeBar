@@ -7,6 +7,7 @@ import { CalculationResult } from '@/types/rules';
 import { getRule } from '@/lib/rules';
 import { format, parseISO } from 'date-fns';
 import { trackEvent } from '@/lib/storage';
+import { copyToClipboard } from '@/lib/utils';
 
 type Props = {
   result: CalculationResult;
@@ -122,27 +123,12 @@ function formatCopyText(result: CalculationResult, claimType: string): string {
 export default function CopyButton({ result, claimType }: Props) {
   const [copied, setCopied] = useState(false);
 
-  function fallbackCopy(text: string) {
-    const textarea = document.createElement('textarea');
-    textarea.value = text;
-    textarea.style.position = 'fixed';
-    textarea.style.opacity = '0';
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
-  }
-
   async function handleCopy() {
     const text = formatCopyText(result, claimType);
     try {
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(text);
-      } else {
-        fallbackCopy(text);
-      }
+      await copyToClipboard(text);
     } catch {
-      fallbackCopy(text);
+      // clipboard unavailable — silently ignore
     }
     setCopied(true);
     trackEvent({ type: 'copy_clicked', claimType });
@@ -155,7 +141,9 @@ export default function CopyButton({ result, claimType }: Props) {
       onClick={handleCopy}
       whileTap={{ scale: 0.9 }}
       className="flex items-center gap-1.5 text-[11px] text-slate-500 hover:text-slate-300
-        px-2.5 py-1.5 rounded-lg glass-hover transition-all duration-200 cursor-pointer border border-transparent hover:border-white/[0.06]"
+  px-2.5 py-1.5 rounded-xl transition-all duration-200 cursor-pointer border border-transparent
+  hover:border-white/10 hover:ring-1 hover:ring-white/10 hover:shadow-[0_0_12px_rgba(255,255,255,0.05)]
+  active:scale-[0.98]"
     >
       <AnimatePresence mode="wait">
         {copied ? (

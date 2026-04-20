@@ -25,7 +25,8 @@ export default function DisclaimerBanner() {
           initial={{ height: 'auto', opacity: 1 }}
           exit={{ height: 0, opacity: 0 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
-          className="disclaimer-banner relative z-40 overflow-hidden border-b border-[var(--accent)]/20 bg-[var(--accent)]/8"
+          className="disclaimer-banner relative z-40 overflow-hidden bg-[var(--accent)]/8"
+          style={{ borderBottom: 'none', borderTop: '1px solid transparent', borderImage: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent) 1' }}
         >
           <div className="max-w-6xl mx-auto px-4 sm:px-8 py-2 flex items-center gap-2.5">
             <AlertTriangle className="w-3 h-3 text-[var(--accent-text)] shrink-0" />

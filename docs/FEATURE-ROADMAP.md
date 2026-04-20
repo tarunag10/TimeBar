@@ -7,17 +7,21 @@
 
 ## 🔥 Tier 1 — High Impact, Should Build Next
 
-### 1. Shareable Links (URL-encoded state)
+### 1. ~~Shareable Links (URL-encoded state)~~ ✅ COMPLETED
 
-Encode claim type + answers into URL query params so users can share a direct link to a pre-filled calculation. Lawyers live by sharing links in emails.
+Implemented June 2025. Encode claim type + answers into compressed URL query params (`?s=...`) using `lz-string` so users can share a direct link to a pre-filled calculation.
 
-- **Effort:** Small — serialize answers to URL params, hydrate on page load
+- **Effort:** Small → Medium (escalated for validation, clipboard refactor, analytics)
 - **Impact:** Very high — makes the tool collaborative by default
-- **Implementation notes:**
-  - Use `URLSearchParams` to serialize the `answers` object + `claimType` into the URL
-  - On page load, detect query params and pre-populate state via `handleRestore`
-  - Add a "Share" button next to Copy/Calendar export in the ResultCard
-  - Consider compressing params with `lz-string` if URLs get long
+- **What was built:**
+  - `lz-string` compression (`compressToEncodedURIComponent`) for short URLs
+  - `lib/share.ts` — encode/decode share state utilities
+  - `components/ShareButton.tsx` — Share button with "Link copied" feedback
+  - `useSearchParams` + `Suspense` wrapper to hydrate state from URL on page load
+  - Claim type validated against known rules before restoring (security)
+  - "Shared link restored" badge that clears when answers change
+  - `copyToClipboard` utility extracted to `lib/utils.ts` (deduplicated from CopyButton + ShareButton)
+  - `share_clicked` analytics event type added
 
 ### 2. PDF Export (professional report)
 
@@ -183,7 +187,7 @@ The PRD calls for this and it's missing. Critical for confidence before adding m
 
 | Feature | Why | Priority |
 |---|---|---|
-| Shareable links (#1) | Highest ROI — small effort, massive utility | 🔴 Do first |
+| ~~Shareable links (#1)~~ ✅ | Highest ROI — small effort, massive utility | ✅ Done |
 | ~~Light/dark toggle (#3)~~ ✅ | Removes adoption barrier | ✅ Done |
 | PWA manifest (#8) | "Install" on phone = daily use | 🟠 Soon |
 | Feedback widget (#7) | Closes the quality loop | 🟠 Soon |
@@ -193,7 +197,7 @@ The PRD calls for this and it's missing. Critical for confidence before adding m
 
 ## 🎯 Recommended Build Order
 
-1. **Shareable Links** — highest ROI, unlocks collaboration
+1. ~~**Shareable Links**~~ ✅ — highest ROI, unlocks collaboration (DONE)
 2. ~~**Light/Dark Toggle**~~ ✅ — removes accessibility barrier (DONE)
 3. **PDF Export** — professional output, daily-use driver
 4. **Side-by-Side Comparison** — unique differentiator

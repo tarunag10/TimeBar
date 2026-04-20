@@ -44,17 +44,25 @@ export default function StatusBadge({ status }: Props) {
   const config = statusConfig[status];
   const Icon = config.icon;
 
+  const glowVars: Record<string, string> = {
+    live: 'var(--badge-glow-green)',
+    expires_today: 'var(--badge-glow-amber)',
+    expired: 'var(--badge-glow-red)',
+    manual_review: 'var(--badge-glow-blue)',
+  };
+
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-medium tracking-wide border ${config.bg} ${config.border} ${config.text}`}
+      className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-medium tracking-wide border ${config.bg} ${config.border} ${config.text}`}
+      style={{ boxShadow: glowVars[status] }}
     >
       {config.pulse ? (
-        <span className="relative flex h-1.5 w-1.5">
+        <span className="relative flex h-2 w-2">
           <span className={`animate-ping absolute inline-flex h-full w-full rounded-full opacity-50 ${status === 'live' ? 'bg-[var(--badge-live-dot)]' : 'bg-[var(--badge-today-dot)]'}`} />
-          <span className={`relative inline-flex rounded-full h-1.5 w-1.5 ${status === 'live' ? 'bg-[var(--badge-live-dot)]' : 'bg-[var(--badge-today-dot)]'}`} />
+          <span className={`relative inline-flex rounded-full h-2 w-2 ${status === 'live' ? 'bg-[var(--badge-live-dot)]' : 'bg-[var(--badge-today-dot)]'}`} />
         </span>
       ) : (
-        <Icon className="w-3 h-3" />
+        <Icon className="w-3.5 h-3.5" />
       )}
       {config.label}
     </span>

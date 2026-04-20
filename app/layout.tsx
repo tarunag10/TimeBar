@@ -48,6 +48,9 @@ export default function RootLayout({
           <Header />
           <DisclaimerBanner />
           <main id="main-content" role="main" className="relative z-10 flex-1">{children}</main>
+          <footer className="relative z-10 py-4 text-center">
+            <p className="text-[10px] text-slate-600">Built for legal professionals</p>
+          </footer>
         </ThemeProvider>
       </body>
     </html>

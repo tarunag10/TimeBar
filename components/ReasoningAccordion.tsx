@@ -13,7 +13,7 @@ export default function ReasoningAccordion({ result }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="glass rounded-xl overflow-hidden border border-[var(--accent)]/22">
+    <div className="glass glass-card rounded-2xl overflow-hidden border border-[var(--accent)]/22">
       <button
         type="button"
         onClick={() => setOpen(!open)}
@@ -43,9 +43,9 @@ export default function ReasoningAccordion({ result }: Props) {
             transition={{ duration: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
             <div className="px-5 pb-5 border-t border-white/[0.06]">
-              <ol className="mt-4 space-y-3">
+              <ol className="mt-4 space-y-3 border-l-2 border-transparent" style={{ borderImage: 'var(--reasoning-accent) 1' }}>
                 {result.explanationSteps.map((step, i) => (
-                  <li key={i} className="flex gap-3 text-[12px] leading-relaxed">
+                  <li key={i} className="flex gap-3 text-[12px] leading-relaxed pl-4">
                     <span className="flex items-center justify-center w-5 h-5 rounded-full bg-[var(--accent-soft)] text-[var(--accent-text)] text-[10px] font-medium shrink-0 mt-0.5">
                       {i + 1}
                     </span>

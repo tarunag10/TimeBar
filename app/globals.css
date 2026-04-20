@@ -88,13 +88,13 @@
   --changelog-badge-border: rgba(59, 130, 246, 0.2);
 
   /* Glass effects */
-  --glass-bg: linear-gradient(165deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.016));
+  --glass-bg: linear-gradient(165deg, rgba(255, 255, 255, 0.065), rgba(255, 255, 255, 0.022));
   --glass-border: rgba(236, 196, 130, 0.12);
   --glass-blur: blur(16px) saturate(1.15);
-  --glass-strong-bg: linear-gradient(165deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.024));
+  --glass-strong-bg: linear-gradient(165deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.032));
   --glass-strong-border: rgba(236, 196, 130, 0.18);
   --glass-strong-blur: blur(18px) saturate(1.2);
-  --glass-hover-bg: linear-gradient(165deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03));
+  --glass-hover-bg: linear-gradient(165deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.04));
   --glass-hover-border: rgba(236, 196, 130, 0.4);
   --panel-bg: linear-gradient(150deg, rgba(255, 255, 255, 0.052), rgba(255, 255, 255, 0.018));
   --panel-border: rgba(236, 196, 130, 0.16);
@@ -106,7 +106,7 @@
   --radial-1: rgba(213, 176, 107, 0.14);
   --radial-2: rgba(134, 166, 235, 0.12);
   --radial-3: rgba(14, 165, 233, 0.08);
-  --grid-line: rgba(255, 255, 255, 0.018);
+  --grid-line: rgba(255, 255, 255, 0.025);
   --scrollbar-thumb: rgba(255, 255, 255, 0.1);
   --scrollbar-thumb-hover: rgba(255, 255, 255, 0.2);
   --calendar-filter: invert(0.7);
@@ -120,6 +120,24 @@
   --glow-amber: 0 0 24px -6px rgba(251, 191, 36, 0.25), 0 0 0 1px rgba(251, 191, 36, 0.08);
   --glow-red: 0 0 24px -6px rgba(251, 113, 133, 0.25), 0 0 0 1px rgba(251, 113, 133, 0.08);
   --glow-blue: 0 0 24px -6px rgba(96, 165, 250, 0.25), 0 0 0 1px rgba(96, 165, 250, 0.08);
+
+  /* Glass enhancements */
+  --glass-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05), 0 2px 8px -2px rgba(0, 0, 0, 0.3), 0 8px 24px -4px rgba(0, 0, 0, 0.2);
+  --glass-top-highlight: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.05), transparent);
+  --glass-inner-glow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  --section-divider: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  --cta-gradient: linear-gradient(135deg, #b45309, #d97706, #eab308);
+  --cta-glow: 0 4px 16px rgba(212, 168, 83, 0.3);
+  --ambient-green: radial-gradient(ellipse at 50% 50%, rgba(52, 211, 153, 0.08), transparent 70%);
+  --ambient-amber: radial-gradient(ellipse at 50% 50%, rgba(251, 191, 36, 0.08), transparent 70%);
+  --ambient-red: radial-gradient(ellipse at 50% 50%, rgba(251, 113, 133, 0.08), transparent 70%);
+  --ambient-blue: radial-gradient(ellipse at 50% 50%, rgba(96, 165, 250, 0.08), transparent 70%);
+  --badge-glow-green: 0 0 20px rgba(52, 211, 153, 0.3);
+  --badge-glow-amber: 0 0 20px rgba(251, 191, 36, 0.3);
+  --badge-glow-red: 0 0 20px rgba(251, 113, 133, 0.3);
+  --badge-glow-blue: 0 0 20px rgba(96, 165, 250, 0.3);
+  --progress-gradient: linear-gradient(90deg, #d5b06b, #5b8ce6);
+  --reasoning-accent: linear-gradient(180deg, var(--accent), var(--accent-blue));
 }
 
 /* ── Light theme ───────────────────────────── */
@@ -197,13 +215,13 @@
   --changelog-badge-border: rgba(37, 99, 235, 0.15);
 
   /* Glass effects — light */
-  --glass-bg: linear-gradient(165deg, rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.6));
+  --glass-bg: linear-gradient(165deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.65));
   --glass-border: rgba(180, 150, 90, 0.15);
   --glass-blur: blur(16px) saturate(1.15);
-  --glass-strong-bg: linear-gradient(165deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7));
+  --glass-strong-bg: linear-gradient(165deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.75));
   --glass-strong-border: rgba(180, 150, 90, 0.2);
   --glass-strong-blur: blur(18px) saturate(1.2);
-  --glass-hover-bg: linear-gradient(165deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.8));
+  --glass-hover-bg: linear-gradient(165deg, rgba(255, 255, 255, 0.97), rgba(255, 255, 255, 0.85));
   --glass-hover-border: rgba(180, 150, 90, 0.35);
   --panel-bg: linear-gradient(150deg, rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.65));
   --panel-border: rgba(180, 150, 90, 0.2);
@@ -229,6 +247,24 @@
   --glow-amber: 0 0 24px -6px rgba(251, 191, 36, 0.15), 0 0 0 1px rgba(251, 191, 36, 0.1);
   --glow-red: 0 0 24px -6px rgba(251, 113, 133, 0.15), 0 0 0 1px rgba(251, 113, 133, 0.1);
   --glow-blue: 0 0 24px -6px rgba(96, 165, 250, 0.15), 0 0 0 1px rgba(96, 165, 250, 0.1);
+
+  /* Glass enhancements — light */
+  --glass-shadow: 0 0 0 1px rgba(0, 0, 0, 0.04), 0 2px 8px -2px rgba(0, 0, 0, 0.08), 0 8px 24px -4px rgba(0, 0, 0, 0.06);
+  --glass-top-highlight: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.02), transparent);
+  --glass-inner-glow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  --section-divider: linear-gradient(90deg, transparent, rgba(0, 0, 0, 0.08), transparent);
+  --cta-gradient: linear-gradient(135deg, #b45309, #d97706, #eab308);
+  --cta-glow: 0 4px 16px rgba(180, 137, 48, 0.2);
+  --ambient-green: radial-gradient(ellipse at 50% 50%, rgba(5, 150, 105, 0.05), transparent 70%);
+  --ambient-amber: radial-gradient(ellipse at 50% 50%, rgba(180, 83, 9, 0.05), transparent 70%);
+  --ambient-red: radial-gradient(ellipse at 50% 50%, rgba(185, 28, 28, 0.05), transparent 70%);
+  --ambient-blue: radial-gradient(ellipse at 50% 50%, rgba(37, 99, 235, 0.05), transparent 70%);
+  --badge-glow-green: 0 0 20px rgba(5, 150, 105, 0.2);
+  --badge-glow-amber: 0 0 20px rgba(180, 83, 9, 0.2);
+  --badge-glow-red: 0 0 20px rgba(185, 28, 28, 0.2);
+  --badge-glow-blue: 0 0 20px rgba(37, 99, 235, 0.2);
+  --progress-gradient: linear-gradient(90deg, #b08930, #3b6fd4);
+  --reasoning-accent: linear-gradient(180deg, var(--accent), var(--accent-blue));
 }
 
 html {
@@ -275,6 +311,7 @@ body::after {
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
 }
 
 .glass-strong {
@@ -282,6 +319,7 @@ body::after {
   backdrop-filter: var(--glass-strong-blur);
   -webkit-backdrop-filter: var(--glass-strong-blur);
   border: 1px solid var(--glass-strong-border);
+  box-shadow: var(--glass-shadow);
 }
 
 .glass-hover {
@@ -290,7 +328,7 @@ body::after {
 .glass-hover:hover {
   background: var(--glass-hover-bg);
   border-color: var(--glass-hover-border);
-  box-shadow: 0 12px 54px -18px rgba(0, 0, 0, 0.2), 0 0 0 1px var(--glass-hover-border);
+  box-shadow: var(--glass-shadow), var(--glass-inner-glow);
 }
 
 .panel-shell {
@@ -327,6 +365,25 @@ body::after {
   animation: pulse-glow 2s ease-in-out infinite;
 }
 
+@keyframes ambient-drift {
+  0%, 100% { background-position: 0% 0%, 100% 100%, 50% 50%; }
+  33% { background-position: 10% 5%, 90% 95%, 45% 55%; }
+  66% { background-position: 5% 10%, 95% 90%, 55% 45%; }
+}
+
+@keyframes countdown-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.animate-ambient {
+  animation: ambient-drift 20s ease-in-out infinite;
+}
+
+.animate-countdown {
+  animation: countdown-pulse 2s ease-in-out infinite;
+}
+
 .glow-green {
   box-shadow: var(--glow-green);
 }
@@ -341,6 +398,57 @@ body::after {
 
 .glow-blue {
   box-shadow: var(--glow-blue);
+}
+
+/* Top-edge light catch for glass cards */
+.glass-card {
+  position: relative;
+}
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--glass-top-highlight);
+  border-radius: inherit;
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Section divider gradient line */
+.divider-gradient {
+  height: 1px;
+  background: var(--section-divider);
+  border: none;
+}
+
+/* CTA button styling */
+.btn-cta {
+  background: var(--cta-gradient);
+  box-shadow: var(--cta-glow);
+  color: white;
+  font-weight: 600;
+  border: none;
+}
+.btn-cta:hover {
+  filter: brightness(1.1);
+}
+.btn-cta:active {
+  transform: scale(0.98);
+}
+
+/* Ghost button glow */
+.btn-ghost:hover {
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.05);
+}
+
+/* Progress bar */
+.progress-bar {
+  background: var(--progress-gradient);
+  border-radius: 9999px;
+  height: 3px;
 }
 
 ::-webkit-scrollbar { width: 5px; }
@@ -387,6 +495,41 @@ input[type="date"]::-webkit-calendar-picker-indicator:hover {
 /* Badge/status colors now use CSS variables — no need for class overrides */
 
 [data-theme="light"] .text-green-400 { color: #059669; }
+
+/* ── Report route watermark ──────────────── */
+
+.print-watermark::before {
+  content: 'NOT LEGAL ADVICE';
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-45deg);
+  font-size: 6rem;
+  font-weight: 800;
+  color: rgba(0, 0, 0, 0.03);
+  pointer-events: none;
+  z-index: 0;
+  white-space: nowrap;
+  letter-spacing: 0.15em;
+}
+
+/* ── Reduced motion ──────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-ping,
+  .animate-pulse-glow {
+    animation: none !important;
+  }
+}
 
 /* ── Print stylesheet ───────────────────── */
 
