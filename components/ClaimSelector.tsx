@@ -62,27 +62,27 @@ export default function ClaimSelector({ onSelect }: Props) {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="mb-8">
+      <div className="mb-6 sm:mb-8">
         <p className="text-[11px] tracking-[3px] uppercase text-slate-500 font-medium mb-2">
           England &amp; Wales
         </p>
-        <h1 className="text-3xl sm:text-4xl display-serif tracking-tight text-gradient">
+        <h1 className="text-[2rem] sm:text-4xl leading-tight display-serif tracking-tight text-gradient">
           Limitation Calculator
         </h1>
-        <p className="text-sm text-slate-300 mt-2 leading-relaxed max-w-3xl">
+        <p className="text-[13px] sm:text-sm text-slate-300 mt-2 leading-relaxed max-w-3xl">
           Select the legal claim type that best matches your case. The calculator will then guide you
           through plain-English questions and estimate the likely limitation deadline under
           England &amp; Wales law.
         </p>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-5 sm:space-y-6">
         {claimCategories.map((category, categoryIndex) => (
           <div key={category.label}>
             <p className="text-[11px] tracking-[2px] uppercase text-slate-500 font-medium mb-3">
               {category.label}
             </p>
-            <div className="grid sm:grid-cols-2 gap-2.5">
+            <div className="grid sm:grid-cols-2 gap-2 sm:gap-2.5">
               {category.items.map((claim, itemIndex) => {
                 const Icon = claimIcons[claim.key];
                 const rule = getRule(claim.key);
@@ -100,25 +100,25 @@ export default function ClaimSelector({ onSelect }: Props) {
                     whileHover={{ y: -2, transition: { type: 'spring', stiffness: 420, damping: 24 } }}
                     whileTap={{ scale: 0.99 }}
                     onClick={() => onSelect(claim.key)}
-                    className="w-full group relative text-left glass glass-hover glass-card rounded-2xl p-4
+                    className="w-full group relative text-left glass glass-hover glass-card rounded-xl sm:rounded-2xl p-3.5 sm:p-4 min-h-[86px] sm:min-h-0
                       focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]/50
                       cursor-pointer overflow-hidden border-l-2 border-l-transparent hover:border-l-[var(--accent)]
                       active:scale-[0.98] transition-all duration-200"
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-[var(--accent)]/15 via-transparent to-[var(--accent-blue)]/12 opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-2xl" />
 
-                    <div className="relative flex items-center gap-3.5">
-                      <div className="w-9 h-9 rounded-lg bg-[var(--overlay-white-4)] border border-[var(--accent)]/25 flex items-center justify-center">
+                    <div className="relative flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-lg bg-[var(--overlay-white-4)] border border-[var(--accent)]/25 flex items-center justify-center shrink-0">
                         <Icon className="w-4 h-4 text-[var(--accent-icon)] group-hover:text-[var(--accent-icon-hover)] transition-colors duration-300" />
                       </div>
-                      <div className="flex-1">
-                        <div className="text-[13px] font-semibold text-slate-200 group-hover:text-white transition-colors duration-200">
+                      <div className="flex-1 min-w-0">
+                        <div className="text-[13px] sm:text-[13px] font-semibold text-slate-200 group-hover:text-white transition-colors duration-200 leading-snug">
                           {claim.title}
                         </div>
-                        <div className="text-[11px] text-slate-400 mt-0.5">
+                        <div className="text-[11px] text-slate-400 mt-0.5 leading-snug">
                           {claim.shortDesc}
                         </div>
-                        <div className="text-[10px] text-slate-500 mt-1">
+                        <div className="text-[10px] text-slate-500 mt-1 truncate">
                           {rule.statuteRef.act}, {rule.statuteRef.section}
                         </div>
                       </div>

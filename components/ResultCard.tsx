@@ -78,8 +78,8 @@ export default function ResultCard({ result, claimType, accrualDate, answers }: 
       <div className={`absolute inset-0 bg-gradient-to-br ${style.gradient}`} />
       <div className="absolute inset-0 glass" />
 
-      <div className="relative p-5 sm:p-6">
-        <div className="flex items-start justify-between gap-4">
+      <div className="relative p-4 sm:p-6">
+        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
           <div className="flex-1 min-w-0">
             {result.status === 'manual_review' ? (
               <>
@@ -96,7 +96,7 @@ export default function ResultCard({ result, claimType, accrualDate, answers }: 
               </>
             ) : (
               <>
-                <div className={`text-sm uppercase tracking-wider ${style.dateColor} font-semibold mb-1`}>
+                <div className={`text-[13px] sm:text-sm uppercase tracking-wider ${style.dateColor} font-semibold mb-1`}>
                   {result.status === 'live' && (
                     <span className="animate-countdown">{result.daysRemaining} days remaining</span>
                   )}
@@ -105,7 +105,7 @@ export default function ResultCard({ result, claimType, accrualDate, answers }: 
                 </div>
 
                 {result.primaryExpiryDate && (
-                  <div className={`text-3xl sm:text-4xl display-serif ${style.dateColor} tracking-tight leading-none`}>
+                  <div className={`text-[2rem] sm:text-4xl display-serif ${style.dateColor} tracking-tight leading-none`}>
                     {formatDisplayDate(result.adjustedExpiryDate || result.primaryExpiryDate)}
                   </div>
                 )}
@@ -123,7 +123,7 @@ export default function ResultCard({ result, claimType, accrualDate, answers }: 
             )}
           </div>
 
-          <div className="shrink-0 flex flex-row sm:flex-col items-center sm:items-end gap-2 sm:gap-2.5 flex-wrap justify-end">
+          <div className="shrink-0 grid grid-cols-2 sm:flex sm:flex-col items-stretch sm:items-end gap-2 sm:gap-2.5">
             <StatusBadge status={result.status} />
             <ShareButton shareState={{ claimType, answers }} />
             <CopyButton result={result} claimType={claimType} />
@@ -132,7 +132,7 @@ export default function ResultCard({ result, claimType, accrualDate, answers }: 
           </div>
         </div>
 
-        <div className="mt-4 rounded-2xl border border-white/[0.08] bg-[var(--overlay-subtle)] p-3.5 space-y-3">
+        <div className="mt-4 rounded-xl sm:rounded-2xl border border-white/[0.08] bg-[var(--overlay-subtle)] p-3 sm:p-3.5 space-y-3">
           <div className="flex flex-wrap items-center gap-2 text-[10px] uppercase tracking-[1.5px]">
             <span className="px-2 py-1 rounded-md bg-[var(--overlay-white-5)] text-slate-300">
               Urgency: {result.urgencyLevel}
@@ -165,7 +165,7 @@ export default function ResultCard({ result, claimType, accrualDate, answers }: 
               <p className="text-[11px] uppercase tracking-[1.5px] text-slate-500 mb-2">Procedural action timeline</p>
               <div className="space-y-2">
                 {result.proceduralMilestones.slice(0, 4).map((milestone, idx) => (
-                  <div key={idx} className="rounded-xl glass glass-card p-3">
+                  <div key={idx} className="rounded-xl glass glass-card p-3 mobile-flat-card">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <p className="text-[12px] text-slate-100 font-medium">{milestone.title}</p>
                       <span className={`text-[10px] uppercase px-1.5 py-0.5 rounded border ${priorityStyle(milestone.priority)}`}>
@@ -190,7 +190,7 @@ export default function ResultCard({ result, claimType, accrualDate, answers }: 
               <p className="text-[11px] uppercase tracking-[1.5px] text-slate-500 mb-2">Scenario timeline model</p>
               <div className="space-y-2">
                 {result.scenarioTimelines.map((scenario) => (
-                  <div key={scenario.id} className="rounded-xl glass glass-card p-3">
+                  <div key={scenario.id} className="rounded-xl glass glass-card p-3 mobile-flat-card">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <p className="text-[12px] text-slate-100 font-medium">{scenario.label}</p>
                       <span className={`text-[10px] uppercase px-1.5 py-0.5 rounded border ${riskBandStyle(scenario.riskBand)}`}>

@@ -27,7 +27,7 @@ function BooleanInput({
   ];
 
   return (
-    <div className="flex flex-wrap gap-2">
+    <div className="grid grid-cols-3 gap-2 sm:flex sm:flex-wrap">
       {options.map((opt) => {
         const isSelected = value === opt.val;
         return (
@@ -36,7 +36,7 @@ function BooleanInput({
             type="button"
             whileTap={{ scale: 0.95 }}
             onClick={() => onChange(opt.val)}
-            className={`px-5 py-2.5 rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer border
+            className={`px-3 sm:px-5 py-3 sm:py-2.5 rounded-xl sm:rounded-full text-xs font-semibold transition-all duration-200 cursor-pointer border min-h-[46px]
               ${
                 isSelected
                   ? 'bg-[var(--accent-soft)] border-[var(--accent)]/45 text-[var(--accent-text)] shadow-[0_0_18px_-5px_rgba(213,176,107,0.35)]'
@@ -77,7 +77,7 @@ function DateInput({
           onBlur={onBlur}
           min="1900-01-01"
           max="2100-12-31"
-          className={`w-full sm:w-auto pl-9 pr-3 h-12 rounded-xl text-sm text-slate-100 min-h-[44px]
+          className={`w-full pl-9 pr-3 h-12 rounded-xl text-base sm:text-sm text-slate-100 min-h-[48px] sm:max-w-xs
             glass border ${error ? 'border-rose-500/60' : 'border-[var(--accent)]/25'}
             shadow-[inset_0_1px_3px_rgba(0,0,0,0.2)]
             focus:outline-none focus:border-[var(--accent)]/55 focus:bg-[var(--surface-hover)] focus:shadow-[0_0_20px_-6px_rgba(213,176,107,0.35),inset_0_1px_3px_rgba(0,0,0,0.2)]
@@ -112,7 +112,7 @@ function SelectInput({
       <select
         value={value || ''}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full sm:w-auto pl-3 pr-8 h-12 rounded-xl text-sm text-slate-100 appearance-none
+        className="w-full sm:max-w-xs pl-3 pr-8 h-12 rounded-xl text-base sm:text-sm text-slate-100 appearance-none
           glass border border-[var(--accent)]/25 shadow-[inset_0_1px_3px_rgba(0,0,0,0.2)]
           focus:outline-none focus:border-[var(--accent)]/55 focus:bg-[var(--surface-hover)] focus:shadow-[0_0_20px_-6px_rgba(213,176,107,0.35)]
           transition-all duration-200 cursor-pointer bg-no-repeat bg-[right_0.5rem_center]"
@@ -220,7 +220,7 @@ export default function DynamicQuestionnaire({ rule, answers, onAnswerChange }: 
   return (
     <div className="space-y-4">
       {/* Progress bar */}
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between sticky sm:static top-14 z-10 -mx-4 px-4 py-2 sm:mx-0 sm:px-0 sm:py-0 bg-[var(--bg-primary)]/84 sm:bg-transparent backdrop-blur-xl sm:backdrop-blur-0">
         <div className="h-[3px] flex-1 rounded-full bg-[var(--overlay-white-4)] overflow-hidden">
           <motion.div
             className="progress-bar h-full"
@@ -244,7 +244,7 @@ export default function DynamicQuestionnaire({ rule, answers, onAnswerChange }: 
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: i * 0.05, ease: [0.25, 0.46, 0.45, 0.94] }}
-            className="rounded-2xl border border-white/[0.06] bg-[var(--overlay-subtle)] p-4 glass-card"
+            className="rounded-xl sm:rounded-2xl border border-white/[0.06] bg-[var(--overlay-subtle)] p-3.5 sm:p-4 glass-card"
           >
             <label className="flex items-center text-[13px] tracking-[-0.02em] text-slate-200 font-medium mb-2.5 leading-relaxed">
               <span>{q.label}</span>

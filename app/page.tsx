@@ -89,7 +89,7 @@ function HomePageContent() {
   const accrualDate = answers.accrual_date as string | undefined;
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-8 py-10 sm:py-16">
+    <div className="max-w-6xl mx-auto px-3.5 sm:px-8 py-5 sm:py-16">
       <AnimatePresence mode="wait">
         {!selectedClaim ? (
           <motion.div
@@ -99,7 +99,7 @@ function HomePageContent() {
             className="space-y-10"
           >
             <section className="panel-shell overflow-hidden">
-              <div className="p-6 sm:p-8 lg:p-10 relative">
+              <div className="p-5 sm:p-8 lg:p-10 relative">
                 <div className="absolute -top-24 -right-24 w-64 h-64 rounded-full bg-[var(--accent)]/15 blur-3xl" />
                 <div className="absolute -bottom-20 left-1/3 w-72 h-72 rounded-full bg-[var(--accent-blue)]/14 blur-3xl" />
 
@@ -111,7 +111,7 @@ function HomePageContent() {
                   <h1 className="mt-4 text-4xl sm:text-5xl lg:text-6xl leading-[0.95] text-gradient display-serif">
                     TimeBar
                   </h1>
-                  <p className="mt-3 text-base sm:text-lg text-slate-300 max-w-2xl leading-relaxed">
+                  <p className="mt-3 text-[15px] sm:text-lg text-slate-300 max-w-2xl leading-relaxed">
                     A premium England & Wales limitation calculator with statute-grounded rules,
                     plain-English prompts, and defensible reasoning for each date outcome.
                   </p>
@@ -129,7 +129,7 @@ function HomePageContent() {
               </div>
             </section>
 
-            <section className="panel-shell p-5 sm:p-7">
+            <section className="panel-shell p-4 sm:p-7">
               <ClaimSelector onSelect={handleClaimSelect} />
             </section>
 
@@ -145,7 +145,7 @@ function HomePageContent() {
             exit={{ opacity: 0, y: 20, filter: 'blur(5px)' }}
             transition={{ duration: 0.35, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
-            <div className="flex items-center gap-4 mb-6">
+            <div className="flex items-center gap-4 mb-5 sm:mb-6">
               <motion.button
                 type="button"
                 onClick={handleBack}
@@ -163,13 +163,13 @@ function HomePageContent() {
               )}
             </div>
 
-            <div className="grid lg:grid-cols-[1.08fr_0.92fr] gap-6 lg:gap-8 items-start">
-              <section className="panel-shell p-5 sm:p-7">
-                <div className="mb-7">
+            <div className="grid lg:grid-cols-[1.08fr_0.92fr] gap-4 sm:gap-6 lg:gap-8 items-start">
+              <section className="panel-shell p-4 sm:p-7">
+                <div className="mb-5 sm:mb-7">
                   <p className="text-[11px] tracking-[2px] uppercase text-slate-500 font-medium">
                     {rule?.title}
                   </p>
-                  <h1 className="text-2xl sm:text-3xl display-serif text-gradient mt-1">
+                  <h1 className="text-[1.7rem] sm:text-3xl leading-tight display-serif text-gradient mt-1">
                     Build the Limitation Timeline
                   </h1>
                   <p className="text-sm text-slate-400 mt-2">
@@ -188,7 +188,7 @@ function HomePageContent() {
                 </ErrorBoundary>
               </section>
 
-              <div className="space-y-5 lg:sticky lg:top-24">
+              <div className="space-y-4 sm:space-y-5 lg:sticky lg:top-24">
                 <AnimatePresence mode="wait">
                   {result ? (
                     <motion.div
@@ -227,7 +227,7 @@ function HomePageContent() {
                       initial={{ opacity: 0, y: 12 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="panel-shell p-5 sm:p-6"
+                      className="panel-shell p-4 sm:p-6"
                     >
                       <h3 className="text-sm uppercase tracking-[2px] text-slate-500 mb-2">
                         Live Analysis

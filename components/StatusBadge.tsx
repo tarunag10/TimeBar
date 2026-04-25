@@ -53,7 +53,7 @@ export default function StatusBadge({ status }: Props) {
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-medium tracking-wide border ${config.bg} ${config.border} ${config.text}`}
+      className={`inline-flex items-center justify-center gap-1.5 px-4 py-2 sm:py-1.5 rounded-xl sm:rounded-lg text-xs sm:text-sm font-medium tracking-wide border min-h-[44px] sm:min-h-0 ${config.bg} ${config.border} ${config.text}`}
       style={{ boxShadow: glowVars[status] }}
     >
       {config.pulse ? (

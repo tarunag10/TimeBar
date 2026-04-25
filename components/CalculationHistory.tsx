@@ -46,8 +46,8 @@ export default function CalculationHistory({ onRestore }: Props) {
   }
 
   return (
-    <section className="panel-shell p-5 sm:p-7">
-      <div className="flex items-center justify-between mb-4">
+    <section className="panel-shell p-4 sm:p-7">
+      <div className="flex items-center justify-between gap-3 mb-4">
         <div className="flex items-center gap-2">
           <Clock className="w-3.5 h-3.5 text-[var(--accent)]" />
           <h2 className="text-xs font-semibold uppercase tracking-[2px] text-slate-400">
@@ -56,7 +56,7 @@ export default function CalculationHistory({ onRestore }: Props) {
         </div>
         <button
           onClick={handleClearAll}
-          className="flex items-center gap-1 text-[10px] text-slate-600 hover:text-rose-400 transition-colors cursor-pointer"
+          className="flex items-center gap-1 text-[11px] sm:text-[10px] text-slate-600 hover:text-rose-400 transition-colors cursor-pointer min-h-[40px]"
         >
           <Trash2 className="w-3 h-3" />
           Clear all
@@ -79,7 +79,7 @@ export default function CalculationHistory({ onRestore }: Props) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -20, height: 0 }}
                 transition={{ duration: 0.2 }}
-                className="flex items-center gap-3 p-3 rounded-xl border border-white/[0.06] bg-[var(--overlay-subtle)]
+                className="flex items-center gap-3 p-3 rounded-xl border border-white/[0.06] bg-[var(--overlay-subtle)] min-h-[68px]
                   hover:bg-[var(--surface-hover)] hover:border-[var(--accent)]/20 transition-all duration-200 group cursor-pointer"
                 onClick={() => handleRestore(entry)}
               >
@@ -90,7 +90,7 @@ export default function CalculationHistory({ onRestore }: Props) {
                       {statusLabels[entry.status] || entry.status}
                     </span>
                   </div>
-                  <div className="flex items-center gap-3 text-[10px] text-slate-500">
+                  <div className="flex flex-wrap items-center gap-x-3 gap-y-0.5 text-[10px] text-slate-500">
                     {entry.expiryDate && <span>Expiry: {entry.expiryDate}</span>}
                     <span>{formatDistanceToNow(entry.timestamp, { addSuffix: true })}</span>
                   </div>
@@ -101,8 +101,8 @@ export default function CalculationHistory({ onRestore }: Props) {
                     e.stopPropagation();
                     handleRemove(entry.id);
                   }}
-                  className="opacity-0 group-hover:opacity-100 text-slate-600 hover:text-rose-400
-                    transition-all duration-200 p-1 cursor-pointer"
+                  className="sm:opacity-0 sm:group-hover:opacity-100 text-slate-600 hover:text-rose-400
+                    transition-all duration-200 p-1 cursor-pointer min-h-[40px] min-w-[40px] flex items-center justify-center"
                   aria-label="Remove entry"
                 >
                   <X className="w-3 h-3" />
