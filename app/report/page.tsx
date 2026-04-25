@@ -6,7 +6,7 @@ import { format, parseISO } from 'date-fns';
 import { calculate } from '@/lib/engine/calculate';
 import { decodeShareState } from '@/lib/share';
 import { rules } from '@/lib/rules';
-import { Rule, CalculationResult } from '@/types/rules';
+import { Rule } from '@/types/rules';
 import { getRule } from '@/lib/rules';
 
 function formatDisplayDate(isoDate: string): string {
@@ -49,7 +49,7 @@ function ReportContent() {
     );
   }
 
-  const { rule, result, claimType } = data;
+  const { rule, result } = data;
   const accrualDate = data.answers.accrual_date as string | undefined;
   const generatedAt = format(new Date(), 'd MMMM yyyy \'at\' HH:mm');
 

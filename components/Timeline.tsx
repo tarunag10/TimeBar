@@ -1,9 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { parseISO, format, differenceInCalendarDays } from 'date-fns';
-import { useTheme } from 'next-themes';
 
 type Props = {
   accrualDate: string;
@@ -13,15 +11,6 @@ type Props = {
 };
 
 export default function Timeline({ accrualDate, expiryDate, adjustedExpiryDate }: Props) {
-  // Hooks must be called before any early returns (rules of hooks)
-  const { resolvedTheme } = useTheme();
-  const [accentColor, setAccentColor] = useState('#d5b06b');
-  useEffect(() => {
-    const value = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
-    // eslint-disable-next-line react-hooks/set-state-in-effect -- reading CSS variable requires effect + state
-    if (value) setAccentColor(value);
-  }, [resolvedTheme]);
-
   const accrual = parseISO(accrualDate);
   const expiry = parseISO(adjustedExpiryDate || expiryDate);
   const today = new Date();

@@ -32,9 +32,11 @@ function HomePageContent() {
     if (!shared) return;
     const state = decodeShareState(shared);
     if (state && state.claimType && state.answers && state.claimType in rules) {
-      setSelectedClaim(state.claimType as Rule['claimType']);
-      setAnswers(state.answers);
-      setShareRestored(true);
+      queueMicrotask(() => {
+        setSelectedClaim(state.claimType as Rule['claimType']);
+        setAnswers(state.answers);
+        setShareRestored(true);
+      });
       trackEvent({ type: 'claim_selected', claimType: state.claimType });
     }
   }, [searchParams]);

@@ -17,7 +17,9 @@ export default function Header() {
   useEffect(() => { setMounted(true); }, []);
 
   // Close mobile menu on route change
-  useEffect(() => { setMobileMenuOpen(false); }, [pathname]);
+  useEffect(() => {
+    queueMicrotask(() => setMobileMenuOpen(false));
+  }, [pathname]);
 
   const handleShowHelp = useCallback(() => {
     try { localStorage.removeItem('timebar_onboarded'); } catch { /* ignore */ }
