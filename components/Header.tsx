@@ -1,10 +1,11 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
-import { Scale, Sparkles, Sun, Moon, Menu, X, HelpCircle } from 'lucide-react';
+import { Sun, Moon, Menu, X, HelpCircle } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Header() {
@@ -36,11 +37,16 @@ export default function Header() {
     <header className="sticky top-0 z-50 bg-[var(--bg-primary)]/86 sm:bg-[var(--bg-primary)]/70 backdrop-blur-[20px]" style={{ borderBottom: '1px solid transparent', borderImage: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), rgba(255,255,255,0.05), transparent) 1' }}>
       <div className="max-w-6xl mx-auto px-3.5 sm:px-8 flex items-center justify-between h-14 sm:h-15">
         <Link href="/" className="flex items-center gap-2.5 sm:gap-3 group" aria-label="TimeBar home">
-          <div className="relative w-8 h-8 rounded-lg border border-[var(--accent)]/35 bg-[var(--accent-soft)] flex items-center justify-center">
-            <Scale className="w-4 h-4 text-[var(--accent-icon)] group-hover:scale-105 transition-transform duration-300" />
-            <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-[var(--accent-blue)]/70 border border-[var(--ring-bg)] flex items-center justify-center">
-              <Sparkles className="w-1.5 h-1.5 text-[var(--ring-bg)]" />
-            </div>
+          <div className="relative w-9 h-9 sm:w-10 sm:h-10 rounded-xl border border-[var(--accent)]/30 bg-[var(--bg-deep)] overflow-hidden shadow-[0_0_18px_-8px_rgba(213,176,107,0.65)] group-hover:border-[var(--accent)]/55 transition-all duration-300">
+            <Image
+              src="/timebar-logo.png"
+              alt=""
+              width={80}
+              height={80}
+              priority
+              className="h-full w-full object-cover scale-[1.08] group-hover:scale-[1.14] transition-transform duration-500"
+            />
+            <div className="absolute inset-0 rounded-xl ring-1 ring-inset ring-white/10" />
           </div>
           <div>
             <span className="block text-xl leading-none font-semibold tracking-tight text-gradient display-serif">
