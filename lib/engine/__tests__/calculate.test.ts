@@ -586,6 +586,87 @@ describe('Knowledge-with-longstop (professional negligence)', () => {
   });
 });
 
+describe('Expanded limitation rules', () => {
+  it('clinical negligence uses the known date of knowledge', () => {
+    const result = calculate({
+      claimType: 'clinical_negligence',
+      answers: {
+        accrual_date: '2020-01-01',
+        knowledge_date_known: true,
+        knowledge_date: '2022-06-01',
+        disability_at_accrual: false,
+        fraud_concealment: false,
+      },
+    });
+
+    expect(result.status).not.toBe('manual_review');
+    expect(result.primaryExpiryDate).toBe('2025-06-01');
+  });
+
+  it('fatal accident routes uncertain dependant knowledge to manual review', () => {
+    const result = calculate({
+      claimType: 'fatal_accident',
+      answers: {
+        accrual_date: '2024-01-01',
+        knowledge_date_known: false,
+        disability_at_accrual: false,
+      },
+    });
+
+    expect(result.status).toBe('manual_review');
+    expect(result.warnings.some((warning) => warning.includes('dependant'))).toBe(true);
+  });
+
+  it('product liability enforces the 10-year product-supply longstop', () => {
+    const result = calculate({
+      claimType: 'product_liability',
+      answers: {
+        act_or_omission_date: '2010-01-01',
+        accrual_date: '2020-01-01',
+        knowledge_date_known: true,
+        knowledge_date: '2024-01-01',
+        disability_at_accrual: false,
+      },
+    });
+
+    expect(result.adjustedExpiryDate).toBe('2020-01-01');
+    expect(result.appliedModifiers.some((modifier) => modifier.includes('10 years'))).toBe(true);
+    expect(result.warnings.some((warning) => warning.includes('CPA 1987'))).toBe(true);
+  });
+
+  it('product liability without product-supply date requires manual review', () => {
+    const result = calculate({
+      claimType: 'product_liability',
+      answers: {
+        accrual_date: '2020-01-01',
+        knowledge_date_known: true,
+        knowledge_date: '2020-01-01',
+        disability_at_accrual: false,
+      },
+    });
+
+    expect(result.status).toBe('manual_review');
+    expect(result.warnings.some((warning) => warning.includes('product-supply'))).toBe(true);
+  });
+
+  it('latent damage uses the s.14B longstop from act or omission date', () => {
+    const result = calculate({
+      claimType: 'latent_damage',
+      answers: {
+        act_or_omission_date: '2010-06-01',
+        accrual_date: '2020-01-01',
+        knowledge_date_known: true,
+        knowledge_date: '2024-01-01',
+        disability_at_accrual: false,
+        fraud_concealment: false,
+      },
+    });
+
+    expect(result.adjustedExpiryDate).toBe('2025-06-01');
+    expect(result.warnings.some((warning) => warning.includes('s.14B'))).toBe(true);
+  });
+});
+
 // ────────────────────────────────────────────
 // 8. Result structure validation
 // ────────────────────────────────────────────

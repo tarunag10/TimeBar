@@ -123,6 +123,29 @@ function buildNextActions(
   return actions;
 }
 
+function getLongstopBasis(rule: Rule): { label: string; warning: string } {
+  if (rule.claimType === 'product_liability') {
+    return {
+      label: 'date the product was supplied',
+      warning:
+        'The calculated date has been capped by the 10-year longstop for defective-product claims under Sch. 1 para. 1 Consumer Protection Act 1987 (CPA 1987).',
+    };
+  }
+
+  if (rule.claimType === 'latent_damage' || rule.claimType === 'professional_negligence') {
+    return {
+      label: 'date of act/omission',
+      warning:
+        'The calculated date has been capped by the 15-year longstop (s.14B Limitation Act 1980), which runs from the date of the negligent act or omission.',
+    };
+  }
+
+  return {
+    label: 'longstop start date',
+    warning: `The calculated date has been capped by the ${rule.longstopPeriod?.value ?? ''}-year longstop for this claim type.`,
+  };
+}
+
 function buildReviewChecklist(rule: Rule): string[] {
   const checklist = [
     'Accrual/start date supported by documentary evidence.',
@@ -244,9 +267,7 @@ export function calculate(input: CalculationInput): CalculationResult {
   let longstopApplied = false;
 
   if (rule.startRule === 'knowledge_with_longstop' && rule.longstopPeriod) {
-    // s.14B longstop runs from the date of the negligent act or omission,
-    // NOT from the date of damage/accrual. Use act_or_omission_date if available,
-    // falling back to accrual_date for backwards compatibility.
+    const longstopBasis = getLongstopBasis(rule);
     const longstopBaseStr = (answers.act_or_omission_date as string | undefined) || (answers.accrual_date as string | undefined);
     if (longstopBaseStr) {
       longstopExpiry = addPeriod(parseISO(longstopBaseStr), rule.longstopPeriod);
@@ -255,11 +276,9 @@ export function calculate(input: CalculationInput): CalculationResult {
         adjustedExpiry = longstopExpiry;
         longstopApplied = true;
         modifierResult.appliedModifiers.push(
-          `Longstop cap (${rule.longstopPeriod.value} ${rule.longstopPeriod.unit} from date of act/omission)`
+          `Longstop cap (${rule.longstopPeriod.value} ${rule.longstopPeriod.unit} from ${longstopBasis.label})`
         );
-        modifierResult.warnings.push(
-          'The calculated date has been capped by the 15-year longstop (s.14B Limitation Act 1980), which runs from the date of the negligent act or omission.'
-        );
+        modifierResult.warnings.push(longstopBasis.warning);
       }
     }
   }

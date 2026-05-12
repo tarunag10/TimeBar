@@ -75,7 +75,7 @@ export function checkManualReview(
 
   // PI: knowledge date unknown
   if (
-    rule.claimType === 'personal_injury' &&
+    ['personal_injury', 'clinical_negligence'].includes(rule.claimType) &&
     answers.knowledge_date_known === false
   ) {
     warnings.push(
@@ -84,15 +84,46 @@ export function checkManualReview(
     explanationSteps.push('Date of knowledge is unknown — cannot determine if later-of rule applies.');
   }
 
-  // Professional negligence: knowledge date unknown/disputed
+  // Knowledge date unknown/disputed for rules with longstop analysis
   if (
-    rule.claimType === 'professional_negligence' &&
+    ['professional_negligence', 'latent_damage', 'product_liability'].includes(rule.claimType) &&
     answers.knowledge_date_known === false
   ) {
     warnings.push(
-      'You indicated the claimant\'s date of knowledge is not known. Professional negligence claims may rely on the s.14A knowledge-based period (3 years from knowledge), with a separate longstop under s.14B. Manual legal review is required where knowledge is uncertain.'
+      'You indicated the claimant\'s date of knowledge is not known. This claim type may rely on a knowledge-based period with a separate longstop. Manual legal review is required where knowledge is uncertain.'
     );
-    explanationSteps.push('Professional negligence knowledge date uncertain — s.14A analysis required.');
+    explanationSteps.push('Knowledge date uncertain — knowledge-based limitation analysis required.');
+  }
+
+  if (
+    rule.claimType === 'fatal_accident' &&
+    answers.knowledge_date_known === false
+  ) {
+    warnings.push(
+      'You indicated the dependant\'s date of knowledge is not known. Fatal accident limitation may run from date of death or the relevant date of knowledge. Manual legal review is required where that date is uncertain.'
+    );
+    explanationSteps.push('Dependant date of knowledge is unknown — manual review required.');
+  }
+
+  if (
+    rule.startRule.includes('knowledge') &&
+    answers.knowledge_date_known === true &&
+    !answers.knowledge_date
+  ) {
+    warnings.push(
+      'You confirmed that a date of knowledge is known, but no date of knowledge was provided. A reliable knowledge-based limitation date cannot be calculated.'
+    );
+    explanationSteps.push('Known date of knowledge missing — manual review required.');
+  }
+
+  if (
+    rule.claimType === 'product_liability' &&
+    !answers.act_or_omission_date
+  ) {
+    warnings.push(
+      'The product-supply date is required to test the 10-year CPA 1987 longstop. Without it, this tool cannot state a reliable product liability deadline.'
+    );
+    explanationSteps.push('Product-supply date missing — 10-year longstop cannot be checked.');
   }
 
   // Mortgage interest usually needs period-by-period treatment if arrears are rolling

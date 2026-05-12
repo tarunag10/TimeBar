@@ -7,6 +7,7 @@ import {
   clearHistory,
   getAnalyticsEvents,
   trackEvent,
+  getDraft,
 } from '../storage';
 
 beforeEach(() => {
@@ -90,6 +91,24 @@ describe('History CRUD', () => {
     clearHistory();
     expect(getHistory()).toEqual([]);
   });
+
+  it('ignores malformed stored history entries', () => {
+    localStorage.setItem('timebar_history', JSON.stringify([
+      { id: 'bad', claimType: 'simple_contract' },
+      {
+        id: 'ok',
+        claimType: 'simple_contract',
+        accrualDate: '2020-01-01',
+        status: 'live',
+        expiryDate: '2026-01-01',
+        timestamp: Date.now(),
+        answers: { accrual_date: '2020-01-01' },
+      },
+    ]));
+
+    expect(getHistory()).toHaveLength(1);
+    expect(getHistory()[0].id).toBe('ok');
+  });
 });
 
 describe('Analytics', () => {
@@ -113,5 +132,27 @@ describe('Analytics', () => {
     expect(events).toHaveLength(100);
     // Should have kept the last 100 (indices 10-109)
     expect(events[0].claimType).toBe('type_10');
+  });
+
+  it('ignores malformed analytics events', () => {
+    localStorage.setItem('timebar_analytics', JSON.stringify([
+      { type: 'unknown', timestamp: Date.now() },
+      { type: 'claim_selected', claimType: 'simple_contract', timestamp: Date.now() },
+    ]));
+
+    expect(getAnalyticsEvents()).toHaveLength(1);
+    expect(getAnalyticsEvents()[0].type).toBe('claim_selected');
+  });
+});
+
+describe('Draft recovery', () => {
+  it('ignores malformed draft data', () => {
+    localStorage.setItem('timebar_draft', JSON.stringify({
+      claimType: 'simple_contract',
+      timestamp: Date.now(),
+      answers: { accrual_date: 'x'.repeat(121) },
+    }));
+
+    expect(getDraft()).toBeNull();
   });
 });

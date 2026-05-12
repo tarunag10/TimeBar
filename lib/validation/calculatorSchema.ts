@@ -24,6 +24,13 @@ export const calculatorInputSchema = z.object({
     'judgment_enforcement',
     'mortgage_principal',
     'mortgage_interest',
+    'clinical_negligence',
+    'fatal_accident',
+    'product_liability',
+    'conversion',
+    'unjust_enrichment',
+    'latent_damage',
+    'hra_claim',
   ]),
   answers: z.record(z.string(), z.union([z.string(), z.boolean(), z.undefined()])),
 });

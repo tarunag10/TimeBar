@@ -16,6 +16,8 @@ export default function ShareButton({ shareState }: Props) {
 
   async function handleShare() {
     const url = buildShareURL(shareState);
+    if (!url) return;
+
     try {
       await copyToClipboard(url);
     } catch {

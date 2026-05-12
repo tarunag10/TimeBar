@@ -1,5 +1,6 @@
 import { CalculationResult } from '@/types/rules';
 import { generateId } from '@/lib/utils';
+import { TIMEBAR_LIMITS } from '@/lib/limits';
 
 // ── Types ──────────────────────────────────
 
@@ -24,8 +25,6 @@ export type AnalyticsEvent = {
 
 const HISTORY_KEY = 'timebar_history';
 const ANALYTICS_KEY = 'timebar_analytics';
-const HISTORY_MAX = 10;
-const ANALYTICS_MAX = 100;
 
 // ── Helpers ────────────────────────────────
 
@@ -52,10 +51,60 @@ function safeSetJSON<T>(key: string, value: T): void {
   }
 }
 
+function isPlainObject(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null && !Array.isArray(value);
+}
+
+function isAnswerMap(value: unknown): value is Record<string, string | boolean | undefined> {
+  if (!isPlainObject(value)) return false;
+  const entries = Object.entries(value);
+  if (entries.length > TIMEBAR_LIMITS.answerMaxCount) return false;
+
+  return entries.every(([key, answer]) => {
+    if (key.length > TIMEBAR_LIMITS.answerKeyMaxLength) return false;
+    if (answer === undefined || typeof answer === 'boolean') return true;
+    return typeof answer === 'string' && answer.length <= TIMEBAR_LIMITS.answerStringMaxLength;
+  });
+}
+
+function isHistoryEntry(value: unknown): value is HistoryEntry {
+  return (
+    isPlainObject(value) &&
+    typeof value.id === 'string' &&
+    typeof value.claimType === 'string' &&
+    typeof value.accrualDate === 'string' &&
+    ['live', 'expires_today', 'expired', 'manual_review'].includes(String(value.status)) &&
+    (typeof value.expiryDate === 'string' || value.expiryDate === null) &&
+    typeof value.timestamp === 'number' &&
+    isAnswerMap(value.answers)
+  );
+}
+
+function isAnalyticsEvent(value: unknown): value is AnalyticsEvent {
+  return (
+    isPlainObject(value) &&
+    ['claim_selected', 'result_computed', 'copy_clicked', 'share_clicked', 'ics_downloaded', 'print_clicked'].includes(String(value.type)) &&
+    (value.claimType === undefined || typeof value.claimType === 'string') &&
+    (value.status === undefined || typeof value.status === 'string') &&
+    typeof value.timestamp === 'number'
+  );
+}
+
+function isDraftData(value: unknown): value is DraftData {
+  return (
+    isPlainObject(value) &&
+    typeof value.claimType === 'string' &&
+    typeof value.timestamp === 'number' &&
+    isAnswerMap(value.answers)
+  );
+}
+
 // ── History ────────────────────────────────
 
 export function getHistory(): HistoryEntry[] {
-  return safeGetJSON<HistoryEntry[]>(HISTORY_KEY) ?? [];
+  const entries = safeGetJSON<unknown>(HISTORY_KEY);
+  if (!Array.isArray(entries)) return [];
+  return entries.filter(isHistoryEntry).slice(0, TIMEBAR_LIMITS.historyMaxEntries);
 }
 
 export function addHistoryEntry(entry: Omit<HistoryEntry, 'id' | 'timestamp'>): void {
@@ -77,7 +126,7 @@ export function addHistoryEntry(entry: Omit<HistoryEntry, 'id' | 'timestamp'>): 
   };
 
   entries.unshift(newEntry);
-  safeSetJSON(HISTORY_KEY, entries.slice(0, HISTORY_MAX));
+  safeSetJSON(HISTORY_KEY, entries.slice(0, TIMEBAR_LIMITS.historyMaxEntries));
 }
 
 export function removeHistoryEntry(id: string): void {
@@ -102,8 +151,6 @@ export function clearAllData(): void {
 // ── Draft Auto-Save ────────────────────────
 
 const DRAFT_KEY = 'timebar_draft';
-const DRAFT_MAX_AGE_MS = 24 * 60 * 60 * 1000; // 24 hours
-
 export type DraftData = {
   claimType: string;
   answers: Record<string, string | boolean | undefined>;
@@ -111,14 +158,15 @@ export type DraftData = {
 };
 
 export function saveDraft(claimType: string, answers: Record<string, string | boolean | undefined>): void {
+  if (!isAnswerMap(answers)) return;
   safeSetJSON(DRAFT_KEY, { claimType, answers, timestamp: Date.now() });
 }
 
 export function getDraft(): DraftData | null {
-  const draft = safeGetJSON<DraftData>(DRAFT_KEY);
-  if (!draft) return null;
+  const draft = safeGetJSON<unknown>(DRAFT_KEY);
+  if (!isDraftData(draft)) return null;
   // Expire drafts older than 24 hours
-  if (Date.now() - draft.timestamp > DRAFT_MAX_AGE_MS) {
+  if (Date.now() - draft.timestamp > TIMEBAR_LIMITS.draftMaxAgeMs) {
     clearDraft();
     return null;
   }
@@ -151,12 +199,14 @@ export function setOnboarded(): void {
 // ── Analytics ──────────────────────────────
 
 export function getAnalyticsEvents(): AnalyticsEvent[] {
-  return safeGetJSON<AnalyticsEvent[]>(ANALYTICS_KEY) ?? [];
+  const events = safeGetJSON<unknown>(ANALYTICS_KEY);
+  if (!Array.isArray(events)) return [];
+  return events.filter(isAnalyticsEvent).slice(-TIMEBAR_LIMITS.analyticsMaxEvents);
 }
 
 export function trackEvent(event: Omit<AnalyticsEvent, 'timestamp'>): void {
   const events = getAnalyticsEvents();
   events.push({ ...event, timestamp: Date.now() });
   // Keep newest entries, cap at max
-  safeSetJSON(ANALYTICS_KEY, events.slice(-ANALYTICS_MAX));
+  safeSetJSON(ANALYTICS_KEY, events.slice(-TIMEBAR_LIMITS.analyticsMaxEvents));
 }
